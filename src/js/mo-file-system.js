@@ -55,7 +55,7 @@ var MoFileSystem = (function (exports) {
     // 文件类型枚举
     const fileTypeEnum = {
         "text": {
-            "text/plain": ".txt",
+            "text/plain": [".txt", ".json"],
         },
         "image": {
             "image/png": ".png",
