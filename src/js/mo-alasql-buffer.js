@@ -1,6 +1,3 @@
-if (window['alasql'] === undefined) {
-    window.location.reload();
-}
 var MoAlasqlBuffer = (function (exports) {
     'use strict';
 
@@ -8,6 +5,19 @@ var MoAlasqlBuffer = (function (exports) {
     exports.handle = null;
     exports.json = null;
     exports.db = null;
+
+    /**
+     * 获取Alasql组件
+     * 
+     * @returns alasql
+     */
+    function getAlasql() {
+        const windowAlasql = window['alasql'];
+        if (windowAlasql === undefined) {
+            throw Error("没有Alasql组件依赖!");
+        }
+        return windowAlasql;
+    }
 
     /**
      * 初始化数据库
@@ -29,18 +39,19 @@ var MoAlasqlBuffer = (function (exports) {
                     reader.onload = () => {
                         const modbJsonStr = reader.result === "" ? `{init:'CREATE DATABASE ${exports.name}',tables:{}}` : reader.result;
                         exports.json = eval('(' + modbJsonStr + ')');
-                        if (window.alasql.databases[exports.name]) {
-                            window.alasql(`DROP DATABASE ${exports.name}`);
+                        const windowAlasql = getAlasql();
+                        if (windowAlasql.databases[exports.name]) {
+                            windowAlasql(`DROP DATABASE ${exports.name}`);
                         }
                         // 创建数据库
-                        window.alasql(exports.json.init);
-                        window.alasql(`USE ${exports.name}`);
-                        exports.db = window.alasql.databases[exports.name];
+                        windowAlasql(exports.json.init);
+                        windowAlasql(`USE ${exports.name}`);
+                        exports.db = windowAlasql.databases[exports.name];
                         // 导入表
                         const tables = exports.json.tables;
                         for (const tableName in tables) {
                             // 创建表
-                            window.alasql(tables[tableName].init);
+                            windowAlasql(tables[tableName].init);
                             // 导入数据
                             const columns = exports.db.tables[tableName].columns;
                             for (const row of tables[tableName].data) {
@@ -60,7 +71,7 @@ var MoAlasqlBuffer = (function (exports) {
                                 }
                                 keys = keys.substring(0, keys.length - 1);
                                 vals = vals.substring(0, vals.length - 1);
-                                window.alasql(`INSERT INTO ${tableName}(${keys}) VALUES(${vals})`);
+                                windowAlasql(`INSERT INTO ${tableName}(${keys}) VALUES(${vals})`);
                             }
                         }
                         resolved();
@@ -79,7 +90,8 @@ var MoAlasqlBuffer = (function (exports) {
      */
     async function dumpDataBase() {
         const tables = {};
-        const alaTables = window.alasql.databases[exports.name].tables
+        const windowAlasql = getAlasql();
+        const alaTables = windowAlasql.databases[exports.name].tables
         for (const tableName in alaTables) {
             const table = {
                 init: "",
@@ -87,7 +99,7 @@ var MoAlasqlBuffer = (function (exports) {
             };
             // 导出数据
             table.init = dumpTableStructure(alaTables[tableName], tableName);
-            window.alasql(`SELECT * INTO ? FROM ${tableName}`, [table.data]);
+            windowAlasql(`SELECT * INTO ? FROM ${tableName}`, [table.data]);
             tables[tableName] = table;
         }
         exports.json.tables = tables;
