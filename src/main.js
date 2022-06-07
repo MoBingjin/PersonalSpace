@@ -12,7 +12,7 @@ document.querySelector("#app").innerHTML = `
     <app></app>
 `;
 
-const appName = 'demo';
+const appName = 'PersonalSpace';
 
 const options = {
     moduleCache: {
