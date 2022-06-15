@@ -1,4 +1,6 @@
-var MoAlasqlBuffer = (function (exports) {
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) : factory(global.MoAlasqlBuffer = {});
+})(this, (function (exports) {
     'use strict';
 
     exports.name = "modb";
@@ -165,4 +167,4 @@ var MoAlasqlBuffer = (function (exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
 
     return exports;
-})({});
+}));

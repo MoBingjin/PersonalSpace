@@ -1,4 +1,6 @@
-var MoFileSystem = (function (exports) {
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) : factory(global.MoFileSystem = {});
+})(this, (function (exports) {
     'use strict';
 
     /**
@@ -599,4 +601,4 @@ var MoFileSystem = (function (exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
 
     return exports;
-})({});
+}));
