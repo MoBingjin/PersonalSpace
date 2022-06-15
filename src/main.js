@@ -1,13 +1,4 @@
 ;
-if (window['Vue'] === undefined
-    || window['vue3-sfc-loader'] === undefined
-    || window['ElementPlus'] === undefined
-    || window['eIconPicker'] === undefined
-    || window['MoAlasqlBuffer'] === undefined
-    || window['MoFileSystem'] === undefined) {
-    window.location.reload();
-}
-
 document.querySelector("#app").innerHTML = `
     <app></app>
 `;
