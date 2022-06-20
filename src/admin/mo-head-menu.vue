@@ -30,21 +30,18 @@
   </div>
 </template>
 
-<script>
-const { defineComponent, ref } = Vue;
+<script setup>
 
-export default defineComponent({
-  setup() {
-    const activeIndex = ref("1");
-    const handleSelect = (key, keyPath) => {
-      //console.log(key, keyPath);
-    };
-    return {
-      activeIndex,
-      handleSelect,
-    };
-  },
-});
+const { ref } = window["Vue"];
+
+
+const activeIndex = ref("1");
+
+
+const handleSelect = (key, keyPath) => {
+  //console.log(key, keyPath);
+};
+
 </script>
 
 <style scoped>
@@ -54,7 +51,8 @@ export default defineComponent({
   display: flex;
   align-items: center;
 }
-.mo-head > span {
+
+.mo-head>span {
   font-family: '宋体';
   color: #e6e6e6;
   font-size: 30px;
