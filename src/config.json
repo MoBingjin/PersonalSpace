@@ -12,8 +12,8 @@
         "deleteArticleURL": "https://action.mobingc.ml/article/delete"
     },
     "url": {
-        "@showdown.js": "https://unpkg.com/showdown@2.1.0/dist/showdown.min.js",
-        "@md-editor-v3.js": "https://unpkg.com/md-editor-v3@2.1.2/lib/md-editor-v3.umd.js",
-        "@md-editor-v3.css": "https://unpkg.com/md-editor-v3@2.1.2/lib/style.css"
+        "@showdown.js": "/src/plugins/unpkg.com/showdown@2.1.0/dist/showdown.min.js",
+        "@md-editor-v3.js": "/src/plugins/unpkg.com/md-editor-v3@2.1.2/lib/md-editor-v3.umd.js",
+        "@md-editor-v3.css": "/src/plugins/unpkg.com/md-editor-v3@2.1.2/lib/style.css"
     }
 }
