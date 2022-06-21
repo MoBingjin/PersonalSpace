@@ -5,11 +5,11 @@
         "pageSize": 20
     },
     "api": {
-        "uploadImageURL": "https://action.mobingc.ml/image/upload",
-        "publishArticleURL": "https://action.mobingc.ml/article/publish",
-        "listArticleURL": "https://action.mobingc.ml/article/list",
-        "dataArticleURL": "https://action.mobingc.ml/article/data",
-        "deleteArticleURL": "https://action.mobingc.ml/article/delete"
+        "uploadImageURL": "https://mine.mobingc.top/image/upload",
+        "publishArticleURL": "https://mine.mobingc.top/article/publish",
+        "listArticleURL": "https://mine.mobingc.top/article/list",
+        "dataArticleURL": "https://mine.mobingc.top/article/data",
+        "deleteArticleURL": "https://mine.mobingc.top/article/delete"
     },
     "url": {
         "@showdown.js": "/src/plugins/unpkg.com/showdown@2.1.0/dist/showdown.min.js",
