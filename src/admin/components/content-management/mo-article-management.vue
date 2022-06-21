@@ -23,7 +23,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" round size="small" @click="listArticleInfoList()">搜索</el-button>
+          <el-button type="primary" round size="small" @click="search">搜索</el-button>
         </el-form-item>
       </el-form>
     </el-header>
@@ -62,8 +62,8 @@
       </el-scrollbar>
     </el-main>
     <el-footer>
-      <el-pagination layout="prev, pager, next" :page-size="currentPageSize" :total="total" :hide-on-single-page="true"
-        @current-change="listArticleInfoList" />
+      <el-pagination layout="prev, pager, next" :page-size="currentPageSize" :current-page="currentPage" :total="total"
+        :hide-on-single-page="true" @current-change="listArticleInfoList" />
     </el-footer>
   </el-container>
 </template>
@@ -117,8 +117,12 @@ const typeList = reactive(["不限", "原创", "转载", "其他"]);
 const articleInfoList = reactive([]);
 // 分页每页数目
 const currentPageSize = ref(pageSize);
+// 当前页
+const currentPage = ref(1);
 // 分页总数
 const total = ref(0);
+// 搜索条件
+const searchParams = ref({});
 // 是否初始完成
 const isFinish = ref(false);
 
@@ -148,53 +152,13 @@ const monthList = computed(() => {
  * @param {number} page 当前页
  */
 const listArticleInfoList = async (page = 1) => {
+  currentPage.value = page;
+  searchParams.value["page"] = page;
   return new Promise((rev, rej) => {
-    // 参数
-    const params = {
-      limit: currentPageSize.value,
-      page
-    };
-
-    // 关键词
-    const keyValue = form.key.trim();
-    if (keyValue !== "") {
-      params["title"] = keyValue;
-      params["description"] = keyValue;
-    }
-
-    // 文章类型
-    const typeValue = form.type;
-    if (typeValue !== "" && typeValue !== "不限") {
-      params["type"] = typeValue;
-    }
-
-    // 时间
-    const yearValue = form.year;
-    if (yearValue !== "" && yearValue !== "all") {
-      const monthValue = form.month;
-      if (monthValue !== "" && monthValue !== "all") {
-        let endTimeYear;
-        let endTimeMonth;
-        let endMonthNumber = Number(monthValue) + 1;
-        if (endMonthNumber > 12) {
-          endTimeYear = Number(yearValue) + 1;
-          endTimeMonth = "01";
-        } else {
-          endTimeYear = yearValue;
-          endTimeMonth = endMonthNumber < 10 ? "0" + endMonthNumber : endMonthNumber;
-        }
-        params["startTime"] = parse2Time(`${yearValue}-${monthValue}-01 00:00:00`);
-        params["endTime"] = parse2Time(`${endTimeYear}-${endTimeMonth}-01 00:00:00`);
-      } else {
-        params["startTime"] = parse2Time(`${yearValue}-01-01 00:00:00`);
-        params["endTime"] = parse2Time(`${Number(yearValue) + 1}-01-01 00:00:00`);
-      }
-    }
-
     // 获取文章信息列表数据
     fetch(listArticleURL, {
       method: "post",
-      body: JSON.stringify(params)
+      body: JSON.stringify(searchParams.value)
     })
       .then(res => res.json())
       .then(data => {
@@ -303,6 +267,54 @@ const remove = (articleId, title, index) => {
 const yearChange = value => value === "all" && (form.month = "all");
 
 /**
+ * 搜索事件
+ */
+const search = async () => {
+
+  // 搜索参数
+  searchParams.value = { limit: currentPageSize.value };
+
+  // 关键词
+  const keyValue = form.key.trim();
+  if (keyValue !== "") {
+    searchParams.value["title"] = keyValue;
+    searchParams.value["description"] = keyValue;
+  }
+
+  // 文章类型
+  const typeValue = form.type;
+  if (typeValue !== "" && typeValue !== "不限") {
+    searchParams.value["type"] = typeValue;
+  }
+
+  // 时间
+  const yearValue = form.year;
+  if (yearValue !== "" && yearValue !== "all") {
+    const monthValue = form.month;
+    if (monthValue !== "" && monthValue !== "all") {
+      let endTimeYear;
+      let endTimeMonth;
+      let endMonthNumber = Number(monthValue) + 1;
+      if (endMonthNumber > 12) {
+        endTimeYear = Number(yearValue) + 1;
+        endTimeMonth = "01";
+      } else {
+        endTimeYear = yearValue;
+        endTimeMonth = endMonthNumber < 10 ? "0" + endMonthNumber : endMonthNumber;
+      }
+      searchParams.value["startTime"] = parse2Time(`${yearValue}-${monthValue}-01 00:00:00`);
+      searchParams.value["endTime"] = parse2Time(`${endTimeYear}-${endTimeMonth}-01 00:00:00`);
+    } else {
+      searchParams.value["startTime"] = parse2Time(`${yearValue}-01-01 00:00:00`);
+      searchParams.value["endTime"] = parse2Time(`${Number(yearValue) + 1}-01-01 00:00:00`);
+    }
+  }
+
+  // 获取文章信息列表
+  await listArticleInfoList(1);
+};
+
+/**
  * 打开标签
  * 
  * @param {string} title 菜单标题
@@ -315,7 +327,7 @@ const openTab = (title, componentName, params) => emits("menu-item", { title, co
 // 初始化操作
 (async () => {
   // 获取文章信息列表
-  await listArticleInfoList();
+  await search();
   isFinish.value = true;
 })();
 
