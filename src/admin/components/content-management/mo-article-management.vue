@@ -77,7 +77,7 @@ const { pageSize } = window["MoConfig"].params;
 const { dataArticleURL, deleteArticleURL, listArticleURL } = window["MoConfig"].api;
 
 
-// 回传参数
+// 回调对象
 const emits = defineEmits(["menu-item"]);
 
 

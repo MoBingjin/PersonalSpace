@@ -1,25 +1,24 @@
 ;
-document.querySelector("#app").innerHTML = `
+document.querySelector('#app').innerHTML = `
     <app></app>
 `;
 
 // 解析配置
-const configRes = await fetch("./src/config.json");
+const configRes = await fetch(`${window.location.pathname}/src/config.json`.substring(1));
 window['MoConfig'] = await configRes.json();
 
 // vue3-sfc-loader参数
 const options = {
     moduleCache: {
-        vue: Vue
+        vue: window['Vue']
     },
     async getFile(url) {
-        url = url[0] === '@' ? window['MoConfig'].url[url] : url;
+        url = url.startsWith('@') ? window['MoConfig'].url[url] : url;
         const res = await fetch(url);
-        if (!res.ok)
+        if (!res.ok) {
             throw Object.assign(new Error(res.statusText + ' ' + url), { res });
-        return {
-            getContentData: asBinary => asBinary ? res.arrayBuffer() : res.text(),
         }
+        return { getContentData: asBinary => asBinary ? res.arrayBuffer() : res.text() };
     },
     addStyle(textContent) {
         const style = Object.assign(document.createElement('style'), { textContent });
@@ -31,18 +30,20 @@ const options = {
             case '.css':
                 options.addStyle(await getContentData(false));
                 return null;
+            case '.png':
+            case '.jpg':
+            case '.jpeg':
+            case '.gif':
+                return path;
         }
     }
 };
 
 const { loadModule } = window['vue3-sfc-loader'];
 
-const mainDir = new URL(window.location.href).searchParams.has(window['MoConfig'].params.adminEntrance) ? 'admin' : 'home';
-const mainPath = `./src/${mainDir}/App.vue`;
-
-const vm = Vue.createApp({
+const vm = window['Vue'].createApp({
     components: {
-        'app': Vue.defineAsyncComponent(() => loadModule(mainPath, options))
+        'app': window['Vue'].defineAsyncComponent(() => loadModule(`${window.location.pathname}/src/App.vue`.substring(1), options))
     }
 });
 

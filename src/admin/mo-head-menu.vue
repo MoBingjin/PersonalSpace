@@ -1,46 +1,16 @@
 <template>
   <div class="mo-head">
     <span>个人空间</span>
-    <!-- <e-icon icon-name="el-icon-cloudy" /> -->
-    <!-- <el-menu
-      :default-active="activeIndex"
-      class="el-menu-demo"
-      mode="horizontal"
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b"
-      @select="handleSelect"
-    >
-      <el-menu-item index="1">Processing Center</el-menu-item>
-      <el-sub-menu index="2">
-        <template #title>Workspace</template>
-        <el-menu-item index="2-1">item one</el-menu-item>
-        <el-menu-item index="2-2">item two</el-menu-item>
-        <el-menu-item index="2-3">item three</el-menu-item>
-        <el-sub-menu index="2-4">
-          <template #title>item four</template>
-          <el-menu-item index="2-4-1">item one</el-menu-item>
-          <el-menu-item index="2-4-2">item two</el-menu-item>
-          <el-menu-item index="2-4-3">item three</el-menu-item>
-        </el-sub-menu>
-      </el-sub-menu>
-      <el-menu-item index="3" disabled>Info</el-menu-item>
-      <el-menu-item index="4">Orders</el-menu-item>
-    </el-menu> -->
+    <span title="退出" @click="emits('loginout', {})">
+      <e-icon icon-name="fa fa-sign-in" />
+    </span>
   </div>
 </template>
 
 <script setup>
 
-const { ref } = window["Vue"];
-
-
-const activeIndex = ref("1");
-
-
-const handleSelect = (key, keyPath) => {
-  //console.log(key, keyPath);
-};
+// 回调对象
+const emits = defineEmits(["loginout"]);
 
 </script>
 
@@ -50,9 +20,10 @@ const handleSelect = (key, keyPath) => {
   height: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
-.mo-head>span {
+.mo-head>span:first-child {
   font-family: '宋体';
   color: #e6e6e6;
   font-size: 30px;
@@ -60,5 +31,16 @@ const handleSelect = (key, keyPath) => {
   padding: 5px;
   border: 1px solid #f5f5f5;
   border-radius: 5px;
+}
+
+.mo-head>span:last-child {
+  font-size: 24px;
+  margin-right: 20px;
+  color: #e6e6e6;
+}
+
+.mo-head>span:last-child:hover {
+  cursor: pointer;
+  color: #ffd04b;
 }
 </style>

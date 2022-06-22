@@ -5,6 +5,7 @@
         "pageSize": 20
     },
     "api": {
+        "checkUserURL": "https://mine.mobingc.top/user/check",
         "uploadImageURL": "https://mine.mobingc.top/image/upload",
         "publishArticleURL": "https://mine.mobingc.top/article/publish",
         "listArticleURL": "https://mine.mobingc.top/article/list",

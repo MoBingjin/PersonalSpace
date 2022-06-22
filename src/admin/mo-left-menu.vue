@@ -38,7 +38,7 @@ defineProps({
 });
 
 
-// 回传参数
+// 回调对象
 const emits = defineEmits(["menu-item"]);
 
 
