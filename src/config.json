@@ -1,5 +1,10 @@
 {
     "params": {
+        "title": {
+            "home": "沫の小站",
+            "admin": "后台管理",
+            "404": "小笨蛋，页面跑偏啦～"
+        },
         "adminEntrance": "admin",
         "markdownStatic": "https://markdown.mobingc.ml/static/",
         "pageSize": 20

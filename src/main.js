@@ -3,9 +3,13 @@ document.querySelector('#app').innerHTML = `
     <app></app>
 `;
 
+// 根路径
+const rootPath = "/";
+
 // 解析配置
-const configRes = await fetch(`${window.location.pathname}/src/config.json`.substring(1));
+const configRes = await fetch(`${rootPath}src/config.json`);
 window['MoConfig'] = await configRes.json();
+window['MoConfig'].params.rootPath = rootPath;
 
 // vue3-sfc-loader参数
 const options = {
@@ -43,7 +47,7 @@ const { loadModule } = window['vue3-sfc-loader'];
 
 const vm = window['Vue'].createApp({
     components: {
-        'app': window['Vue'].defineAsyncComponent(() => loadModule(`${window.location.pathname}/src/App.vue`.substring(1), options))
+        'app': window['Vue'].defineAsyncComponent(() => loadModule(`${rootPath}src/App.vue`, options))
     }
 });
 
