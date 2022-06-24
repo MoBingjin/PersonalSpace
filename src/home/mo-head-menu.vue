@@ -2,18 +2,10 @@
     <div class="mo-head">
         <span @click="goHome">{{ logo }}</span>
         <span>
-            <el-menu default-active="/home" mode="horizontal" :ellipsis="false" :router="true">
-                <el-menu-item index="/home">
-                    <e-icon icon-name="el-icon-s-home" />
-                    <span>首页</span>
-                </el-menu-item>
-                <el-menu-item index="/archives">
-                    <e-icon icon-name="el-icon-s-cooperation" />
-                    <span>归档</span>
-                </el-menu-item>
-                <el-menu-item index="/about">
-                    <e-icon icon-name="el-icon-info" />
-                    <span>关于</span>
+            <el-menu :default-active="defaultActive" mode="horizontal" :ellipsis="false" :router="true">
+                <el-menu-item v-for="item in menus" :index="item.index">
+                    <e-icon :icon-name="item.icon" />
+                    <span>{{ item.name }}</span>
                 </el-menu-item>
             </el-menu>
         </span>
@@ -22,11 +14,41 @@
 
 <script setup>
 
-const { ref } = window["Vue"];
+const { computed, reactive, ref } = window["Vue"];
+const { useRoute } = window["VueRouter"];
 
+// 跳转路由对象
+const route = useRoute();
 
 // logo
 const logo = ref(window["MoConfig"].params.title["home"]);
+// 菜单项
+const menus = reactive([
+    {
+        index: "/home",
+        icon: "el-icon-s-home",
+        name: "首页"
+    },
+    {
+        index: "/archives",
+        icon: "el-icon-s-cooperation",
+        name: "归档"
+    },
+    {
+        index: "/about",
+        icon: "el-icon-info",
+        name: "关于"
+    }
+]);
+// 默认激活菜单项
+const defaultActive = computed(() => {
+    for (let menu of menus) {
+        if (menu.index === route.path) {
+            return route.path;
+        }
+    }
+    return "/home";
+});
 
 
 /**

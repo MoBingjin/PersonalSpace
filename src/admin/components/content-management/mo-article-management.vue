@@ -116,7 +116,7 @@ const typeList = reactive(["不限", "原创", "转载", "其他"]);
 // 文章信息列表
 const articleInfoList = reactive([]);
 // 分页每页数目
-const currentPageSize = ref(pageSize);
+const currentPageSize = ref(pageSize["admin"]);
 // 当前页
 const currentPage = ref(1);
 // 分页总数

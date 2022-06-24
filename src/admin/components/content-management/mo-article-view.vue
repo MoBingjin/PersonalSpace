@@ -18,6 +18,7 @@
 
 import MdEditorV3 from "@md-editor-v3.js";
 import "@md-editor-v3.css";
+import _ from "@lodash.js";
 const { ref } = window["Vue"];
 
 
@@ -34,8 +35,6 @@ const props = defineProps({
 const scrollbar = ref();
 // 滚动高度距离
 const scrollTopRef = ref(0);
-// 是否正在返回顶部
-const isGoTop = ref(false);
 
 
 /**
@@ -48,11 +47,7 @@ const scrollHandle = ({ scrollTop }) => scrollTopRef.value = scrollTop;
 /**
  * 返回顶部
  */
-const goTop = () => {
-    if (isGoTop.value) {
-        return;
-    }
-    isGoTop.value = true;
+const goTop = _.debounce(() => {
     let scrollTop = scrollTopRef.value;
     const distance = Math.ceil(scrollTop / 100);
     const timer = setInterval(() => {
@@ -61,11 +56,10 @@ const goTop = () => {
         } else {
             scrollTop = 0;
             clearInterval(timer);
-            isGoTop.value = false;
         }
         scrollbar.value.setScrollTop(scrollTop);
     }, 5);
-}
+}, 1000, { leading: true, trailing: false });
 
 </script>
 

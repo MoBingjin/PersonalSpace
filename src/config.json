@@ -1,5 +1,6 @@
 {
     "params": {
+        "user": "沫",
         "title": {
             "home": "沫の小站",
             "admin": "后台管理",
@@ -7,7 +8,10 @@
         },
         "adminEntrance": "admin",
         "markdownStatic": "https://markdown.mobingc.ml/static/",
-        "pageSize": 20
+        "pageSize": {
+            "admin": 20,
+            "home": 5
+        }
     },
     "api": {
         "checkUserURL": "https://mine.mobingc.top/user/check",
@@ -18,6 +22,7 @@
         "deleteArticleURL": "https://mine.mobingc.top/article/delete"
     },
     "url": {
+        "@lodash.js": "/src/plugins/unpkg.com/lodash@4.17.21/lodash.js",
         "@showdown.js": "/src/plugins/unpkg.com/showdown@2.1.0/dist/showdown.min.js",
         "@md-editor-v3.js": "/src/plugins/unpkg.com/md-editor-v3@2.1.2/lib/md-editor-v3.umd.js",
         "@md-editor-v3.css": "/src/plugins/unpkg.com/md-editor-v3@2.1.2/lib/style.css"
