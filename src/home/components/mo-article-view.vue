@@ -1,13 +1,13 @@
 <template>
     <div>
         <div class="mo-cover">
-            <div>
+            <div v-if="articleData.title">
                 <div class="mo-article-title">{{ articleData.title }}</div>
                 <div class="mo-info">
                     <span><a href="/"><img class="mo-avatar" src="../picture/avatar.png" alt="头像" /></a></span>
-                    <span>{{ articleData.title ? user : "" }}</span>
+                    <span>{{ user }}</span>
                     <span>·</span>
-                    <span>{{ articleData.createTime ? formatDate(articleData.createTime, "yyyy-MM-dd") : "" }}</span>
+                    <span>{{ formatDate(articleData.createTime) }}</span>
                 </div>
             </div>
         </div>
