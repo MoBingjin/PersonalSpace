@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="mo-top">
-            <div><img class="mo-avatar" src="../picture/avatar.png" alt="头像" /></div>
+            <div><img class="mo-avatar" :src="avatarPath" alt="头像" /></div>
             <div>
                 <div class="mo-down" @click="handleDown">
                     <e-icon icon-name="fa fa-chevron-down" />
@@ -16,13 +16,14 @@
                         <el-row>
                             <el-col :span="10">
                                 <div class="mo-article-cover" @click="view(item.articleId)">
-                                    <img :src="item.cover || defaultImgPath" alt="cover">
+                                    <img :src="item.cover || defaultCoverPath" alt="cover">
                                 </div>
                             </el-col>
                             <el-col :span="14">
                                 <div class="mo-article-info">
                                     <div>
-                                        <div class="mo-article-title" @click="view(item.articleId)">{{ item.title }}</div>
+                                        <div class="mo-article-title" @click="view(item.articleId)">{{ item.title }}
+                                        </div>
                                         <div class="mo-article-description">{{ item.description }}</div>
                                     </div>
                                     <div class="mo-article-footer">
@@ -51,8 +52,8 @@ import _ from "@lodash.js";
 import { formatDate } from "../../common/js/utils.js";
 const { reactive, ref } = window["Vue"];
 const { useRouter } = window["VueRouter"];
-const { pageSize, rootPath } = window["MoConfig"].params;
 const { listArticleURL } = window["MoConfig"].api;
+const { avatarImageURL, defaultCoverImageURL, pageSize, rootPath } = window["MoConfig"].params;
 
 
 // 路由实例对象
@@ -60,8 +61,10 @@ const router = useRouter();
 
 // 文章信息列表
 const articleInfoList = reactive([]);
-// 默认图片路径
-const defaultImgPath = `${rootPath}src/home/picture/default.png`;
+// 头像路径
+const avatarPath = avatarImageURL || `${rootPath}src/home/picture/avatar.png`;
+// 默认封面路径
+const defaultCoverPath = defaultCoverImageURL || `${rootPath}src/home/picture/default_cover.png`;
 // 分页每页数目
 const currentPageSize = ref(pageSize["home"]);
 // 当前页
@@ -156,7 +159,7 @@ const handleDown = _.debounce(() => {
     // 动态样式设置
     setTimeout(() => {
         const waveElement = window["document"].getElementsByClassName("mo-wave")[0];
-        waveElement.style.background = `url("${window["MoConfig"].params.rootPath}src/home/picture/wave.png") repeat-x`;
+        waveElement.style.background = `url("${rootPath}src/home/picture/wave.png") repeat-x`;
         let backgroundPositionX = 0;
         setInterval(() => {
             waveElement.style.backgroundPositionX = `${--backgroundPositionX}px`;

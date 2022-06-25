@@ -4,7 +4,7 @@
             <div v-if="articleData.title">
                 <div class="mo-article-title">{{ articleData.title }}</div>
                 <div class="mo-info">
-                    <span><a href="/"><img class="mo-avatar" src="../picture/avatar.png" alt="头像" /></a></span>
+                    <span><a href="/"><img class="mo-avatar" :src="avatarPath" alt="头像" /></a></span>
                     <span>{{ user }}</span>
                     <span>·</span>
                     <span>{{ formatDate(articleData.createTime) }}</span>
@@ -31,14 +31,16 @@ import _ from "@lodash.js";
 import { formatDate } from "../../common/js/utils.js";
 const { ref } = window["Vue"];
 const { useRoute } = window["VueRouter"];
-const { rootPath, user } = window["MoConfig"].params;
 const { dataArticleURL } = window["MoConfig"].api;
+const { avatarImageURL, defaultCoverImageURL, rootPath, user } = window["MoConfig"].params;
 
 
 // 跳转路由对象
 const route = useRoute();
 
 
+// 头像路径
+const avatarPath = avatarImageURL || `${rootPath}src/home/picture/avatar.png`;
 // 文章数据
 const articleData = ref({});
 // 滚动高度距离
@@ -59,7 +61,7 @@ const dataArticle = articleId => {
         .then(data => {
             if (data.code === 0) {
                 articleData.value = data.data;
-                setCover(data.data["cover"] || `${rootPath}src/home/picture/default.png`);
+                setCover(data.data["cover"] || defaultCoverImageURL || `${rootPath}src/home/picture/default.png`);
             }
             console.log(data.message);
         })

@@ -73,8 +73,8 @@
 import { formatDate, parse2Time } from "../../../common/js/utils.js";
 const { computed, reactive, ref } = window["Vue"];
 const { ElMessage, ElMessageBox } = window["ElementPlus"];
-const { pageSize } = window["MoConfig"].params;
 const { dataArticleURL, deleteArticleURL, listArticleURL } = window["MoConfig"].api;
+const { pageSize } = window["MoConfig"].params;
 
 
 // 回调对象

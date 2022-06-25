@@ -1,17 +1,21 @@
 {
     "params": {
-        "user": "沫",
         "title": {
             "home": "沫の小站",
             "admin": "后台管理",
             "404": "小笨蛋，页面跑偏啦～"
         },
-        "adminEntrance": "admin",
-        "markdownStatic": "https://markdown.mobingc.ml/static/",
         "pageSize": {
             "admin": 20,
             "home": 5
-        }
+        },
+        "user": "沫",
+        "adminEntrance": "admin",
+        "markdownStatic": "https://markdown.mobingc.ml/static/",
+        "backgroundImageURL": "https://static-freenom-fwonshrnni.cn-hongkong.fcapp.run/picture/background.png",
+        "avatarImageURL": "https://static-freenom-fwonshrnni.cn-hongkong.fcapp.run/picture/avatar.png",
+        "defaultCoverImageURL": "https://static-freenom-fwonshrnni.cn-hongkong.fcapp.run/picture/default_cover.png",
+        "_404ImageURL": "https://static-freenom-fwonshrnni.cn-hongkong.fcapp.run/picture/404.png"
     },
     "api": {
         "checkUserURL": "https://mine.mobingc.top/user/check",

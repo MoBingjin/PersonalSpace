@@ -16,12 +16,13 @@
 
 const { computed, reactive, ref } = window["Vue"];
 const { useRoute } = window["VueRouter"];
+const { title } = window["MoConfig"].params;
 
 // 跳转路由对象
 const route = useRoute();
 
 // logo
-const logo = ref(window["MoConfig"].params.title["home"]);
+const logo = title["home"];
 // 菜单项
 const menus = reactive([
     {

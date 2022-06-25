@@ -14,6 +14,7 @@
 import MoHeadMenu from "./mo-head-menu.vue";
 const { getCurrentInstance, ref, watch } = window["Vue"];
 const { createRouter, createWebHashHistory } = window["VueRouter"];
+const { backgroundImageURL, rootPath, title } = window["MoConfig"].params;
 
 
 // 导航栏class
@@ -76,18 +77,18 @@ const handleScroll = event => {
     // 404
     if (route.matched[0].path === "/:other") {
       headerClass.value = "mo-hidden";
-      window["document"].getElementsByTagName("title")[0].innerHTML = window["MoConfig"].params.title["404"];
+      window["document"].getElementsByTagName("title")[0].innerHTML = title["404"];
       window["document"].body.style.background = "none";
       window.removeEventListener("scroll", handleScroll);
       return;
     }
 
-    window["document"].getElementsByTagName("title")[0].innerHTML = `${route.matched[0].name} | ${window["MoConfig"].params.title["home"]}`;
+    window["document"].getElementsByTagName("title")[0].innerHTML = `${route.matched[0].name} | ${title["home"]}`;
 
     // 首页
     if (["/", "/home"].includes(route.path)) {
       headerClass.value = "mo-header mo-header-init";
-      window["document"].body.style.background = `url("${window["MoConfig"].params.rootPath}src/home/picture/background.png") no-repeat fixed`;
+      window["document"].body.style.background = `url(${backgroundImageURL || rootPath + "src/home/picture/background.png"}) no-repeat fixed`;
       window["document"].body.style.backgroundSize = "100vw 100vh";
       window.addEventListener("scroll", handleScroll);
       return;

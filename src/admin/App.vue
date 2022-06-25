@@ -6,6 +6,7 @@
 
 const { markRaw, ref } = window["Vue"];
 const { checkUserURL } = window["MoConfig"].api;
+const { title } = window["MoConfig"].params;
 const localStorage = window["localStorage"];
 
 
@@ -23,7 +24,7 @@ const changePage = data => import(`./${data["componentName"]}.vue`).then(compone
 
 // 初始化操作
 (() => {
-  window["document"].getElementsByTagName("title")[0].innerHTML = window["MoConfig"].params.title["admin"];
+  window["document"].getElementsByTagName("title")[0].innerHTML = title["admin"];
   const token = localStorage.getItem("token");
   if (token) {
     fetch(checkUserURL, {
