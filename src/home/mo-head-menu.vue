@@ -88,7 +88,7 @@ const goHome = () => window.location.href = "/";
 
 .el-menu {
     --el-font-size-base: 16px;
-    --el-menu-background-color: #ffffff00;
+    --el-menu-bg-color: #ffffff00;
     --el-menu-text-color: #666666;
     --el-menu-hover-text-color: #666666;
     --el-menu-active-color: #ffd04b;

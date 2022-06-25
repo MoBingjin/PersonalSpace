@@ -1,16 +1,20 @@
 <template>
-  <div v-html="html"></div>
+  <div>
+    <md-editor-v3 v-model="articleData" :previewOnly="true" style="height: 100%">
+    </md-editor-v3>
+  </div>
 </template>
 
 <script setup>
 
-import showdown from "@showdown.js";
+import MdEditorV3 from "@md-editor-v3.js";
+import "@md-editor-v3.css";
 const { ref } = window["Vue"];
 const { markdownStatic } = window["MoConfig"].params;
 
 
-// 显示html文本
-const html = ref("");
+// 文章数据
+const articleData = ref("");
 
 
 // 初始化操作
@@ -20,8 +24,7 @@ const html = ref("");
       return response.text();
     })
     .then((data) => {
-      const converter = new showdown.Converter();
-      html.value = converter.makeHtml(data);
+      articleData.value = data;
     });
 })();
 

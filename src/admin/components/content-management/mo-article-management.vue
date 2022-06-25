@@ -23,7 +23,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" round size="small" @click="search">搜索</el-button>
+          <el-button type="primary" round @click="search">搜索</el-button>
         </el-form-item>
       </el-form>
     </el-header>
@@ -343,6 +343,10 @@ const openTab = (title, componentName, params) => emits("menu-item", { title, co
 .el-main,
 .el-footer {
   padding: 0;
+}
+
+.el-form-item {
+  margin-right: 10px;
 }
 
 .el-scrollbar {

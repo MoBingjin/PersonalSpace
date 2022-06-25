@@ -22,9 +22,8 @@
         "deleteArticleURL": "https://mine.mobingc.top/article/delete"
     },
     "url": {
-        "@lodash.js": "/src/plugins/unpkg.com/lodash@4.17.21/lodash.js",
-        "@showdown.js": "/src/plugins/unpkg.com/showdown@2.1.0/dist/showdown.min.js",
-        "@md-editor-v3.js": "/src/plugins/unpkg.com/md-editor-v3@2.1.2/lib/md-editor-v3.umd.js",
-        "@md-editor-v3.css": "/src/plugins/unpkg.com/md-editor-v3@2.1.2/lib/style.css"
+        "@lodash.js": "https://cdn.staticfile.org/lodash.js/4.17.21/lodash.js",
+        "@md-editor-v3.js": "https://cdn.jsdelivr.net/npm/md-editor-v3@2.1.2/lib/md-editor-v3.umd.js",
+        "@md-editor-v3.css": "https://cdn.jsdelivr.net/npm/md-editor-v3@2.1.2/lib/style.css"
     }
 }
