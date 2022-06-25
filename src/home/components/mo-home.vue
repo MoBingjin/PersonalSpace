@@ -183,27 +183,32 @@ const handleDown = _.debounce(() => {
 }
 
 .mo-top>div:first-child {
-    width: 135px;
-    height: 135px;
     margin-top: 35vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #ffffff88;
-    border-radius: 50%;
-    box-shadow: 0px 0px 10px #000;
+    animation: avatarDown 1.5s 1;
 }
 
-.mo-top>div:first-child:hover {
-    transform: scale(1.1);
-    box-shadow: 0px 0px 11px #000;
+@keyframes avatarDown {
+    from {
+        margin-top: calc(35vh - 30px);
+    }
+
+    to {
+        margin-top: 35vh;
+    }
 }
 
 .mo-avatar {
     width: 130px;
     height: 130px;
-    background-color: #cccccc88;
+    padding: 5px;
     border-radius: 50%;
+    box-shadow: inset 0 0 10px #000;
+    transform: rotate(0);
+    transition: all ease 1s;
+}
+
+.mo-avatar:hover {
+    transform: rotate(360deg);
 }
 
 .mo-top>div:last-child {

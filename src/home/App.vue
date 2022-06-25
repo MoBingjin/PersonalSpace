@@ -67,6 +67,13 @@ const handleScroll = event => {
 // 初始化操作
 (() => {
 
+  // 淡入效果
+  window["document"].body.style.opacity = "0";
+  setTimeout(() => {
+    window["document"].body.style.transition = "opacity 1.5s";
+    window["document"].body.style.opacity = "1";
+  }, 0);
+
   // 设置路由
   const router = createRouter({ history: createWebHashHistory(), routes });
   getCurrentInstance().appContext.app.use(router);
@@ -88,7 +95,7 @@ const handleScroll = event => {
     // 首页
     if (["/", "/home"].includes(route.path)) {
       headerClass.value = "mo-header mo-header-init";
-      window["document"].body.style.background = `url(${backgroundImageURL || rootPath + "src/home/picture/background.png"}) no-repeat fixed`;
+      window["document"].body.style.background = `url(${backgroundImageURL || `${rootPath}src/home/picture/background.png`}) no-repeat fixed`;
       window["document"].body.style.backgroundSize = "100vw 100vh";
       window.addEventListener("scroll", handleScroll);
       return;
