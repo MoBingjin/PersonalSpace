@@ -17,9 +17,7 @@
                 </md-editor-v3>
             </div>
         </div>
-        <div v-if="scrollTopRef > 200" class="mo-go-top" title="返回顶部" @click="goTop">
-            <e-icon icon-name="el-icon-caret-top" />
-        </div>
+        <el-backtop :right="100" :bottom="100" style="width: 50px; height: 50px;" />
     </div>
 </template>
 
@@ -27,7 +25,6 @@
 
 import MdEditorV3 from "@md-editor-v3.js";
 import "@md-editor-v3.css";
-import _ from "@lodash.js";
 import { formatDate } from "../../common/js/utils.js";
 const { ref } = window["Vue"];
 const { useRoute } = window["VueRouter"];
@@ -43,8 +40,6 @@ const route = useRoute();
 const avatarPath = avatarImageURL || `${rootPath}src/home/picture/avatar.png`;
 // 文章数据
 const articleData = ref({});
-// 滚动高度距离
-const scrollTopRef = ref(0);
 
 
 /**
@@ -81,37 +76,20 @@ const setCover = coverPath => {
     coverElement.style.backgroundSize = "cover";
 }
 
-/**
- * 返回顶部
- */
-const goTop = _.debounce(() => {
-    let scrollTop = scrollTopRef.value;
-    const distance = Math.ceil(scrollTop / 100);
-    const timer = setInterval(() => {
-        if (scrollTop > distance) {
-            scrollTop -= distance;
-        } else {
-            scrollTop = 0;
-            clearInterval(timer);
-        }
-        window["document"].documentElement.scrollTop = scrollTop;
-    }, 5);
-}, 1000, { leading: true, trailing: false });
-
 
 // 初始化操作
 (() => {
     // 获取文章数据
     dataArticle(route.params.articleId);
-
-    // 监听滚动条
-    window.addEventListener("scroll", event => {
-        scrollTopRef.value = event.target.documentElement.scrollTop;
-    });
 })();
 
 </script>
 
+<style>
+.el-backtop .el-icon {
+    font-size: 20px;
+}
+</style>
 <style scoped>
 .mo-cover {
     width: calc(100vw - 17px);
@@ -173,25 +151,5 @@ const goTop = _.debounce(() => {
 .mo-content>div {
     width: 60vw;
     min-width: 800px;
-}
-
-.mo-go-top {
-    position: fixed;
-    right: 100px;
-    bottom: 100px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: #fff;
-    padding: 10px;
-    cursor: pointer;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
-    text-align: center;
-    font-size: 22px;
-    color: #409eff;
-}
-
-.mo-go-top:hover {
-    background: #ebedf0;
 }
 </style>

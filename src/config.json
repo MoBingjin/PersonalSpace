@@ -7,7 +7,7 @@
         },
         "pageSize": {
             "admin": 20,
-            "home": 5
+            "home": 10
         },
         "user": "沫",
         "adminEntrance": "admin",

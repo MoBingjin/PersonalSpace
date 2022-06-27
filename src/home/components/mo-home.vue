@@ -3,45 +3,53 @@
         <div class="mo-top">
             <div><img class="mo-avatar" :src="avatarPath" alt="头像" referrerpolicy="no-referrer" /></div>
             <div>
-                <div class="mo-down" @click="handleDown">
+                <div class="mo-down" @click="toBody">
                     <e-icon icon-name="fa fa-chevron-down" />
                 </div>
                 <div class="mo-wave"></div>
             </div>
         </div>
         <div class="mo-body">
-            <div class="mo-article-list">
-                <div v-for="item in articleInfoList">
-                    <div class="mo-article">
-                        <el-row>
-                            <el-col :span="10">
-                                <div class="mo-article-cover" @click="view(item.articleId)">
-                                    <img :src="item.cover || defaultCoverPath" alt="cover">
-                                </div>
-                            </el-col>
-                            <el-col :span="14">
-                                <div class="mo-article-info">
-                                    <div>
-                                        <div class="mo-article-title" @click="view(item.articleId)">{{ item.title }}
+            <div class="mo-content">
+                <div class="mo-article-list">
+                    <div v-for="item in articleInfoList">
+                        <div class="mo-article">
+                            <el-row>
+                                <el-col :span="10">
+                                    <div class="mo-article-cover" @click="view(item.articleId)">
+                                        <img :src="item.cover || defaultCoverPath" alt="cover">
+                                    </div>
+                                </el-col>
+                                <el-col :span="14">
+                                    <div class="mo-article-info">
+                                        <div>
+                                            <div class="mo-article-title" @click="view(item.articleId)">{{ item.title }}
+                                            </div>
+                                            <div class="mo-article-description">{{ item.description }}</div>
                                         </div>
-                                        <div class="mo-article-description">{{ item.description }}</div>
+                                        <div class="mo-article-footer">
+                                            <span class="mo-article-date">
+                                                <e-icon icon-name="el-icon-time" />
+                                                <span>{{ formatDate(item.createTime, "yyyy-MM-dd HH:mm:ss") }}</span>
+                                            </span>
+                                            <span class="mo-article-type">
+                                                <e-icon icon-name="el-icon-price-tag" />
+                                                <span>{{ item.type }}</span>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="mo-article-footer">
-                                        <span class="mo-article-date">
-                                            <e-icon icon-name="el-icon-time" />
-                                            <span>{{ formatDate(item.createTime, "yyyy-MM-dd HH:mm:ss") }}</span>
-                                        </span>
-                                        <span class="mo-article-type">
-                                            <e-icon icon-name="el-icon-price-tag" />
-                                            <span>{{ item.type }}</span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </el-col>
-                        </el-row>
+                                </el-col>
+                            </el-row>
+                        </div>
                     </div>
                 </div>
+                <div class="mo-home-pager">
+                    <el-pagination background layout="prev, pager, next" :page-size="currentPageSize"
+                        :current-page="currentPage" :total="total" :hide-on-single-page="true"
+                        @current-change="listArticleInfoList" />
+                </div>
             </div>
+            <el-backtop :right="100" :bottom="100" style="width: 50px; height: 50px;" />
         </div>
     </div>
 </template>
@@ -82,7 +90,10 @@ const searchParams = ref({});
  * 
  * @param {number} page 当前页
  */
-const listArticleInfoList = async (page = 1) => {
+const listArticleInfoList = async (page = 1, isToBody = true) => {
+    if (isToBody) {
+        toBody();
+    }
     currentPage.value = page;
     searchParams.value["page"] = page;
     return new Promise((rev, rej) => {
@@ -131,26 +142,36 @@ const search = async () => {
     }
 
     // 获取文章信息列表
-    await listArticleInfoList(1);
+    await listArticleInfoList(1, false);
 };
 
 /**
- * 下移点击事件
+ * 移动至主体头部
  */
-const handleDown = _.debounce(() => {
-    let scrollTop = window["document"].documentElement.scrollTop;
+const toBody = _.debounce(() => {
     const targetTop = window["document"].getElementsByClassName("mo-body")[0].offsetTop;
-    const distance = Math.ceil((targetTop - scrollTop) / 100);
+    moveScroll(targetTop);
+}, 1000, { leading: true, trailing: false });
+
+/**
+ * 将滚动条移动至目标高度
+ * 
+ * @param {number} targetTop 目标高度
+ */
+const moveScroll = (targetTop) => {
+    let scrollTop = window["document"].documentElement.scrollTop;
+    const direction = targetTop > scrollTop ? 1 : -1;
+    const distance = Math.ceil(Math.abs(targetTop - scrollTop) / 100);
     const timer = setInterval(() => {
-        if ((targetTop - scrollTop) > distance) {
-            scrollTop += distance;
+        if (Math.abs(targetTop - scrollTop) > distance) {
+            scrollTop += direction * distance;
         } else {
             scrollTop = targetTop;
             clearInterval(timer);
         }
         window["document"].documentElement.scrollTop = scrollTop;
     }, 5);
-}, 1000, { leading: true, trailing: false });
+};
 
 
 //初始化操作
@@ -172,6 +193,17 @@ const handleDown = _.debounce(() => {
 
 </script>
 
+<style>
+.mo-home-pager .el-pagination.is-background .btn-prev,
+.mo-home-pager .el-pagination.is-background .btn-next,
+.mo-home-pager .el-pagination.is-background .el-pager li {
+    background-color: #ffffff;
+}
+
+.el-backtop .el-icon {
+    font-size: 20px;
+}
+</style>
 <style scoped>
 .mo-top {
     width: calc(100vw - 17px);
@@ -259,16 +291,20 @@ const handleDown = _.debounce(() => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #ffffff;
+    background-color: #f5f5f5;
+}
+
+.mo-content {
+    width: 780px;
+    padding-top: 80px;
 }
 
 .mo-article-list {
-    width: 600px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding-top: 100px;
 }
 
 .mo-article-list>div {
@@ -276,10 +312,11 @@ const handleDown = _.debounce(() => {
 }
 
 .mo-article {
-    width: 780px;
+    width: 100%;
     height: 210px;
     border-radius: 20px;
     box-shadow: 0 1px 20px -6px rgb(0 0 0 / 50%);
+    background-color: #ffffff;
 }
 
 .mo-article:hover {
@@ -360,5 +397,16 @@ const handleDown = _.debounce(() => {
 
 .mo-article-footer>span>span {
     padding-left: 5px;
+}
+
+.mo-home-pager {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-items: start;
+}
+
+.el-pagination {
+    padding-bottom: 20px;
 }
 </style>
