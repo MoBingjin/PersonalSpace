@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="mo-top">
-            <div><img class="mo-avatar" :src="avatarPath" alt="头像" /></div>
+            <div><img class="mo-avatar" :src="avatarPath" alt="头像" referrerpolicy="no-referrer" /></div>
             <div>
                 <div class="mo-down" @click="handleDown">
                     <e-icon icon-name="fa fa-chevron-down" />

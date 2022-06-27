@@ -83,9 +83,9 @@ const handleScroll = event => {
 
     // 404
     if (route.matched[0].path === "/:other") {
-      headerClass.value = "mo-hidden";
       window["document"].getElementsByTagName("title")[0].innerHTML = title["404"];
       window["document"].body.style.background = "none";
+      headerClass.value = "mo-hidden";
       window.removeEventListener("scroll", handleScroll);
       return;
     }
@@ -94,16 +94,26 @@ const handleScroll = event => {
 
     // 首页
     if (["/", "/home"].includes(route.path)) {
+      if (backgroundImageURL) {
+        const backgroundImg = new Image();
+        backgroundImg.referrerPolicy = "no-referrer";
+        backgroundImg.src = backgroundImageURL;
+        backgroundImg.onload = () => {
+          window["document"].body.style.background = `url(${backgroundImg.src}) no-repeat fixed`;
+          window["document"].body.style.backgroundSize = "100vw 100vh";
+        }
+      } else {
+        window["document"].body.style.background = `url(${rootPath}src/home/picture/background.png) no-repeat fixed`;
+        window["document"].body.style.backgroundSize = "100vw 100vh";
+      }
       headerClass.value = "mo-header mo-header-init";
-      window["document"].body.style.background = `url(${backgroundImageURL || `${rootPath}src/home/picture/background.png`}) no-repeat fixed`;
-      window["document"].body.style.backgroundSize = "100vw 100vh";
       window.addEventListener("scroll", handleScroll);
       return;
     }
 
     // 其他
-    headerClass.value = "mo-header mo-header-show";
     window["document"].body.style.background = "none";
+    headerClass.value = "mo-header mo-header-show";
     window.removeEventListener("scroll", handleScroll);
   });
 

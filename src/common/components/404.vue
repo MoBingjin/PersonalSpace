@@ -1,6 +1,6 @@
 <template>
     <div class="mo-404">
-        <img :src="_404ImagePath">
+        <img :src="_404ImagePath" referrerpolicy="no-referrer">
         <h2>小笨蛋，页面跑偏啦～</h2>
         <p>你可以选择刷新页面或者返回主页</p>
         <a href="/" class="mo-btn mo-btn-primary mo-btn-blue">返回主页</a>

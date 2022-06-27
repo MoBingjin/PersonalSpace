@@ -12,10 +12,10 @@
         "user": "沫",
         "adminEntrance": "admin",
         "markdownStatic": "https://markdown.mobingc.ml/static/",
-        "backgroundImageURL": "https://static-freenom-fwonshrnni.cn-hongkong.fcapp.run/picture/background.png",
-        "avatarImageURL": "https://static-freenom-fwonshrnni.cn-hongkong.fcapp.run/picture/avatar.png",
-        "defaultCoverImageURL": "https://static-freenom-fwonshrnni.cn-hongkong.fcapp.run/picture/default_cover.png",
-        "_404ImageURL": "https://static-freenom-fwonshrnni.cn-hongkong.fcapp.run/picture/404.png"
+        "backgroundImageURL": "https://tva1.sinaimg.cn/large/007q9ZDily1h3mv7fyyjlj32yo1o0hdu.jpg",
+        "avatarImageURL": "https://tva1.sinaimg.cn/large/007q9ZDily1h3mv7etuivj30jn0jnwq9.jpg",
+        "defaultCoverImageURL": "https://tva1.sinaimg.cn/large/007q9ZDily1h3mv7f5mfbj30zj0k24dl.jpg",
+        "_404ImageURL": "https://tva1.sinaimg.cn/large/007q9ZDily1h3mv1t69btj30gc0a0acy.jpg"
     },
     "api": {
         "checkUserURL": "https://mine.mobingc.top/user/check",
