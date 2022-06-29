@@ -14,7 +14,7 @@
 import MoHeadMenu from "./mo-head-menu.vue";
 const { getCurrentInstance, ref, watch } = window["Vue"];
 const { createRouter, createWebHashHistory } = window["VueRouter"];
-const { backgroundImageURL, rootPath, title } = window["MoConfig"].params;
+const { title } = window["MoConfig"].params;
 
 
 // 导航栏class
@@ -84,7 +84,6 @@ const handleScroll = event => {
     // 404
     if (route.matched[0].path === "/:other") {
       window["document"].getElementsByTagName("title")[0].innerHTML = title["404"];
-      window["document"].body.style.background = "none";
       headerClass.value = "mo-hidden";
       window.removeEventListener("scroll", handleScroll);
       return;
@@ -94,25 +93,12 @@ const handleScroll = event => {
 
     // 首页
     if (["/", "/home"].includes(route.path)) {
-      if (backgroundImageURL) {
-        const backgroundImg = new Image();
-        backgroundImg.referrerPolicy = "no-referrer";
-        backgroundImg.src = backgroundImageURL;
-        backgroundImg.onload = () => {
-          window["document"].body.style.background = `url(${backgroundImg.src}) no-repeat fixed`;
-          window["document"].body.style.backgroundSize = "100vw 100vh";
-        }
-      } else {
-        window["document"].body.style.background = `url(${rootPath}src/home/picture/background.png) no-repeat fixed`;
-        window["document"].body.style.backgroundSize = "100vw 100vh";
-      }
       headerClass.value = "mo-header mo-header-init";
       window.addEventListener("scroll", handleScroll);
       return;
     }
 
     // 其他
-    window["document"].body.style.background = "none";
     headerClass.value = "mo-header mo-header-show";
     window.removeEventListener("scroll", handleScroll);
   });
@@ -122,10 +108,17 @@ const handleScroll = event => {
 </script>
 
 <style scoped>
+@media screen and (max-width: 960px) {
+  .mo-header {
+    display: none;
+  }
+}
+
 .mo-header {
   position: fixed;
-  width: 100vw;
+  width: 100%;
   height: 60px;
+  top: 0;
   background-color: rgba(255, 255, 255, 0.95);
   z-index: 9999;
 }

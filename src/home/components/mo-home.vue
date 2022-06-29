@@ -1,14 +1,16 @@
 <template>
     <div>
-        <div class="mo-top">
-            <div><img class="mo-avatar" :src="avatarPath" alt="头像" referrerpolicy="no-referrer" /></div>
-            <div>
-                <div class="mo-down" @click="toBody">
-                    <e-icon icon-name="fa fa-chevron-down" />
+        <figure class="mo-home-background" :backgroundImg="backgroundImageURL">
+            <div class="mo-top">
+                <div><img class="mo-avatar" :src="avatarPath" alt="头像" referrerpolicy="no-referrer" /></div>
+                <div>
+                    <div class="mo-down" @click="toBody">
+                        <e-icon icon-name="fa fa-chevron-down" />
+                    </div>
+                    <div class="mo-wave"></div>
                 </div>
-                <div class="mo-wave"></div>
             </div>
-        </div>
+        </figure>
         <div class="mo-body">
             <div class="mo-content">
                 <div class="mo-article-list">
@@ -49,7 +51,7 @@
                         @current-change="listArticleInfoList" />
                 </div>
             </div>
-            <el-backtop :right="100" :bottom="100" style="width: 50px; height: 50px;" />
+            <el-backtop />
         </div>
     </div>
 </template>
@@ -61,7 +63,7 @@ import { formatDate } from "../../common/js/utils.js";
 const { reactive, ref } = window["Vue"];
 const { useRouter } = window["VueRouter"];
 const { listArticleURL } = window["MoConfig"].api;
-const { avatarImageURL, defaultCoverImageURL, pageSize, rootPath } = window["MoConfig"].params;
+const { avatarImageURL, backgroundImageURL, defaultCoverImageURL, pageSize, rootPath, title } = window["MoConfig"].params;
 
 
 // 路由实例对象
@@ -179,12 +181,19 @@ const moveScroll = (targetTop) => {
 
     // 动态样式设置
     setTimeout(() => {
+
+        // 主背景设置
+        const backgroundElement = window["document"].getElementsByClassName("mo-home-background")[0];
+        backgroundElement.style.setProperty("--mo-home-bg", `url(${backgroundImageURL})`);
+
+        // 波浪背景设置
         const waveElement = window["document"].getElementsByClassName("mo-wave")[0];
-        waveElement.style.background = `url("${rootPath}src/home/picture/wave.png") repeat-x`;
+        waveElement.style.setProperty("--mo-wave-bg", `url("${rootPath}src/home/picture/wave.png")`);
         let backgroundPositionX = 0;
         setInterval(() => {
-            waveElement.style.backgroundPositionX = `${--backgroundPositionX}px`;
+            waveElement.style.setProperty("--mo-wave-position-x", `${--backgroundPositionX}px`);
         }, 30);
+
     }, 0);
 
     // 获取文章信息列表
@@ -194,6 +203,17 @@ const moveScroll = (targetTop) => {
 </script>
 
 <style>
+@media screen and (max-width: 960px) {
+
+    .mo-article .el-row .el-col-10,
+    .mo-article .el-row .el-col-14 {
+        max-width: 100%;
+        max-height: 50%;
+        flex: 0 0 100%;
+    }
+
+}
+
 .mo-home-pager .el-pagination.is-background .btn-prev,
 .mo-home-pager .el-pagination.is-background .btn-next,
 .mo-home-pager .el-pagination.is-background .el-pager li {
@@ -205,33 +225,259 @@ const moveScroll = (targetTop) => {
 }
 </style>
 <style scoped>
+@media screen and (max-width: 960px) {
+
+    .mo-home-background {
+        height: 300px;
+        background-attachment: scroll;
+    }
+
+    .mo-top>div:first-child {
+        margin-top: 80px;
+        animation: avatarDown 1.5s 1;
+    }
+
+    @keyframes avatarDown {
+        from {
+            margin-top: 50px;
+        }
+
+        to {
+            margin-top: 80px;
+        }
+    }
+
+    .mo-avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .mo-down {
+        display: none;
+    }
+
+    .mo-wave {
+        width: 150vw;
+        height: 38px;
+        margin-bottom: -18px;
+        background: #f5f5f5;
+        border-top-left-radius: 100%;
+        border-top-right-radius: 100%;
+    }
+
+    .mo-content {
+        padding-top: 0;
+    }
+
+    .mo-head::after {
+        content: '';
+        width: 150%;
+        height: 38px;
+        position: absolute;
+        top: 262px;
+        left: -25%;
+        background: #f5f5f5;
+        border-top-left-radius: 100%;
+        border-top-right-radius: 100%;
+        z-index: 4;
+    }
+
+    .el-row {
+        flex-direction: column;
+    }
+
+    .mo-article-list>div {
+        padding: 10px 0 10px 0;
+    }
+
+    .mo-article {
+        height: 270px;
+        border-radius: 10px;
+    }
+
+    .mo-article-cover {
+        border-radius: 10px 10px 0 0;
+    }
+
+    .mo-article-title,
+    .mo-article-description {
+        width: calc(100% - 20px);
+        padding: 10px 10px 0 10px;
+    }
+
+    .mo-article-title {
+        font-size: 18px;
+    }
+
+    .mo-article-description {
+        font-size: 15px;
+    }
+
+    .mo-article-footer {
+        font-size: 12px;
+        padding: 0 0 10px 10px;
+    }
+
+    .mo-article-footer>span {
+        padding-right: 10px;
+    }
+
+    .mo-article-footer>span>span {
+        padding-left: 3px;
+    }
+
+    .el-backtop {
+        right: 10px !important;
+        bottom: 10px !important;
+    }
+
+}
+
+@media screen and (min-width: 961px) {
+    .mo-home-background {
+        height: 100vh;
+        background-attachment: fixed;
+    }
+
+    .mo-top>div:first-child {
+        margin-top: 35vh;
+        animation: avatarDown 1.5s 1;
+    }
+
+    @keyframes avatarDown {
+        from {
+            margin-top: calc(35vh - 30px);
+        }
+
+        to {
+            margin-top: 35vh;
+        }
+    }
+
+    .mo-avatar {
+        width: 130px;
+        height: 130px;
+    }
+
+    .mo-top>div:last-child {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .mo-down {
+        width: 50px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0px;
+        font-size: 28px;
+        color: #ffffff;
+        transform: scale(1.5, 1);
+        animation: downMove 2s infinite;
+    }
+
+    @keyframes downMove {
+        10% {
+            margin-bottom: 0px;
+        }
+
+        50% {
+            margin-bottom: 8px;
+        }
+
+        100% {
+            margin-bottom: 0px;
+        }
+    }
+
+    .mo-down:hover {
+        cursor: pointer;
+    }
+
+    .mo-wave {
+        width: 100%;
+        height: 85px;
+        background-image: var(--mo-wave-bg);
+        background-repeat: repeat-x;
+        background-position-x: var(--mo-wave-position-x);
+    }
+
+    .mo-content {
+        padding-top: 80px;
+    }
+
+    .mo-article-list>div {
+        padding: 20px 0 20px 0;
+    }
+
+    .mo-article {
+        height: 210px;
+        border-radius: 20px;
+    }
+
+    .mo-article-cover {
+        border-radius: 20px 0 0 20px;
+    }
+
+    .mo-article-title,
+    .mo-article-description {
+        width: calc(100% - 40px);
+        padding: 20px 20px 0 20px;
+    }
+
+    .mo-article-title {
+        font-size: 24px;
+    }
+
+    .mo-article-description {
+        font-size: 18px;
+    }
+
+    .mo-article-footer {
+        font-size: 16px;
+        padding: 0 0 20px 20px;
+    }
+
+    .mo-article-footer>span {
+        padding-right: 20px;
+    }
+
+    .mo-article-footer>span>span {
+        padding-left: 5px;
+    }
+
+    .el-backtop {
+        right: 100px !important;
+        bottom: 100px !important;
+    }
+
+}
+
+.mo-home-background {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-image: var(--mo-home-bg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    z-index: -1;
+}
+
 .mo-top {
-    width: calc(100vw - 17px);
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-}
-
-.mo-top>div:first-child {
-    margin-top: 35vh;
-    animation: avatarDown 1.5s 1;
-}
-
-@keyframes avatarDown {
-    from {
-        margin-top: calc(35vh - 30px);
-    }
-
-    to {
-        margin-top: 35vh;
-    }
+    overflow: hidden;
 }
 
 .mo-avatar {
-    width: 130px;
-    height: 130px;
     padding: 5px;
     border-radius: 50%;
     box-shadow: inset 0 0 10px #000;
@@ -243,51 +489,8 @@ const moveScroll = (targetTop) => {
     transform: rotate(360deg);
 }
 
-.mo-top>div:last-child {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.mo-down {
-    width: 50px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0px;
-    font-size: 28px;
-    color: #ffffff;
-    transform: scale(1.5, 1);
-    animation: downMove 2s infinite;
-}
-
-@keyframes downMove {
-    10% {
-        margin-bottom: 0px;
-    }
-
-    50% {
-        margin-bottom: 8px;
-    }
-
-    100% {
-        margin-bottom: 0px;
-    }
-}
-
-.mo-down:hover {
-    cursor: pointer;
-}
-
-.mo-wave {
-    width: 100%;
-    height: 85px;
-}
-
 .mo-body {
-    width: calc(100vw - 17px);
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -295,8 +498,8 @@ const moveScroll = (targetTop) => {
 }
 
 .mo-content {
-    width: 780px;
-    padding-top: 80px;
+    width: 90%;
+    max-width: 780px;
 }
 
 .mo-article-list {
@@ -307,14 +510,8 @@ const moveScroll = (targetTop) => {
     justify-content: space-between;
 }
 
-.mo-article-list>div {
-    padding: 20px 0 20px 0;
-}
-
 .mo-article {
     width: 100%;
-    height: 210px;
-    border-radius: 20px;
     box-shadow: 0 1px 20px -6px rgb(0 0 0 / 50%);
     background-color: #ffffff;
 }
@@ -336,7 +533,6 @@ const moveScroll = (targetTop) => {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    border-radius: 20px 0 0 20px;
 }
 
 .mo-article-cover>img {
@@ -357,10 +553,12 @@ const moveScroll = (targetTop) => {
     font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
 }
 
+.mo-article-info>div:first-child {
+    width: 100%;
+}
+
 .mo-article-title,
 .mo-article-description {
-    width: calc(100% - 40px);
-    padding: 20px 20px 0 20px;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -370,8 +568,7 @@ const moveScroll = (targetTop) => {
 }
 
 .mo-article-title {
-    font-size: 24px;
-    font-weight: 500;
+    font-weight: 550;
     color: #504e4e;
 }
 
@@ -381,22 +578,11 @@ const moveScroll = (targetTop) => {
 }
 
 .mo-article-description {
-    font-size: 18px;
     color: #000000a8;
 }
 
 .mo-article-footer {
-    font-size: 16px;
     color: #888888;
-    padding: 0 0 20px 20px;
-}
-
-.mo-article-footer>span {
-    padding-right: 20px;
-}
-
-.mo-article-footer>span>span {
-    padding-left: 5px;
 }
 
 .mo-home-pager {
@@ -408,5 +594,10 @@ const moveScroll = (targetTop) => {
 
 .el-pagination {
     padding-bottom: 20px;
+}
+
+.el-backtop {
+    width: 50px;
+    height: 50px;
 }
 </style>

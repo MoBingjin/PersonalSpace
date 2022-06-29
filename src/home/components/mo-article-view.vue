@@ -17,7 +17,7 @@
                 </md-editor-v3>
             </div>
         </div>
-        <el-backtop :right="100" :bottom="100" style="width: 50px; height: 50px;" />
+        <el-backtop />
     </div>
 </template>
 
@@ -72,8 +72,7 @@ const dataArticle = articleId => {
  */
 const setCover = coverPath => {
     const coverElement = window["document"].getElementsByClassName("mo-cover")[0];
-    coverElement.style.background = `url("${coverPath}") no-repeat`;
-    coverElement.style.backgroundSize = "cover";
+    coverElement.style.background = `url("${coverPath}") center center / cover no-repeat`;
 }
 
 
@@ -91,18 +90,70 @@ const setCover = coverPath => {
 }
 </style>
 <style scoped>
+@media screen and (max-width: 960px) {
+
+    .mo-cover {
+        height: 280px;
+    }
+
+    .mo-cover>div {
+        width: 95%;
+        height: 100%;
+    }
+
+    .mo-article-title {
+        font-size: 26px;
+        padding-bottom: 30px;
+    }
+
+    .mo-content>div {
+        width: 95%;
+    }
+
+    .el-backtop {
+        right: 10px !important;
+        bottom: 10px !important;
+    }
+
+}
+
+@media screen and (min-width: 961px) {
+
+    .mo-cover {
+        height: 50vh;
+    }
+
+    .mo-cover>div {
+        width: 60%;
+        height: 100%;
+        min-width: 800px;
+    }
+
+    .mo-article-title {
+        font-size: 32px;
+        padding-bottom: 50px;
+    }
+
+    .mo-content>div {
+        width: 60%;
+        min-width: 800px;
+    }
+
+    .el-backtop {
+        right: 100px !important;
+        bottom: 100px !important;
+    }
+
+}
+
 .mo-cover {
-    width: calc(100vw - 17px);
-    height: 50vh;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .mo-cover>div {
-    width: 60vw;
-    height: 100%;
-    min-width: 800px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -112,16 +163,11 @@ const setCover = coverPath => {
     text-shadow: 2px 2px 10px #000;
 }
 
-.mo-article-title {
-    font-size: 32px;
-    padding-bottom: 50px;
-}
-
 .mo-info {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding-bottom: 12px;
+    padding-bottom: 25px;
     font-size: 14px;
 }
 
@@ -142,14 +188,14 @@ const setCover = coverPath => {
 }
 
 .mo-content {
-    width: calc(100vw - 17px);
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.mo-content>div {
-    width: 60vw;
-    min-width: 800px;
+.el-backtop {
+    width: 50px;
+    height: 50px;
 }
 </style>
