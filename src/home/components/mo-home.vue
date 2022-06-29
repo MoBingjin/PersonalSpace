@@ -257,7 +257,7 @@ const moveScroll = (targetTop) => {
     }
 
     .mo-wave {
-        width: 150vw;
+        width: 150%;
         height: 38px;
         margin-bottom: -18px;
         background: #f5f5f5;
