@@ -23,7 +23,8 @@
         "publishArticleURL": "https://mine.mobingc.top/article/publish",
         "listArticleURL": "https://mine.mobingc.top/article/list",
         "dataArticleURL": "https://mine.mobingc.top/article/data",
-        "deleteArticleURL": "https://mine.mobingc.top/article/delete"
+        "deleteArticleURL": "https://mine.mobingc.top/article/delete",
+        "archivesArticleURL": "https://mine.mobingc.top/article/archives"
     },
     "url": {
         "@lodash.js": "https://cdn.staticfile.org/lodash.js/4.17.21/lodash.js",

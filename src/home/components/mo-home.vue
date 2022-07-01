@@ -63,7 +63,7 @@ import { formatDate } from "../../common/js/utils.js";
 const { reactive, ref } = window["Vue"];
 const { useRouter } = window["VueRouter"];
 const { listArticleURL } = window["MoConfig"].api;
-const { avatarImageURL, backgroundImageURL, defaultCoverImageURL, pageSize, rootPath, title } = window["MoConfig"].params;
+const { avatarImageURL, backgroundImageURL, defaultCoverImageURL, pageSize, rootPath } = window["MoConfig"].params;
 
 
 // 路由实例对象
