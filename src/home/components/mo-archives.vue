@@ -136,4 +136,8 @@ const archives = reactive([
     align-items: center;
     justify-content: center;
 }
+
+.el-timeline {
+    padding: 0 50px 0 115px;
+}
 </style>
