@@ -25,6 +25,10 @@
           <e-icon icon-name="el-icon-document" />
           <span>文章管理</span>
         </el-menu-item>
+        <el-menu-item index="3-2" @click="openTab('标签管理', 'content-management/mo-tag-management', {})">
+          <e-icon icon-name="el-icon-price-tag" />
+          <span>标签管理</span>
+        </el-menu-item>
       </el-sub-menu>
     </el-menu>
   </div>
@@ -39,7 +43,7 @@ defineProps({
 
 
 // 回调对象
-const emits = defineEmits(["menu-item"]);
+const emits = defineEmits(['menu-item']);
 
 
 /**
@@ -49,7 +53,7 @@ const emits = defineEmits(["menu-item"]);
  * @param {string} componentName 组件名称
  * @param {any} params 组件参数
  */
-const openTab = (title, componentName, params) => emits("menu-item", { title, componentName, params });
+const openTab = (title, componentName, params) => emits('menu-item', { title, componentName, params });
 
 </script>
 

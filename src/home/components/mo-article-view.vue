@@ -23,13 +23,16 @@
 
 <script setup>
 
-import MdEditorV3 from "@md-editor-v3.js";
-import "@md-editor-v3.css";
-import { formatDate } from "../../common/js/utils.js";
-const { ref } = window["Vue"];
-const { useRoute } = window["VueRouter"];
-const { dataArticleURL } = window["MoConfig"].api;
-const { avatarImageURL, defaultCoverImageURL, rootPath, user } = window["MoConfig"].params;
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { api, params } from 'mo-config';
+import { formatDate } from '../../common/js/utils.js';
+import MdEditorV3 from '@md-editor-v3.js';
+import '@md-editor-v3.css';
+
+
+const { dataArticleURL } = api;
+const { avatarImageURL, defaultCoverImageURL, rootPath, user } = params;
 
 
 // 跳转路由对象
@@ -49,14 +52,14 @@ const articleData = ref({});
  */
 const dataArticle = articleId => {
     fetch(dataArticleURL, {
-        method: "post",
+        method: 'post',
         body: JSON.stringify({ articleId })
     })
         .then(res => res.json())
         .then(data => {
             if (data.code === 0) {
                 articleData.value = data.data;
-                setCover(data.data["cover"] || defaultCoverImageURL || `${rootPath}src/home/picture/default.png`);
+                setCover(data.data['cover'] || defaultCoverImageURL || `${rootPath}src/home/picture/default.png`);
             }
             console.log(data.message);
         })
@@ -71,8 +74,8 @@ const dataArticle = articleId => {
  * @param {string} coverPath 封面路径
  */
 const setCover = coverPath => {
-    const coverElement = window["document"].getElementsByClassName("mo-cover")[0];
-    coverElement.style.background = `url("${coverPath}") center center / cover no-repeat`;
+    const coverElement = window['document'].getElementsByClassName('mo-cover')[0];
+    coverElement.style.background = `url('${coverPath}') center center / cover no-repeat`;
 }
 
 

@@ -23,18 +23,21 @@
     </el-header>
     <el-main>
       <md-editor-v3 v-model="form.content" placeholder="请输入文章内容" @onUploadImg="onUploadImg" @onSave="onSave"
-        style="height: 65vh"></md-editor-v3>
+        style="height: 60vh"></md-editor-v3>
     </el-main>
   </el-container>
 </template>
 
 <script setup>
 
-import MdEditorV3 from "@md-editor-v3.js";
-import "@md-editor-v3.css";
-const { computed, reactive, ref } = window["Vue"];
-const { ElMessageBox } = window["ElementPlus"];
-const { publishArticleURL, uploadImageURL } = window["MoConfig"].api;
+import { computed, reactive, ref } from 'vue';
+import { ElMessageBox } from 'element-plus';
+import { api } from 'mo-config';
+import MdEditorV3 from '@md-editor-v3.js';
+import '@md-editor-v3.css';
+
+
+const { publishArticleURL, uploadImageURL } = api;
 
 
 // 参数
@@ -47,30 +50,30 @@ const props = defineProps({
 
 // 表单默认值
 const defaultForm = {
-  articleId: "",
-  title: "",
-  type: "原创",
-  description: "",
-  content: ""
+  articleId: '',
+  title: '',
+  type: '原创',
+  description: '',
+  content: ''
 }
 
 // 表单对象
-const form = reactive(props.params["articleData"] || defaultForm);
+const form = reactive(props.params['articleData'] || defaultForm);
 // 旧表单JSON字符串
-const oldForm = ref(JSON.stringify(props.params["articleData"] || defaultForm));
+const oldForm = ref(JSON.stringify(props.params['articleData'] || defaultForm));
 // 表单校验
 const rules = reactive({
   title: [
-    { required: true, message: "标题不能为空", trigger: "blur" },
-    { min: 5, max: 100, message: "标题长度应为5~100", trigger: "blur" }
+    { required: true, message: '标题不能为空', trigger: 'blur' },
+    { min: 5, max: 100, message: '标题长度应为5~100', trigger: 'blur' }
   ],
   description: [
-    { required: true, message: "摘要不能为空", trigger: "blur" },
-    { min: 5, max: 300, message: "摘要长度应为5~300", trigger: "blur" }
+    { required: true, message: '摘要不能为空', trigger: 'blur' },
+    { min: 5, max: 300, message: '摘要长度应为5~300', trigger: 'blur' }
   ],
 });
 // 文章类型列表
-const typeList = reactive(["原创", "转载", "其他"]);
+const typeList = reactive(['原创', '转载', '其他']);
 // 是否显示加载动画
 const loading = ref(false);
 // 表单组件
@@ -91,14 +94,17 @@ const onUploadImg = async (files, callback) => {
   const res = await Promise.all(
     files.map((file) => {
       return new Promise((rev, rej) => {
-        const type = file.name.substring(file.name.lastIndexOf(".") + 1);
+        const type = file.name.substring(file.name.lastIndexOf('.') + 1);
         const reader = new FileReader();
         reader.onload = function () {
           const result = String(reader.result);
-          const imageBase64 = result.substring(result.indexOf(",") + 1);
+          const imageBase64 = result.substring(result.indexOf(',') + 1);
           fetch(uploadImageURL, {
-            method: "post",
-            body: JSON.stringify({ type, imageBase64 })
+            method: 'post',
+            body: JSON.stringify({ type, imageBase64 }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
           })
             .then((res) => res.json())
             .then((data) => rev(data))
@@ -121,25 +127,25 @@ const onSave = value => {
   formComponent.value.validate(async (valid) => {
     if (valid) {
       if (!value) {
-        const result = await ElMessageBox.confirm("当前没有文章内容，是否保存?", "系统提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消"
-        }).catch(() => "cancel");
-        if (result === "cancel") {
+        const result = await ElMessageBox.confirm('当前没有文章内容，是否保存?', '系统提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).catch(() => 'cancel');
+        if (result === 'cancel') {
           return;
         }
       }
       // 显示加载动画
       loading.value = true;
       fetch(publishArticleURL, {
-        method: "post",
+        method: 'post',
         body: JSON.stringify(form),
       })
         .then((res) => res.json())
         .then((data) => {
           // 关闭加载动画
           loading.value = false;
-          ElMessageBox.alert(`文章发布${data.code === 0 ? "成功" : "失败"}！`, "系统提示", { confirmButtonText: "确定" });
+          ElMessageBox.alert(`文章发布${data.code === 0 ? '成功' : '失败'}！`, '系统提示', { confirmButtonText: '确定' });
           form.articleId = data.data;
           oldForm.value = JSON.stringify(form);
           console.log(data.message);
@@ -147,7 +153,7 @@ const onSave = value => {
         .catch((error) => {
           // 关闭加载动画
           loading.value = false;
-          ElMessageBox.alert("文章发布失败！", "系统提示", { confirmButtonText: "确定" });
+          ElMessageBox.alert('文章发布失败！', '系统提示', { confirmButtonText: '确定' });
           console.log(error);
         });
     }

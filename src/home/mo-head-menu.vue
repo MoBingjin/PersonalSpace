@@ -14,31 +14,34 @@
 
 <script setup>
 
-const { computed, reactive, ref } = window["Vue"];
-const { useRoute } = window["VueRouter"];
-const { title } = window["MoConfig"].params;
+import { computed, reactive } from 'vue';
+import { useRoute } from 'vue-router';
+import { params } from 'mo-config';
+
+
+const { title } = params;
 
 // 跳转路由对象
 const route = useRoute();
 
 // logo
-const logo = title["home"];
+const logo = title['home'];
 // 菜单项
 const menus = reactive([
     {
-        index: "/home",
-        icon: "el-icon-s-home",
-        name: "首页"
+        index: '/home',
+        icon: 'el-icon-s-home',
+        name: '首页'
     },
     {
-        index: "/archives",
-        icon: "el-icon-s-cooperation",
-        name: "归档"
+        index: '/archives',
+        icon: 'el-icon-s-cooperation',
+        name: '归档'
     },
     {
-        index: "/about",
-        icon: "el-icon-info",
-        name: "关于"
+        index: '/about',
+        icon: 'el-icon-info',
+        name: '关于'
     }
 ]);
 // 默认激活菜单项
@@ -48,14 +51,14 @@ const defaultActive = computed(() => {
             return route.path;
         }
     }
-    return "/home";
+    return '/home';
 });
 
 
 /**
  * 回到主页
  */
-const goHome = () => window.location.href = "/";
+const goHome = () => window.location.href = '/';
 
 </script>
 

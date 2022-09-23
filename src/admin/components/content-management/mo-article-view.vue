@@ -16,10 +16,10 @@
 
 <script setup>
 
-import MdEditorV3 from "@md-editor-v3.js";
-import "@md-editor-v3.css";
-import _ from "@lodash.js";
-const { ref } = window["Vue"];
+import { ref } from 'vue';
+import MdEditorV3 from '@md-editor-v3.js';
+import '@md-editor-v3.css';
+import _ from '@lodash.js';
 
 
 // 参数
@@ -70,7 +70,7 @@ const goTop = _.debounce(() => {
 
 .el-scrollbar {
     margin: 0 auto;
-    height: 84vh;
+    height: 82vh;
     width: 80vw;
 }
 

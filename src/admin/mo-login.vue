@@ -11,8 +11,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input type="password" placeholder="密码" v-model="form.password"
-                        @keyup.enter.native="login()">
+                    <el-input type="password" placeholder="密码" v-model="form.password" @keyup.enter.native="login()">
                         <template #prepend>
                             <e-icon icon-name="fa fa-lock" />
                         </template>
@@ -28,24 +27,27 @@
 
 <script setup>
 
-const { reactive, ref } = window["Vue"];
-const { ElMessage } = window["ElementPlus"];
-const { checkUserURL } = window["MoConfig"].api;
+import { reactive, ref } from 'vue';
+import { ElMessage } from 'element-plus';
+import { api } from 'mo-config';
+import localStorage from 'local-storage';
+
+const { checkUserURL } = api;
 
 
 // 回调对象
-const emits = defineEmits(["change-page"]);
+const emits = defineEmits(['change-page']);
 
 
 // 表单对象
 const form = reactive({
-    userName: "",
-    password: ""
+    userName: '',
+    password: ''
 });
 // 校验规则
 const rules = reactive({
-    userName: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
-    password: [{ required: true, message: "密码不能为空", trigger: "blur" }]
+    userName: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
+    password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
 });
 // 表单组件
 const formComponent = ref();
@@ -58,20 +60,20 @@ const login = () => {
     formComponent.value.validate(valid => {
         if (valid) {
             fetch(checkUserURL, {
-                method: "post",
+                method: 'post',
                 body: JSON.stringify(form)
             })
                 .then(res => res.json())
                 .then(data => {
                     if (data.code === 0) {
-                        ElMessage({ message: "登录成功！", type: "success" });
-                        window["localStorage"].setItem("token", data.data);
-                        emits("change-page", { componentName: "mo-panel" });
+                        ElMessage({ message: '登录成功！', type: 'success' });
+                        localStorage.setItem('token', data.data);
+                        emits('change-page', { componentName: 'mo-panel' });
                     } else {
-                        ElMessage({ message: "用户名或密码有误！", type: "error" });
+                        ElMessage({ message: '用户名或密码有误！', type: 'error' });
                     }
                 })
-                .catch(() => ElMessage({ message: "登录异常！", type: "error" }));
+                .catch(() => ElMessage({ message: '登录异常！', type: 'error' }));
         }
     });
 }

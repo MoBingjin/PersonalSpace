@@ -4,7 +4,7 @@ document.querySelector('#app').innerHTML = `
 `;
 
 // 根路径
-const rootPath = "/";
+const rootPath = '/';
 
 // 解析配置
 const configRes = await fetch(`${rootPath}src/config.json`);
@@ -14,10 +14,14 @@ window['MoConfig'].params.rootPath = rootPath;
 // vue3-sfc-loader参数
 const options = {
     moduleCache: {
-        vue: window['Vue']
+        'vue': window['Vue'],
+        'vue-router': window["VueRouter"],
+        'element-plus': window['ElementPlus'],
+        'local-storage': window['localStorage'],
+        'mo-config': window['MoConfig']
     },
     async getFile(url) {
-        url = url.startsWith('@') ? window['MoConfig'].url[url] : url;
+        url = window['MoConfig'].url[url] || url;
         const res = await fetch(url);
         if (!res.ok) {
             throw Object.assign(new Error(res.statusText + ' ' + url), { res });
@@ -63,3 +67,24 @@ vm.use(window['eIconPicker'], {
 });
 
 vm.mount('#app');
+
+// axios 配置
+const axiosInstance = window['axios'].create({
+    baseURL: window['MoConfig'].params.baseURL,
+    timeout: 5000,
+    headers: {
+        'Content-Type': 'application/json;charset=UTF-8'
+    }
+});
+// 添加请求拦截器，配置登录认证token
+axiosInstance.interceptors.request.use(config => {
+    if (localStorage.getItem('token')) {
+        config.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+    }
+    return config;
+}, error => {
+    return Promise.reject(error);
+});
+
+// 配置axios的全局引用
+vm.config.globalProperties.$axiosInstance = axiosInstance;

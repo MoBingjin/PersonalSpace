@@ -31,20 +31,21 @@
 
 <script setup>
 
-import MoHeadMenu from "./mo-head-menu.vue";
-import MoLeftMenu from "./mo-left-menu.vue";
-const { computed, markRaw, ref } = window["Vue"];
-const { ElMessageBox } = window["ElementPlus"];
+import MoHeadMenu from './mo-head-menu.vue';
+import MoLeftMenu from './mo-left-menu.vue';
+import { computed, markRaw, ref } from 'vue';
+import { ElMessageBox } from 'element-plus';
+import localStorage from 'local-storage';
 
 
 // 回调对象
-const emits = defineEmits(["change-page"]);
+const emits = defineEmits(['change-page']);
 
 
 // 侧边栏是否展开
 const isCollapse = ref(false);
 // 当前活动标签值
-const editableTabsValue = ref("");
+const editableTabsValue = ref('');
 // 标签数组
 const editableTabs = ref([]);
 // 子组件
@@ -54,11 +55,11 @@ const childParams = ref({});
 
 
 // 侧边栏宽度
-const asideWidth = computed(() => isCollapse.value ? "73px" : "200px");
+const asideWidth = computed(() => isCollapse.value ? '73px' : '200px');
 // 侧边分界线标题
-const dividerTitle = computed(() => isCollapse.value ? "展开" : "收起");
+const dividerTitle = computed(() => isCollapse.value ? '展开' : '收起');
 // 侧边分界线显示图标
-const dividerIcon = computed(() => isCollapse.value ? "&raquo;" : "&laquo;");
+const dividerIcon = computed(() => isCollapse.value ? '&raquo;' : '&laquo;');
 
 
 /**
@@ -90,14 +91,14 @@ const openTab = data => {
 const removeTab = async (targetName) => {
   if (childComponent.value.notSaved) {
     const result = await ElMessageBox.confirm(
-      "存在修改内容未保存，确定要关闭?",
-      "系统提示",
+      '存在修改内容未保存，确定要关闭?',
+      '系统提示',
       {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
       }
-    ).catch(() => "cancel");
-    if (result === "cancel") {
+    ).catch(() => 'cancel');
+    if (result === 'cancel') {
       return;
     }
   }
@@ -140,8 +141,8 @@ const containsObject = (arr, obj) => {
  * 退出登录
  */
 const loginout = () => {
-  window["localStorage"].removeItem("token");
-  emits("change-page", { componentName: "mo-login" });
+  localStorage.removeItem('token');
+  emits('change-page', { componentName: 'mo-login' });
 }
 
 
@@ -149,8 +150,8 @@ const loginout = () => {
 (() => {
   // 打开首页
   openTab({
-    title: "首页",
-    componentName: "mo-main",
+    title: '首页',
+    componentName: 'mo-main',
   });
 })();
 

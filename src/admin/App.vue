@@ -4,10 +4,12 @@
 
 <script setup>
 
-const { markRaw, ref } = window["Vue"];
-const { checkUserURL } = window["MoConfig"].api;
-const { title } = window["MoConfig"].params;
-const localStorage = window["localStorage"];
+import { markRaw, ref } from 'vue';
+import { api, params } from 'mo-config';
+import localStorage from 'local-storage';
+
+const { checkUserURL } = api;
+const { title } = params;
 
 
 // 当前子组件
@@ -19,31 +21,32 @@ const currentComponent = ref(null);
  * 
  * @param {any} data 
  */
-const changePage = data => import(`./${data["componentName"]}.vue`).then(component => currentComponent.value = markRaw(component));
+const changePage = data => import(`./${data['componentName']}.vue`).then(component => currentComponent.value = markRaw(component));
 
 
 // 初始化操作
 (() => {
-  window["document"].getElementsByTagName("title")[0].innerHTML = title["admin"];
-  const token = localStorage.getItem("token");
-  if (token) {
-    fetch(checkUserURL, {
-      method: "post",
-      body: JSON.stringify({ token })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.code === 0) {
-          changePage({ componentName: "mo-panel" });
-        } else {
-          window["localStorage"].removeItem("token");
-          changePage({ componentName: "mo-login" });
-        }
-      })
-      .catch(() => changePage({ componentName: "../common/componets/404" }));
-  } else {
-    changePage({ componentName: "mo-login" });
-  }
+  window['document'].getElementsByTagName('title')[0].innerHTML = title['admin'];
+  changePage({ componentName: 'mo-panel' });
+  // const token = localStorage.getItem('token');
+  // if (token) {
+  //   fetch(checkUserURL, {
+  //     method: 'post',
+  //     body: JSON.stringify({ token })
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       if (data.code === 0) {
+  //         changePage({ componentName: 'mo-panel' });
+  //       } else {
+  //         window['localStorage'].removeItem('token');
+  //         changePage({ componentName: 'mo-login' });
+  //       }
+  //     })
+  //     .catch(() => changePage({ componentName: '../common/componets/404' }));
+  // } else {
+  //   changePage({ componentName: 'mo-login' });
+  // }
 })();
 
 </script>

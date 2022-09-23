@@ -9,7 +9,10 @@
 
 <script setup>
 
-const { _404ImageURL, rootPath } = window["MoConfig"].params;
+import { params } from 'mo-config';
+
+
+const { _404ImageURL, rootPath } = params;
 
 
 // 404图片路径

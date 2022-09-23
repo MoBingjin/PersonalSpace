@@ -10,7 +10,7 @@
 <script setup>
 
 // 回调对象
-const emits = defineEmits(["loginout"]);
+const emits = defineEmits(['loginout']);
 
 </script>
 

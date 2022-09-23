@@ -21,15 +21,18 @@
 
 <script setup>
 
-import MoHeadMenu from "./mo-head-menu.vue";
-import MoSideMenu from "./mo-side-menu.vue";
-const { computed, getCurrentInstance, ref, watch } = window["Vue"];
-const { createRouter, createWebHashHistory } = window["VueRouter"];
-const { title } = window["MoConfig"].params;
+import MoHeadMenu from './mo-head-menu.vue';
+import MoSideMenu from './mo-side-menu.vue';
+import { computed, getCurrentInstance, ref, watch } from 'vue';
+import { createRouter, createWebHashHistory } from 'vue-router';
+import { params } from 'mo-config';
+
+
+const { title } = params;
 
 
 // 导航栏class
-const headerClass = ref("mo-hidden");
+const headerClass = ref('mo-hidden');
 // 侧边栏打开状态
 const sideMenuStatus = ref(false);
 
@@ -37,37 +40,37 @@ const sideMenuStatus = ref(false);
 // 路由规则
 const routes = [
   {
-    path: "/:home(home)?",
-    name: "首页",
-    component: () => import("./components/mo-home.vue")
+    path: '/:home(home)?',
+    name: '首页',
+    component: () => import('./components/mo-home.vue')
   },
   {
-    path: "/archives",
-    name: "归档",
-    component: () => import("./components/mo-archives.vue")
+    path: '/archives',
+    name: '归档',
+    component: () => import('./components/mo-archives.vue')
   },
   {
-    path: "/about",
-    name: "关于",
-    component: () => import("./components/mo-about.vue")
+    path: '/about',
+    name: '关于',
+    component: () => import('./components/mo-about.vue')
   },
   {
-    path: "/article/:articleId",
-    name: "文章",
-    component: () => import("./components/mo-article-view.vue")
+    path: '/article/:articleId',
+    name: '文章',
+    component: () => import('./components/mo-article-view.vue')
   },
   {
-    path: "/:other",
-    component: () => import("../common/components/404.vue")
+    path: '/:other',
+    component: () => import('../common/components/404.vue')
   }
 ];
 
 
-const homeAppClass = computed(() => sideMenuStatus.value ? "mo-home-app open" : "mo-home-app");
-const sideMenuClass = computed(() => sideMenuStatus.value ? "mo-side-menu open" : "mo-side-menu");
-const mainContainerClass = computed(() => sideMenuStatus.value ? "mo-main-container open" : "mo-main-container");
-const sideMenuBtnClass = computed(() => sideMenuStatus.value ? "mo-side-menu-btn open" : "mo-side-menu-btn");
-const hiddenAreaClass = computed(() => sideMenuStatus.value ? "mo-hidden-area open" : "mo-hidden-area");
+const homeAppClass = computed(() => sideMenuStatus.value ? 'mo-home-app open' : 'mo-home-app');
+const sideMenuClass = computed(() => sideMenuStatus.value ? 'mo-side-menu open' : 'mo-side-menu');
+const mainContainerClass = computed(() => sideMenuStatus.value ? 'mo-main-container open' : 'mo-main-container');
+const sideMenuBtnClass = computed(() => sideMenuStatus.value ? 'mo-side-menu-btn open' : 'mo-side-menu-btn');
+const hiddenAreaClass = computed(() => sideMenuStatus.value ? 'mo-hidden-area open' : 'mo-hidden-area');
 
 
 /**
@@ -77,9 +80,9 @@ const hiddenAreaClass = computed(() => sideMenuStatus.value ? "mo-hidden-area op
  */
 const handleScroll = event => {
   if (event.target.documentElement.scrollTop > 0) {
-    headerClass.value = "mo-header mo-header-show";
+    headerClass.value = 'mo-header mo-header-show';
   } else {
-    headerClass.value = "mo-header mo-header-hidden";
+    headerClass.value = 'mo-header mo-header-hidden';
   }
 }
 
@@ -88,10 +91,10 @@ const handleScroll = event => {
 (() => {
 
   // 淡入效果
-  window["document"].body.style.opacity = "0";
+  window['document'].body.style.opacity = '0';
   setTimeout(() => {
-    window["document"].body.style.transition = "opacity 1.5s";
-    window["document"].body.style.opacity = "1";
+    window['document'].body.style.transition = 'opacity 1.5s';
+    window['document'].body.style.opacity = '1';
   }, 0);
 
   // 设置路由
@@ -102,26 +105,26 @@ const handleScroll = event => {
   watch(router.currentRoute, (route) => {
 
     // 404
-    if (route.matched[0].path === "/:other") {
-      window["document"].getElementsByTagName("title")[0].innerHTML = title["404"];
-      window["document"].getElementsByClassName("mo-side-menu-btn")[0].style["display"] = "none";
-      headerClass.value = "mo-hidden";
-      window.removeEventListener("scroll", handleScroll);
+    if (route.matched[0].path === '/:other') {
+      window['document'].getElementsByTagName('title')[0].innerHTML = title['404'];
+      window['document'].getElementsByClassName('mo-side-menu-btn')[0].style['display'] = 'none';
+      headerClass.value = 'mo-hidden';
+      window.removeEventListener('scroll', handleScroll);
       return;
     }
 
-    window["document"].getElementsByTagName("title")[0].innerHTML = `${route.matched[0].name} | ${title["home"]}`;
+    window['document'].getElementsByTagName('title')[0].innerHTML = `${route.matched[0].name} | ${title['home']}`;
 
     // 首页
-    if (["/", "/home"].includes(route.path)) {
-      headerClass.value = "mo-header mo-header-init";
-      window.addEventListener("scroll", handleScroll);
+    if (['/', '/home'].includes(route.path)) {
+      headerClass.value = 'mo-header mo-header-init';
+      window.addEventListener('scroll', handleScroll);
       return;
     }
 
     // 其他
-    headerClass.value = "mo-header mo-header-show";
-    window.removeEventListener("scroll", handleScroll);
+    headerClass.value = 'mo-header mo-header-show';
+    window.removeEventListener('scroll', handleScroll);
   });
 
 })();

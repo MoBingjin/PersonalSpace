@@ -15,15 +15,18 @@
 
 <script setup>
 
-const { computed, reactive, ref } = window["Vue"];
-const { pageSize } = window["MoConfig"].params;
-const { archivesArticleURL } = window["MoConfig"].api;
+import { computed, reactive, ref } from 'vue';
+import { api, params } from 'mo-config';
+
+
+const { pageSize } = params;
+const { archivesArticleURL } = api;
 
 
 // 当前页数
 const page = ref(0);
 // 分页每页数目
-const currentPageSize = ref(pageSize["home"]);
+const currentPageSize = ref(pageSize['home']);
 // 分页总数
 const total = ref(0);
 // 归档信息列表
@@ -43,7 +46,7 @@ const load = () => {
     if (!noMore.value && !loading.value) {
         loading.value = true;
         fetch(archivesArticleURL, {
-            method: "post",
+            method: 'post',
             body: JSON.stringify({
                 limit: currentPageSize.value,
                 page: page.value + 1
@@ -56,17 +59,17 @@ const load = () => {
                     if (archives.length === 0 && data.data.archives.length > 0) {
                         const item = data.data.archives[0];
                         archives.push({
-                            content: item["yearAndMonth"],
-                            yearAndMonth: item["yearAndMonth"],
+                            content: item['yearAndMonth'],
+                            yearAndMonth: item['yearAndMonth'],
                             isTime: true
                         });
                     }
                     data.data.archives.map(item => {
                         const lastItem = archives[archives.length - 1];
-                        if (item["yearAndMonth"] !== lastItem["yearAndMonth"]) {
+                        if (item['yearAndMonth'] !== lastItem['yearAndMonth']) {
                             archives.push({
-                                content: item["yearAndMonth"],
-                                yearAndMonth: item["yearAndMonth"],
+                                content: item['yearAndMonth'],
+                                yearAndMonth: item['yearAndMonth'],
                                 isTime: true
                             });
                         }

@@ -23,7 +23,9 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" round @click="search">搜索</el-button>
+          <el-button type="primary" round @click="search">
+            <e-icon icon-name="el-icon-search"></e-icon>
+          </el-button>
         </el-form-item>
       </el-form>
     </el-header>
@@ -70,31 +72,34 @@
 
 <script setup>
 
-import { formatDate, parse2Time } from "../../../common/js/utils.js";
-const { computed, reactive, ref } = window["Vue"];
-const { ElMessage, ElMessageBox } = window["ElementPlus"];
-const { dataArticleURL, deleteArticleURL, listArticleURL } = window["MoConfig"].api;
-const { pageSize } = window["MoConfig"].params;
+import { computed, reactive, ref } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { formatDate, parse2Time } from '../../../common/js/utils.js';
+import { api, params } from 'mo-config';
+
+
+const { dataArticleURL, deleteArticleURL, listArticleURL } = api;
+const { pageSize } = params;
 
 
 // 回调对象
-const emits = defineEmits(["menu-item"]);
+const emits = defineEmits(['menu-item']);
 
 
 // 表单对象
 const form = reactive({
-  year: "",
-  month: "",
-  type: "",
-  key: ""
+  year: '',
+  month: '',
+  type: '',
+  key: ''
 });
 // 年列表
 const yearList = reactive((() => {
   const yearList = [{
-    value: "all",
-    label: "不限",
+    value: 'all',
+    label: '不限',
   }];
-  const nowYear = formatDate(new Date().getTime(), "yyyy");
+  const nowYear = formatDate(new Date().getTime(), 'yyyy');
   const lastYear = String(Number(nowYear) - 1);
   const previousYear = String(Number(nowYear) - 2);
   yearList.push({
@@ -112,11 +117,11 @@ const yearList = reactive((() => {
   return yearList;
 })());
 // 文章类型列表
-const typeList = reactive(["不限", "原创", "转载", "其他"]);
+const typeList = reactive(['不限', '原创', '转载', '其他']);
 // 文章信息列表
 const articleInfoList = reactive([]);
 // 分页每页数目
-const currentPageSize = ref(pageSize["admin"]);
+const currentPageSize = ref(pageSize['admin']);
 // 当前页
 const currentPage = ref(1);
 // 分页总数
@@ -130,12 +135,12 @@ const isFinish = ref(false);
 // 月列表
 const monthList = computed(() => {
   const monthList = [{
-    value: "all",
-    label: "不限"
+    value: 'all',
+    label: '不限'
   }];
-  if (form.year !== "" && form.year !== "all") {
+  if (form.year !== '' && form.year !== 'all') {
     for (let i = 1; i <= 12; ++i) {
-      const month = i < 10 ? "0" + i : String(i);
+      const month = i < 10 ? '0' + i : String(i);
       monthList.push({
         value: month,
         label: month
@@ -153,11 +158,11 @@ const monthList = computed(() => {
  */
 const listArticleInfoList = async (page = 1) => {
   currentPage.value = page;
-  searchParams.value["page"] = page;
+  searchParams.value['page'] = page;
   return new Promise((rev, rej) => {
     // 获取文章信息列表数据
     fetch(listArticleURL, {
-      method: "post",
+      method: 'post',
       body: JSON.stringify(searchParams.value)
     })
       .then(res => res.json())
@@ -185,13 +190,13 @@ const listArticleInfoList = async (page = 1) => {
 const view = (articleId) => {
   // 获取文章数据
   fetch(dataArticleURL, {
-    method: "post",
+    method: 'post',
     body: JSON.stringify({ articleId })
   })
     .then(res => res.json())
     .then(data => {
       if (data.code === 0) {
-        openTab(data.data.title, "content-management/mo-article-view", { articleData: data.data });
+        openTab(data.data.title, 'content-management/mo-article-view', { articleData: data.data });
       }
       console.log(data.message);
     })
@@ -208,13 +213,13 @@ const view = (articleId) => {
 const edit = (articleId) => {
   // 获取文章数据
   fetch(dataArticleURL, {
-    method: "post",
+    method: 'post',
     body: JSON.stringify({ articleId })
   })
     .then(res => res.json())
     .then(data => {
       if (data.code === 0) {
-        openTab("编辑文章", "mo-publish-article", { articleData: data.data });
+        openTab('编辑文章', 'mo-publish-article', { articleData: data.data });
       }
       console.log(data.message);
     })
@@ -230,29 +235,29 @@ const edit = (articleId) => {
  */
 const remove = (articleId, title, index) => {
   ElMessageBox.confirm(
-    `确定要删除标题为"${title.length < 10 ? title : title.substring(0, 8) + "..."}"的文章吗？`,
-    "系统提示",
+    `确定要删除标题为'${title.length < 10 ? title : title.substring(0, 8) + '...'}'的文章吗？`,
+    '系统提示',
     {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消"
+      confirmButtonText: '确定',
+      cancelButtonText: '取消'
     }
   )
     .then(() => {
       fetch(deleteArticleURL, {
-        method: "post",
+        method: 'post',
         body: JSON.stringify({ articleId })
       })
         .then(res => res.json())
         .then(data => {
           if (data.code === 0) {
             articleInfoList.splice(index, 1);
-            ElMessage({ message: "删除成功！", type: "success" });
+            ElMessage({ message: '删除成功！', type: 'success' });
           } else {
-            ElMessage({ message: "删除失败！", type: "error" });
+            ElMessage({ message: '删除失败！', type: 'error' });
           }
         })
         .catch(error => {
-          ElMessage({ message: "删除异常！", type: "error" });
+          ElMessage({ message: '删除异常！', type: 'error' });
           console.log(error);
         });
     })
@@ -264,7 +269,7 @@ const remove = (articleId, title, index) => {
  * 
  * @param {any} value 
  */
-const yearChange = value => value === "all" && (form.month = "all");
+const yearChange = value => value === 'all' && (form.month = 'all');
 
 /**
  * 搜索事件
@@ -276,37 +281,37 @@ const search = async () => {
 
   // 关键词
   const keyValue = form.key.trim();
-  if (keyValue !== "") {
-    searchParams.value["title"] = keyValue;
-    searchParams.value["description"] = keyValue;
+  if (keyValue !== '') {
+    searchParams.value['title'] = keyValue;
+    searchParams.value['description'] = keyValue;
   }
 
   // 文章类型
   const typeValue = form.type;
-  if (typeValue !== "" && typeValue !== "不限") {
-    searchParams.value["type"] = typeValue;
+  if (typeValue !== '' && typeValue !== '不限') {
+    searchParams.value['type'] = typeValue;
   }
 
   // 时间
   const yearValue = form.year;
-  if (yearValue !== "" && yearValue !== "all") {
+  if (yearValue !== '' && yearValue !== 'all') {
     const monthValue = form.month;
-    if (monthValue !== "" && monthValue !== "all") {
+    if (monthValue !== '' && monthValue !== 'all') {
       let endTimeYear;
       let endTimeMonth;
       let endMonthNumber = Number(monthValue) + 1;
       if (endMonthNumber > 12) {
         endTimeYear = Number(yearValue) + 1;
-        endTimeMonth = "01";
+        endTimeMonth = '01';
       } else {
         endTimeYear = yearValue;
-        endTimeMonth = endMonthNumber < 10 ? "0" + endMonthNumber : endMonthNumber;
+        endTimeMonth = endMonthNumber < 10 ? '0' + endMonthNumber : endMonthNumber;
       }
-      searchParams.value["startTime"] = parse2Time(`${yearValue}-${monthValue}-01 00:00:00`);
-      searchParams.value["endTime"] = parse2Time(`${endTimeYear}-${endTimeMonth}-01 00:00:00`);
+      searchParams.value['startTime'] = parse2Time(`${yearValue}-${monthValue}-01 00:00:00`);
+      searchParams.value['endTime'] = parse2Time(`${endTimeYear}-${endTimeMonth}-01 00:00:00`);
     } else {
-      searchParams.value["startTime"] = parse2Time(`${yearValue}-01-01 00:00:00`);
-      searchParams.value["endTime"] = parse2Time(`${Number(yearValue) + 1}-01-01 00:00:00`);
+      searchParams.value['startTime'] = parse2Time(`${yearValue}-01-01 00:00:00`);
+      searchParams.value['endTime'] = parse2Time(`${Number(yearValue) + 1}-01-01 00:00:00`);
     }
   }
 
@@ -321,7 +326,7 @@ const search = async () => {
  * @param {string} componentName 组件名称
  * @param {any} params 组件参数
  */
-const openTab = (title, componentName, params) => emits("menu-item", { title, componentName, params });
+const openTab = (title, componentName, params) => emits('menu-item', { title, componentName, params });
 
 
 // 初始化操作
@@ -350,7 +355,7 @@ const openTab = (title, componentName, params) => emits("menu-item", { title, co
 }
 
 .el-scrollbar {
-  height: 73vh;
+  height: 68vh;
 }
 
 .el-pagination {

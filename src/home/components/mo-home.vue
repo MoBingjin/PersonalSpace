@@ -58,12 +58,15 @@
 
 <script setup>
 
-import _ from "@lodash.js";
-import { formatDate } from "../../common/js/utils.js";
-const { reactive, ref } = window["Vue"];
-const { useRouter } = window["VueRouter"];
-const { listArticleURL } = window["MoConfig"].api;
-const { avatarImageURL, backgroundImageURL, defaultCoverImageURL, pageSize, rootPath } = window["MoConfig"].params;
+import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { api, params } from 'mo-config';
+import { formatDate } from '../../common/js/utils.js';
+import _ from '@lodash.js';
+
+
+const { listArticleURL } = api;
+const { avatarImageURL, backgroundImageURL, defaultCoverImageURL, pageSize, rootPath } = params;
 
 
 // 路由实例对象
@@ -76,13 +79,13 @@ const avatarPath = avatarImageURL || `${rootPath}src/home/picture/avatar.png`;
 // 默认封面路径
 const defaultCoverPath = defaultCoverImageURL || `${rootPath}src/home/picture/default_cover.png`;
 // 分页每页数目
-const currentPageSize = ref(pageSize["home"]);
+const currentPageSize = ref(pageSize['home']);
 // 当前页
 const currentPage = ref(1);
 // 分页总数
 const total = ref(0);
 // 关键词
-const key = ref("");
+const key = ref('');
 // 搜索条件
 const searchParams = ref({});
 
@@ -97,11 +100,11 @@ const listArticleInfoList = async (page = 1, isToBody = true) => {
         toBody();
     }
     currentPage.value = page;
-    searchParams.value["page"] = page;
+    searchParams.value['page'] = page;
     return new Promise((rev, rej) => {
         // 获取文章信息列表数据
         fetch(listArticleURL, {
-            method: "post",
+            method: 'post',
             body: JSON.stringify(searchParams.value)
         })
             .then(res => res.json())
@@ -138,9 +141,9 @@ const search = async () => {
 
     // 关键词
     const keyValue = key.value.trim();
-    if (keyValue !== "") {
-        searchParams.value["title"] = keyValue;
-        searchParams.value["description"] = keyValue;
+    if (keyValue !== '') {
+        searchParams.value['title'] = keyValue;
+        searchParams.value['description'] = keyValue;
     }
 
     // 获取文章信息列表
@@ -151,7 +154,7 @@ const search = async () => {
  * 移动至主体头部
  */
 const toBody = _.debounce(() => {
-    const targetTop = window["document"].getElementsByClassName("mo-body")[0].offsetTop;
+    const targetTop = window['document'].getElementsByClassName('mo-body')[0].offsetTop;
     moveScroll(targetTop);
 }, 1000, { leading: true, trailing: false });
 
@@ -161,7 +164,7 @@ const toBody = _.debounce(() => {
  * @param {number} targetTop 目标高度
  */
 const moveScroll = (targetTop) => {
-    let scrollTop = window["document"].documentElement.scrollTop;
+    let scrollTop = window['document'].documentElement.scrollTop;
     const direction = targetTop > scrollTop ? 1 : -1;
     const distance = Math.ceil(Math.abs(targetTop - scrollTop) / 100);
     const timer = setInterval(() => {
@@ -171,7 +174,7 @@ const moveScroll = (targetTop) => {
             scrollTop = targetTop;
             clearInterval(timer);
         }
-        window["document"].documentElement.scrollTop = scrollTop;
+        window['document'].documentElement.scrollTop = scrollTop;
     }, 5);
 };
 
@@ -183,15 +186,15 @@ const moveScroll = (targetTop) => {
     setTimeout(() => {
 
         // 主背景设置
-        const backgroundElement = window["document"].getElementsByClassName("mo-home-background")[0];
-        backgroundElement.style.setProperty("--mo-home-bg", `url(${backgroundImageURL})`);
+        const backgroundElement = window['document'].getElementsByClassName('mo-home-background')[0];
+        backgroundElement.style.setProperty('--mo-home-bg', `url(${backgroundImageURL})`);
 
         // 波浪背景设置
-        const waveElement = window["document"].getElementsByClassName("mo-wave")[0];
-        waveElement.style.setProperty("--mo-wave-bg", `url("${rootPath}src/home/picture/wave.png")`);
+        const waveElement = window['document'].getElementsByClassName('mo-wave')[0];
+        waveElement.style.setProperty('--mo-wave-bg', `url('${rootPath}src/home/picture/wave.png')`);
         let backgroundPositionX = 0;
         setInterval(() => {
-            waveElement.style.setProperty("--mo-wave-position-x", `${--backgroundPositionX}px`);
+            waveElement.style.setProperty('--mo-wave-position-x', `${--backgroundPositionX}px`);
         }, 30);
 
     }, 0);

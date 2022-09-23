@@ -6,7 +6,7 @@
 
 <script setup>
 
-const { ref } = window["Vue"];
+import { ref } from 'vue';
 
 </script>
 

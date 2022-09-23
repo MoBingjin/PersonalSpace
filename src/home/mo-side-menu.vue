@@ -14,32 +14,35 @@
 
 <script setup>
 
-const { reactive } = window["Vue"];
-const { title } = window["MoConfig"].params;
+import { reactive } from 'vue';
+import { params } from 'mo-config';
+
+
+const { title } = params;
 
 
 // 回调对象
-const emits = defineEmits(["close-side-menu"]);
+const emits = defineEmits(['close-side-menu']);
 
 
 // logo
-const logo = title["home"];
+const logo = title['home'];
 // 菜单项
 const menus = reactive([
     {
-        index: "/home",
-        icon: "el-icon-s-home",
-        name: "首页"
+        index: '/home',
+        icon: 'el-icon-s-home',
+        name: '首页'
     },
     {
-        index: "/archives",
-        icon: "el-icon-s-cooperation",
-        name: "归档"
+        index: '/archives',
+        icon: 'el-icon-s-cooperation',
+        name: '归档'
     },
     {
-        index: "/about",
-        icon: "el-icon-info",
-        name: "关于"
+        index: '/about',
+        icon: 'el-icon-info',
+        name: '关于'
     }
 ]);
 
@@ -47,7 +50,7 @@ const menus = reactive([
 /**
  * 关闭侧边栏
  */
-const closeSideMenu = () => emits("close-side-menu", {});
+const closeSideMenu = () => emits('close-side-menu', {});
 
 </script>
 
