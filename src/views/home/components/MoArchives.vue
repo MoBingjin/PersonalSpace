@@ -16,17 +16,16 @@
 <script setup>
 
 import { computed, reactive, ref } from 'vue';
-import { api, params } from 'mo-config';
+import appConfig from 'app-config';
 
 
-const { pageSize } = params;
-const { archivesArticleURL } = api;
+const { archivesArticleURL } = appConfig.api;
 
 
 // 当前页数
 const page = ref(0);
 // 分页每页数目
-const currentPageSize = ref(pageSize['home']);
+const currentPageSize = ref(appConfig.pageSize['home']);
 // 分页总数
 const total = ref(0);
 // 归档信息列表

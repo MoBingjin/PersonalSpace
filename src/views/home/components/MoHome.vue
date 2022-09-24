@@ -1,6 +1,6 @@
 <template>
     <div>
-        <figure class="mo-home-background" :backgroundImg="backgroundImageURL">
+        <figure class="mo-home-background" :backgroundImg="appConfig.backgroundImageURL">
             <div class="mo-top">
                 <div><img class="mo-avatar" :src="avatarPath" alt="头像" referrerpolicy="no-referrer" /></div>
                 <div>
@@ -58,28 +58,26 @@
 
 <script setup>
 
-import { reactive, ref } from 'vue';
+import { getCurrentInstance, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { api, params } from 'mo-config';
-import { formatDate } from '../../common/js/utils.js';
+import appConfig from 'app-config';
+import { formatDate } from '@/utils/date-utils.mod.js';
 import _ from '@lodash.js';
 
 
-const { listArticleURL } = api;
-const { avatarImageURL, backgroundImageURL, defaultCoverImageURL, pageSize, rootPath } = params;
-
-
+// 获取真实路径函数
+const getActualPath = getCurrentInstance().appContext.config.globalProperties.$getActualPath;
 // 路由实例对象
 const router = useRouter();
 
 // 文章信息列表
 const articleInfoList = reactive([]);
 // 头像路径
-const avatarPath = avatarImageURL || `${rootPath}src/home/picture/avatar.png`;
+const avatarPath = appConfig.avatarImageURL || getActualPath('static/img/avatar.png');
 // 默认封面路径
-const defaultCoverPath = defaultCoverImageURL || `${rootPath}src/home/picture/default_cover.png`;
+const defaultCoverPath = appConfig.defaultCoverImageURL || getActualPath('static/img/default_cover.png');
 // 分页每页数目
-const currentPageSize = ref(pageSize['home']);
+const currentPageSize = ref(appConfig.pageSize['home']);
 // 当前页
 const currentPage = ref(1);
 // 分页总数
@@ -103,7 +101,7 @@ const listArticleInfoList = async (page = 1, isToBody = true) => {
     searchParams.value['page'] = page;
     return new Promise((rev, rej) => {
         // 获取文章信息列表数据
-        fetch(listArticleURL, {
+        fetch(appConfig.api.listArticleURL, {
             method: 'post',
             body: JSON.stringify(searchParams.value)
         })
@@ -187,11 +185,11 @@ const moveScroll = (targetTop) => {
 
         // 主背景设置
         const backgroundElement = window['document'].getElementsByClassName('mo-home-background')[0];
-        backgroundElement.style.setProperty('--mo-home-bg', `url(${backgroundImageURL})`);
+        backgroundElement.style.setProperty('--mo-home-bg', `url(${appConfig.backgroundImageURL})`);
 
         // 波浪背景设置
         const waveElement = window['document'].getElementsByClassName('mo-wave')[0];
-        waveElement.style.setProperty('--mo-wave-bg', `url('${rootPath}src/home/picture/wave.png')`);
+        waveElement.style.setProperty('--mo-wave-bg', `url('${getActualPath('static/img/wave.png')}')`);
         let backgroundPositionX = 0;
         setInterval(() => {
             waveElement.style.setProperty('--mo-wave-position-x', `${--backgroundPositionX}px`);

@@ -8,12 +8,10 @@
 <script setup>
 
 import { ref } from 'vue';
-import { params } from 'mo-config';
+import appConfig from 'app-config';
 import MdEditorV3 from '@md-editor-v3.js';
 import '@md-editor-v3.css';
 
-
-const { markdownStatic } = params;
 
 // 文章数据
 const articleData = ref('');
@@ -21,7 +19,7 @@ const articleData = ref('');
 
 // 初始化操作
 (() => {
-  fetch(markdownStatic + 'README.md')
+  fetch(appConfig.params.markdownStatic + 'README.md')
     .then((response) => {
       return response.text();
     })

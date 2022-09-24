@@ -48,21 +48,18 @@
     <el-footer>
       <el-pagination layout="prev, pager, next" :page-size="currentPageSize" :current-page="currentPage" :total="total"
         :hide-on-single-page="true" @current-change="listTagInfoList" />
-      <mo-tag-add-or-update ref="moTagAddOrUpdate" @refresh="listTagInfoList"></mo-tag-add-or-update>
+      <mo-tag-add-or-update ref="moTagAddOrUpdate" @refresh="listTagInfoList" />
     </el-footer>
   </el-container>
 </template>
 
 <script setup>
 
-import MoTagAddOrUpdate from './mo-tag-add-or-update.vue';
+import MoTagAddOrUpdate from './MoTagAddOrUpdate.vue';
 import { getCurrentInstance, reactive, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { api, params } from 'mo-config';
+import appConfig from 'app-config';
 
-
-const { listTagURL, removeBatchTagURL, removeTagURL, statusTagURL } = api;
-const { pageSize } = params;
 
 // axios实体对象
 const axiosInstance = getCurrentInstance().appContext.config.globalProperties.$axiosInstance;
@@ -82,7 +79,7 @@ const form = reactive({
 // 表格数据
 const tagInfoList = reactive([]);
 // 分页每页数目
-const currentPageSize = ref(pageSize['admin']);
+const currentPageSize = ref(appConfig.pageSize['admin']);
 // 当前页
 const currentPage = ref(1);
 // 分页总数据条数
@@ -119,7 +116,7 @@ const remove = async (row) => {
     cancelButtonText: '取消'
   })
     .then(() => {
-      axiosInstance.delete(removeTagURL + row.id)
+      axiosInstance.delete(appConfig.api.removeTagURL + row.id)
         .then(({ data: res }) => {
           console.log(res.message);
           if (res.code === 0) {
@@ -159,7 +156,7 @@ const removeBatch = async () => {
     })
       .then(() => {
         const ids = selectRows.map(row => row.id);
-        axiosInstance.delete(removeBatchTagURL, { data: ids })
+        axiosInstance.delete(appConfig.api.removeBatchTagURL, { data: ids })
           .then(({ data: res }) => {
             console.log(res.message);
             if (res.code === 0) {
@@ -190,7 +187,7 @@ const removeBatch = async () => {
  * 标签状态修改
  */
 const statusChange = (row) => {
-  axiosInstance.post(statusTagURL + row.id)
+  axiosInstance.post(appConfig.api.statusTagURL + row.id)
     .then(({ data: res }) => {
       console.log(res.message);
       if (res.code !== 0 || res.data.status !== row.status) {
@@ -215,7 +212,7 @@ const listTagInfoList = async (page = 1) => {
   currentPage.value = page;
   return new Promise((rev, rej) => {
     // 获取文章信息列表数据
-    axiosInstance.post(listTagURL + `?limit=${currentPageSize.value}&page=${currentPage.value}`, form)
+    axiosInstance.post(appConfig.api.listTagURL + `?limit=${currentPageSize.value}&page=${currentPage.value}`, form)
       .then(({ data: res }) => {
         if (res.code === 0) {
           tagInfoList.splice(0, tagInfoList.length);

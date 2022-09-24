@@ -31,8 +31,8 @@
 
 <script setup>
 
-import MoHeadMenu from './mo-head-menu.vue';
-import MoLeftMenu from './mo-left-menu.vue';
+import MoHeadMenu from './MoHeadMenu.vue';
+import MoLeftMenu from './MoLeftMenu.vue';
 import { computed, markRaw, ref } from 'vue';
 import { ElMessageBox } from 'element-plus';
 import localStorage from 'local-storage';
@@ -142,7 +142,7 @@ const containsObject = (arr, obj) => {
  */
 const loginout = () => {
   localStorage.removeItem('token');
-  emits('change-page', { componentName: 'mo-login' });
+  emits('change-page', { componentName: 'MoLogin' });
 }
 
 
@@ -151,7 +151,7 @@ const loginout = () => {
   // 打开首页
   openTab({
     title: '首页',
-    componentName: 'mo-main',
+    componentName: 'MoMain',
   });
 })();
 

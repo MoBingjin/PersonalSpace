@@ -5,7 +5,7 @@
 <script setup>
 
 import { markRaw, ref } from 'vue';
-import { params } from 'mo-config';
+import appConfig from 'app-config';
 
 
 // 当前子组件
@@ -14,12 +14,12 @@ const currentComponent = ref(null);
 
 // 初始化操作
 (async () => {
-  const mainDir = new URL(window.location.href).searchParams.has(params.adminEntrance) ? 'admin' : 'home';
+  const mainDir = new URL(window.location.href).searchParams.has(appConfig.adminEntrance) ? 'admin' : 'home';
   try {
-    currentComponent.value = markRaw(await import(`./${mainDir}/App.vue`));
+    currentComponent.value = markRaw(await import(`./views/${mainDir}/Main.vue`));
   } catch (error) {
     console.log(error);
-    currentComponent.value = markRaw(await import('./common/components/404.vue'));
+    currentComponent.value = markRaw(await import('./views/common/404.vue'));
   }
 })();
 

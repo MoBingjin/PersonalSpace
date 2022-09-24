@@ -25,12 +25,10 @@
 
 <script setup>
 
-import { computed, getCurrentInstance, reactive, ref } from 'vue';
+import { getCurrentInstance, reactive, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { api } from 'mo-config';
+import appConfig from 'app-config';
 
-
-const { addTagURL, infoTagURL, updateTagURL } = api;
 
 // axios实体对象
 const axiosInstance = getCurrentInstance().appContext.config.globalProperties.$axiosInstance;
@@ -70,7 +68,7 @@ const init = (id) => {
     title.value = id ? '更新' : '添加';
     if (id) {
         // 获取标签数据
-        axiosInstance.get(infoTagURL + id)
+        axiosInstance.get(appConfig.api.infoTagURL + id)
             .then(({ data: res }) => {
                 console.log(res.message);
                 if (res.code === 0) {
@@ -119,7 +117,7 @@ const confirm = () => {
  * 添加
  */
 const add = async () => {
-    axiosInstance.put(addTagURL, dataForm)
+    axiosInstance.put(appConfig.api.addTagURL, dataForm)
         .then(({ data: res }) => {
             if (res.code === 0) {
                 ElMessage({ message: '添加成功！', type: 'success' });
@@ -138,7 +136,7 @@ const add = async () => {
  * 更新
  */
 const update = async () => {
-    axiosInstance.post(updateTagURL, dataForm)
+    axiosInstance.post(appConfig.api.updateTagURL, dataForm)
         .then(({ data: res }) => {
             if (res.code === 0) {
                 ElMessage({ message: '更新成功！', type: 'success' });

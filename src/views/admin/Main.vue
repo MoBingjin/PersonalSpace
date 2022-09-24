@@ -5,11 +5,8 @@
 <script setup>
 
 import { markRaw, ref } from 'vue';
-import { api, params } from 'mo-config';
+import appConfig from 'app-config';
 import localStorage from 'local-storage';
-
-const { checkUserURL } = api;
-const { title } = params;
 
 
 // 当前子组件
@@ -26,11 +23,11 @@ const changePage = data => import(`./${data['componentName']}.vue`).then(compone
 
 // 初始化操作
 (() => {
-  window['document'].getElementsByTagName('title')[0].innerHTML = title['admin'];
-  changePage({ componentName: 'mo-panel' });
+  window['document'].getElementsByTagName('title')[0].innerHTML = appConfig.title['admin'];
+  changePage({ componentName: 'MoPanel' });
   // const token = localStorage.getItem('token');
   // if (token) {
-  //   fetch(checkUserURL, {
+  //   fetch(appConfig.api.checkUserURL, {
   //     method: 'post',
   //     body: JSON.stringify({ token })
   //   })

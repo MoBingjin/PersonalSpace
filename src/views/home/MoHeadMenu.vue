@@ -16,16 +16,14 @@
 
 import { computed, reactive } from 'vue';
 import { useRoute } from 'vue-router';
-import { params } from 'mo-config';
+import appConfig from 'app-config';
 
-
-const { title } = params;
 
 // 跳转路由对象
 const route = useRoute();
 
 // logo
-const logo = title['home'];
+const logo = appConfig.title['home'];
 // 菜单项
 const menus = reactive([
     {

@@ -15,10 +15,7 @@
 <script setup>
 
 import { reactive } from 'vue';
-import { params } from 'mo-config';
-
-
-const { title } = params;
+import appConfig from 'app-config';
 
 
 // 回调对象
@@ -26,7 +23,7 @@ const emits = defineEmits(['close-side-menu']);
 
 
 // logo
-const logo = title['home'];
+const logo = appConfig.title['home'];
 // 菜单项
 const menus = reactive([
     {

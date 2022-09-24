@@ -21,14 +21,11 @@
 
 <script setup>
 
-import MoHeadMenu from './mo-head-menu.vue';
-import MoSideMenu from './mo-side-menu.vue';
+import MoHeadMenu from './MoHeadMenu.vue';
+import MoSideMenu from './MoSideMenu.vue';
 import { computed, getCurrentInstance, ref, watch } from 'vue';
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { params } from 'mo-config';
-
-
-const { title } = params;
+import appConfig from 'app-config';
 
 
 // 导航栏class
@@ -42,26 +39,26 @@ const routes = [
   {
     path: '/:home(home)?',
     name: '首页',
-    component: () => import('./components/mo-home.vue')
+    component: () => import('./components/MoHome.vue')
   },
   {
     path: '/archives',
     name: '归档',
-    component: () => import('./components/mo-archives.vue')
+    component: () => import('./components/MoArchives.vue')
   },
   {
     path: '/about',
     name: '关于',
-    component: () => import('./components/mo-about.vue')
+    component: () => import('./components/MoAbout.vue')
   },
   {
     path: '/article/:articleId',
     name: '文章',
-    component: () => import('./components/mo-article-view.vue')
+    component: () => import('./components/MoArticleView.vue')
   },
   {
     path: '/:other',
-    component: () => import('../common/components/404.vue')
+    component: () => import('../common/404.vue')
   }
 ];
 
@@ -106,14 +103,14 @@ const handleScroll = event => {
 
     // 404
     if (route.matched[0].path === '/:other') {
-      window['document'].getElementsByTagName('title')[0].innerHTML = title['404'];
+      window['document'].getElementsByTagName('title')[0].innerHTML = appConfig.title['404'];
       window['document'].getElementsByClassName('mo-side-menu-btn')[0].style['display'] = 'none';
       headerClass.value = 'mo-hidden';
       window.removeEventListener('scroll', handleScroll);
       return;
     }
 
-    window['document'].getElementsByTagName('title')[0].innerHTML = `${route.matched[0].name} | ${title['home']}`;
+    window['document'].getElementsByTagName('title')[0].innerHTML = `${route.matched[0].name} | ${appConfig.title['home']}`;
 
     // 首页
     if (['/', '/home'].includes(route.path)) {

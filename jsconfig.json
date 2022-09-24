@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "baseUrl": "./",
+        "jsx": "preserve",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ],
+            "static/*": [
+                "public/*"
+            ],
+            "vue": [
+                "public/plugins/unpkg.com/vue@3.2.37/dist/vue.global.js"
+            ],
+            "vue-router": [
+                "public/plugins/unpkg.com/vue-router@4.0.16/dist/vue-router.global.js"
+            ],
+            "element-plus": [
+                "public/plugins/unpkg.com/element-plus@2.0.1/dist/index.full.js"
+            ],
+            "app-config": [
+                "src/app.config.mod.js"
+            ]
+        }
+    }
+}

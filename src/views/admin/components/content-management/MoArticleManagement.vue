@@ -58,7 +58,7 @@
         </div>
         <div v-if="isFinish && articleInfoList.length === 0">
           <el-empty description="没有找到符合条件的数据！">
-            <el-button type="primary" @click="openTab('发布文章', 'mo-publish-article', {})">发布文章</el-button>
+            <el-button type="primary" @click="openTab('发布文章', 'MoPublishArticle', {})">发布文章</el-button>
           </el-empty>
         </div>
       </el-scrollbar>
@@ -74,12 +74,8 @@
 
 import { computed, reactive, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { formatDate, parse2Time } from '../../../common/js/utils.js';
-import { api, params } from 'mo-config';
-
-
-const { dataArticleURL, deleteArticleURL, listArticleURL } = api;
-const { pageSize } = params;
+import { formatDate, parse2Time } from '@/utils/date-utils.mod.js';
+import appConfig from 'app-config';
 
 
 // 回调对象
@@ -121,7 +117,7 @@ const typeList = reactive(['不限', '原创', '转载', '其他']);
 // 文章信息列表
 const articleInfoList = reactive([]);
 // 分页每页数目
-const currentPageSize = ref(pageSize['admin']);
+const currentPageSize = ref(appConfig.pageSize['admin']);
 // 当前页
 const currentPage = ref(1);
 // 分页总数
@@ -161,7 +157,7 @@ const listArticleInfoList = async (page = 1) => {
   searchParams.value['page'] = page;
   return new Promise((rev, rej) => {
     // 获取文章信息列表数据
-    fetch(listArticleURL, {
+    fetch(appConfig.api.listArticleURL, {
       method: 'post',
       body: JSON.stringify(searchParams.value)
     })
@@ -189,14 +185,14 @@ const listArticleInfoList = async (page = 1) => {
  */
 const view = (articleId) => {
   // 获取文章数据
-  fetch(dataArticleURL, {
+  fetch(appConfig.api.dataArticleURL, {
     method: 'post',
     body: JSON.stringify({ articleId })
   })
     .then(res => res.json())
     .then(data => {
       if (data.code === 0) {
-        openTab(data.data.title, 'content-management/mo-article-view', { articleData: data.data });
+        openTab(data.data.title, 'content-management/MoArticleView', { articleData: data.data });
       }
       console.log(data.message);
     })
@@ -212,7 +208,7 @@ const view = (articleId) => {
  */
 const edit = (articleId) => {
   // 获取文章数据
-  fetch(dataArticleURL, {
+  fetch(appConfig.api.dataArticleURL, {
     method: 'post',
     body: JSON.stringify({ articleId })
   })
@@ -243,7 +239,7 @@ const remove = (articleId, title, index) => {
     }
   )
     .then(() => {
-      fetch(deleteArticleURL, {
+      fetch(appConfig.api.deleteArticleURL, {
         method: 'post',
         body: JSON.stringify({ articleId })
       })

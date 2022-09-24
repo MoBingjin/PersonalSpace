@@ -5,7 +5,7 @@
                 <div class="mo-article-title">{{ articleData.title }}</div>
                 <div class="mo-info">
                     <span><a href="/"><img class="mo-avatar" :src="avatarPath" alt="头像" /></a></span>
-                    <span>{{ user }}</span>
+                    <span>{{ appConfig.user }}</span>
                     <span>·</span>
                     <span>{{ formatDate(articleData.createTime) }}</span>
                 </div>
@@ -13,8 +13,7 @@
         </div>
         <div class="mo-content">
             <div>
-                <md-editor-v3 v-model="articleData.content" :previewOnly="true" style="height: 100%">
-                </md-editor-v3>
+                <md-editor-v3 v-model="articleData.content" :previewOnly="true" style="height: 100%" />
             </div>
         </div>
         <el-backtop />
@@ -23,24 +22,22 @@
 
 <script setup>
 
-import { ref } from 'vue';
+import { getCurrentInstance, ref  } from 'vue';
 import { useRoute } from 'vue-router';
-import { api, params } from 'mo-config';
-import { formatDate } from '../../common/js/utils.js';
+import appConfig from 'app-config';
+import { formatDate } from '@/utils/date-utils.mod.js';
 import MdEditorV3 from '@md-editor-v3.js';
 import '@md-editor-v3.css';
 
 
-const { dataArticleURL } = api;
-const { avatarImageURL, defaultCoverImageURL, rootPath, user } = params;
-
-
+// 获取真实路径函数
+const getActualPath = getCurrentInstance().appContext.config.globalProperties.$getActualPath;
 // 跳转路由对象
 const route = useRoute();
 
 
 // 头像路径
-const avatarPath = avatarImageURL || `${rootPath}src/home/picture/avatar.png`;
+const avatarPath = appConfig.avatarImageURL || getActualPath('static/img/avatar.png');
 // 文章数据
 const articleData = ref({});
 
@@ -51,7 +48,7 @@ const articleData = ref({});
  * @param {string} articleId 文章ID
  */
 const dataArticle = articleId => {
-    fetch(dataArticleURL, {
+    fetch(appConfig.api.dataArticleURL, {
         method: 'post',
         body: JSON.stringify({ articleId })
     })
@@ -59,7 +56,7 @@ const dataArticle = articleId => {
         .then(data => {
             if (data.code === 0) {
                 articleData.value = data.data;
-                setCover(data.data['cover'] || defaultCoverImageURL || `${rootPath}src/home/picture/default.png`);
+                setCover(data.data['cover'] || appConfig.defaultCoverImageURL || getActualPath('static/img/default_cover.png'));
             }
             console.log(data.message);
         })

@@ -29,10 +29,8 @@
 
 import { reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import { api } from 'mo-config';
+import appConfig from 'app-config';
 import localStorage from 'local-storage';
-
-const { checkUserURL } = api;
 
 
 // 回调对象
@@ -59,7 +57,7 @@ const formComponent = ref();
 const login = () => {
     formComponent.value.validate(valid => {
         if (valid) {
-            fetch(checkUserURL, {
+            fetch(appConfig.api.checkUserURL, {
                 method: 'post',
                 body: JSON.stringify(form)
             })

@@ -9,14 +9,14 @@
 
 <script setup>
 
-import { params } from 'mo-config';
+import { getCurrentInstance } from 'vue';
+import appConfig from 'app-config';
 
 
-const { _404ImageURL, rootPath } = params;
-
-
+// 获取真实路径函数
+const getActualPath = getCurrentInstance().appContext.config.globalProperties.$getActualPath;
 // 404图片路径
-const _404ImagePath = _404ImageURL || `${rootPath}src/common/picture/404.png`;
+const _404ImagePath = appConfig._404ImageURL || getActualPath('static/img/404.png');
 
 </script>
 
