@@ -17,9 +17,9 @@
 <script setup>
 
 import { ref } from 'vue';
-import MdEditorV3 from '@md-editor-v3.js';
-import '@md-editor-v3.css';
-import _ from '@lodash.js';
+import MdEditorV3 from 'md-editor-v3.js';
+import 'md-editor-v3.css';
+import _ from 'lodash.js';
 
 
 // 参数

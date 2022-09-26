@@ -10,11 +10,11 @@
 <script setup>
 
 import { getCurrentInstance } from 'vue';
-import appConfig from 'app-config';
+import appConfig from '@/app.config.mod.js';
 
 
 // 获取真实路径函数
-const getActualPath = getCurrentInstance().appContext.config.globalProperties.$getActualPath;
+const getActualPath = getCurrentInstance().proxy.$getActualPath;
 // 404图片路径
 const _404ImagePath = appConfig._404ImageURL || getActualPath('static/img/404.png');
 

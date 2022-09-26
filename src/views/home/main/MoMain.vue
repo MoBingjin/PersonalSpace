@@ -60,13 +60,13 @@
 
 import { getCurrentInstance, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import appConfig from 'app-config';
+import appConfig from '@/app.config.mod.js';
 import { formatDate } from '@/utils/date-utils.mod.js';
-import _ from '@lodash.js';
+import _ from 'lodash.js';
 
 
 // 获取真实路径函数
-const getActualPath = getCurrentInstance().appContext.config.globalProperties.$getActualPath;
+const getActualPath = getCurrentInstance().proxy.$getActualPath;
 // 路由实例对象
 const router = useRouter();
 

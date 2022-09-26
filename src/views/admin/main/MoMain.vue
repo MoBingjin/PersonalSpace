@@ -8,9 +8,8 @@
 <script setup>
 
 import { ref } from 'vue';
-import appConfig from 'app-config';
-import MdEditorV3 from '@md-editor-v3.js';
-import '@md-editor-v3.css';
+import MdEditorV3 from 'md-editor-v3.js';
+import 'md-editor-v3.css';
 
 
 // 文章数据
@@ -19,7 +18,7 @@ const articleData = ref('');
 
 // 初始化操作
 (() => {
-  fetch(appConfig.params.markdownStatic + 'README.md')
+  fetch('https://markdown.mobingc.ml/static/README.md')
     .then((response) => {
       return response.text();
     })

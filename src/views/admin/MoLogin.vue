@@ -29,8 +29,8 @@
 
 import { reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import appConfig from 'app-config';
-import localStorage from 'local-storage';
+import appConfig from '@/app.config.mod.js';
+import storage from '@/utils/storage.mod.js';
 
 
 // 回调对象
@@ -65,7 +65,7 @@ const login = () => {
                 .then(data => {
                     if (data.code === 0) {
                         ElMessage({ message: '登录成功！', type: 'success' });
-                        localStorage.setItem('token', data.data);
+                        storage.set('token', data.data);
                         emits('change-page', { componentName: 'mo-panel' });
                     } else {
                         ElMessage({ message: '用户名或密码有误！', type: 'error' });

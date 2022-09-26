@@ -5,7 +5,7 @@
 <script setup>
 
 import { markRaw, ref } from 'vue';
-import appConfig from 'app-config';
+import appConfig from '@/app.config.mod.js';
 
 
 // 当前子组件

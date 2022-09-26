@@ -32,9 +32,9 @@
 
 import { computed, reactive, ref } from 'vue';
 import { ElMessageBox } from 'element-plus';
-import appConfig from 'app-config';
-import MdEditorV3 from '@md-editor-v3.js';
-import '@md-editor-v3.css';
+import appConfig from '@/app.config.mod.js';
+import MdEditorV3 from 'md-editor-v3.js';
+import 'md-editor-v3.css';
 
 
 // 参数

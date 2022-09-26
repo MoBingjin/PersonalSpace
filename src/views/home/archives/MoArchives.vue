@@ -16,7 +16,7 @@
 <script setup>
 
 import { computed, reactive, ref } from 'vue';
-import appConfig from 'app-config';
+import appConfig from '@/app.config.mod.js';
 
 
 const { archivesArticleURL } = appConfig.api;

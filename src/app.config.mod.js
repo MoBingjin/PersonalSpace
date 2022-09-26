@@ -44,24 +44,7 @@ export default {
         'listArticleURL': 'https://mine.mobingc.ml/article/list',
         'dataArticleURL': 'https://mine.mobingc.ml/article/data',
         'deleteArticleURL': 'https://mine.mobingc.ml/article/delete',
-        'archivesArticleURL': 'https://mine.mobingc.ml/article/archives',
-        'listTagURL': '/tag/list/',
-        'infoTagURL': '/tag/info/',
-        'addTagURL': '/tag/add/',
-        'updateTagURL': '/tag/update/',
-        'removeTagURL': '/tag/remove/',
-        'removeBatchTagURL': '/tag/batch/remove/',
-        'statusTagURL': '/tag/status/'
-    },
-
-    params: {
-        'baseURL': 'http://localhost:8233/',
-        'markdownStatic': 'https://markdown.mobingc.ml/static/'
-    },
-
-    url: {
-        '@lodash.js': 'https://cdn.staticfile.org/lodash.js/4.17.21/lodash.js',
-        '@md-editor-v3.js': 'https://cdn.jsdelivr.net/npm/md-editor-v3@2.1.2/lib/md-editor-v3.umd.js',
-        '@md-editor-v3.css': 'https://cdn.jsdelivr.net/npm/md-editor-v3@2.1.2/lib/style.css'
+        'archivesArticleURL': 'https://mine.mobingc.ml/article/archives'
     }
+    
 };

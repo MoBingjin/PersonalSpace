@@ -16,7 +16,7 @@
 
 import { computed, reactive } from 'vue';
 import { useRoute } from 'vue-router';
-import appConfig from 'app-config';
+import appConfig from '@/app.config.mod.js';
 
 
 // 跳转路由对象
@@ -27,7 +27,7 @@ const logo = appConfig.title['home'];
 // 菜单项
 const menus = reactive([
     {
-        index: '/home',
+        index: '/main',
         icon: 'el-icon-s-home',
         name: '首页'
     },
@@ -49,7 +49,7 @@ const defaultActive = computed(() => {
             return route.path;
         }
     }
-    return '/home';
+    return '/main';
 });
 
 

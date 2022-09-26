@@ -55,14 +55,11 @@
 
 <script setup>
 
-import MoTagAddOrUpdate from './MoTagAddOrUpdate.vue';
-import { getCurrentInstance, reactive, ref } from 'vue';
+import MoTagAddOrUpdate from './components/MoTagAddOrUpdate.vue';
+import { reactive, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import appConfig from 'app-config';
-
-
-// axios实体对象
-const axiosInstance = getCurrentInstance().appContext.config.globalProperties.$axiosInstance;
+import tagService from '@/api/tag-service.mod.js';
+import appConfig from '@/app.config.mod.js';
 
 // 回调对象
 const emits = defineEmits(['menu-item']);
@@ -116,8 +113,8 @@ const remove = async (row) => {
     cancelButtonText: '取消'
   })
     .then(() => {
-      axiosInstance.delete(appConfig.api.removeTagURL + row.id)
-        .then(({ data: res }) => {
+      tagService.removeTag(row.id)
+        .then(res => {
           console.log(res.message);
           if (res.code === 0) {
             ElMessage({ message: `标签[${row.name}]删除成功!`, type: 'success' });
@@ -156,8 +153,8 @@ const removeBatch = async () => {
     })
       .then(() => {
         const ids = selectRows.map(row => row.id);
-        axiosInstance.delete(appConfig.api.removeBatchTagURL, { data: ids })
-          .then(({ data: res }) => {
+        tagService.removeBatchTag(ids)
+          .then(res => {
             console.log(res.message);
             if (res.code === 0) {
               ElMessage({ message: '标签批量删除成功!', type: 'success' });
@@ -187,8 +184,8 @@ const removeBatch = async () => {
  * 标签状态修改
  */
 const statusChange = (row) => {
-  axiosInstance.post(appConfig.api.statusTagURL + row.id)
-    .then(({ data: res }) => {
+  tagService.statusTag(row.id)
+    .then(res => {
       console.log(res.message);
       if (res.code !== 0 || res.data.status !== row.status) {
         row.status = !row.status;
@@ -212,8 +209,8 @@ const listTagInfoList = async (page = 1) => {
   currentPage.value = page;
   return new Promise((rev, rej) => {
     // 获取文章信息列表数据
-    axiosInstance.post(appConfig.api.listTagURL + `?limit=${currentPageSize.value}&page=${currentPage.value}`, form)
-      .then(({ data: res }) => {
+    tagService.listTag(form, currentPage.value, currentPageSize.value)
+      .then(res => {
         if (res.code === 0) {
           tagInfoList.splice(0, tagInfoList.length);
           res.data.list.map(item => tagInfoList.push(item));

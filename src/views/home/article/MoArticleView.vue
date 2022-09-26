@@ -24,14 +24,14 @@
 
 import { getCurrentInstance, ref  } from 'vue';
 import { useRoute } from 'vue-router';
-import appConfig from 'app-config';
+import appConfig from '@/app.config.mod.js';
 import { formatDate } from '@/utils/date-utils.mod.js';
-import MdEditorV3 from '@md-editor-v3.js';
-import '@md-editor-v3.css';
+import MdEditorV3 from 'md-editor-v3.js';
+import 'md-editor-v3.css';
 
 
 // 获取真实路径函数
-const getActualPath = getCurrentInstance().appContext.config.globalProperties.$getActualPath;
+const getActualPath = getCurrentInstance().proxy.$getActualPath;
 // 跳转路由对象
 const route = useRoute();
 

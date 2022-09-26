@@ -35,7 +35,7 @@ import MoHeadMenu from './MoHeadMenu.vue';
 import MoLeftMenu from './MoLeftMenu.vue';
 import { computed, markRaw, ref } from 'vue';
 import { ElMessageBox } from 'element-plus';
-import localStorage from 'local-storage';
+import storage from '@/utils/storage.mod.js';
 
 
 // 回调对象
@@ -71,7 +71,7 @@ const openTab = data => {
   const { title, componentName, params } = data;
   const tabs = editableTabs.value;
   childParams.value = params || {};
-  import(`./components/${componentName}.vue`).then((component) => {
+  import(`./${componentName}.vue`).then((component) => {
     if (!containsObject(tabs, { componentName })) {
       tabs.push({
         title,
@@ -141,7 +141,7 @@ const containsObject = (arr, obj) => {
  * 退出登录
  */
 const loginout = () => {
-  localStorage.removeItem('token');
+  storage.remove('token');
   emits('change-page', { componentName: 'MoLogin' });
 }
 
@@ -151,7 +151,7 @@ const loginout = () => {
   // 打开首页
   openTab({
     title: '首页',
-    componentName: 'MoMain',
+    componentName: 'main/MoMain',
   });
 })();
 

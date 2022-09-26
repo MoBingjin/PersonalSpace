@@ -19,8 +19,8 @@
             "element-plus": [
                 "public/plugins/unpkg.com/element-plus@2.0.1/dist/index.full.js"
             ],
-            "app-config": [
-                "src/app.config.mod.js"
+            "axios": [
+                "public/plugins/unpkg.com/axios@0.27.2/dist/axios.min.js"
             ]
         }
     }

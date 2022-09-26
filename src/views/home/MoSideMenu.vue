@@ -15,7 +15,7 @@
 <script setup>
 
 import { reactive } from 'vue';
-import appConfig from 'app-config';
+import appConfig from '@/app.config.mod.js';
 
 
 // 回调对象

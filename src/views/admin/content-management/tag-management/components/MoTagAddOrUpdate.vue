@@ -25,13 +25,9 @@
 
 <script setup>
 
-import { getCurrentInstance, reactive, ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import appConfig from 'app-config';
-
-
-// axios实体对象
-const axiosInstance = getCurrentInstance().appContext.config.globalProperties.$axiosInstance;
+import tagService from '@/api/tag-service.mod.js';
 
 // 回调对象
 const emits = defineEmits(['refresh']);
@@ -68,8 +64,8 @@ const init = (id) => {
     title.value = id ? '更新' : '添加';
     if (id) {
         // 获取标签数据
-        axiosInstance.get(appConfig.api.infoTagURL + id)
-            .then(({ data: res }) => {
+        tagService.infoTag(id)
+            .then(res => {
                 console.log(res.message);
                 if (res.code === 0) {
                     dataForm.id = res.data.id;
@@ -117,8 +113,8 @@ const confirm = () => {
  * 添加
  */
 const add = async () => {
-    axiosInstance.put(appConfig.api.addTagURL, dataForm)
-        .then(({ data: res }) => {
+    tagService.addTag(dataForm)
+        .then(res => {
             if (res.code === 0) {
                 ElMessage({ message: '添加成功！', type: 'success' });
                 refresh();
@@ -136,8 +132,8 @@ const add = async () => {
  * 更新
  */
 const update = async () => {
-    axiosInstance.post(appConfig.api.updateTagURL, dataForm)
-        .then(({ data: res }) => {
+    tagService.updateTag(dataForm)
+        .then(res => {
             if (res.code === 0) {
                 ElMessage({ message: '更新成功！', type: 'success' });
                 refresh();

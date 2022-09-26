@@ -75,7 +75,7 @@
 import { computed, reactive, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { formatDate, parse2Time } from '@/utils/date-utils.mod.js';
-import appConfig from 'app-config';
+import appConfig from '@/app.config.mod.js';
 
 
 // 回调对象
@@ -192,7 +192,7 @@ const view = (articleId) => {
     .then(res => res.json())
     .then(data => {
       if (data.code === 0) {
-        openTab(data.data.title, 'content-management/MoArticleView', { articleData: data.data });
+        openTab(data.data.title, 'content-management/article-management/MoArticleView', { articleData: data.data });
       }
       console.log(data.message);
     })

@@ -24,43 +24,18 @@
 import MoHeadMenu from './MoHeadMenu.vue';
 import MoSideMenu from './MoSideMenu.vue';
 import { computed, getCurrentInstance, ref, watch } from 'vue';
-import { createRouter, createWebHashHistory } from 'vue-router';
-import appConfig from 'app-config';
+import router from '@/router/router.mod.js';
+import appConfig from '@/app.config.mod.js';
+
+
+// 设置路由
+getCurrentInstance().appContext.app.use(router);
 
 
 // 导航栏class
 const headerClass = ref('mo-hidden');
 // 侧边栏打开状态
 const sideMenuStatus = ref(false);
-
-
-// 路由规则
-const routes = [
-  {
-    path: '/:home(home)?',
-    name: '首页',
-    component: () => import('./components/MoHome.vue')
-  },
-  {
-    path: '/archives',
-    name: '归档',
-    component: () => import('./components/MoArchives.vue')
-  },
-  {
-    path: '/about',
-    name: '关于',
-    component: () => import('./components/MoAbout.vue')
-  },
-  {
-    path: '/article/:articleId',
-    name: '文章',
-    component: () => import('./components/MoArticleView.vue')
-  },
-  {
-    path: '/:other',
-    component: () => import('../common/404.vue')
-  }
-];
 
 
 const homeAppClass = computed(() => sideMenuStatus.value ? 'mo-home-app open' : 'mo-home-app');
@@ -94,16 +69,12 @@ const handleScroll = event => {
     window['document'].body.style.opacity = '1';
   }, 0);
 
-  // 设置路由
-  const router = createRouter({ history: createWebHashHistory(), routes });
-  getCurrentInstance().appContext.app.use(router);
-
   // 路由监听
   watch(router.currentRoute, (route) => {
 
     // 404
     if (route.matched[0].path === '/:other') {
-      window['document'].getElementsByTagName('title')[0].innerHTML = appConfig.title['404'];
+      window['document'].getElementsByTagName('title')[0].innerHTML = appConfig.title['_404'];
       window['document'].getElementsByClassName('mo-side-menu-btn')[0].style['display'] = 'none';
       headerClass.value = 'mo-hidden';
       window.removeEventListener('scroll', handleScroll);
@@ -112,8 +83,8 @@ const handleScroll = event => {
 
     window['document'].getElementsByTagName('title')[0].innerHTML = `${route.matched[0].name} | ${appConfig.title['home']}`;
 
-    // 首页
-    if (['/', '/home'].includes(route.path)) {
+    // 主页
+    if (['/', '/main'].includes(route.path)) {
       headerClass.value = 'mo-header mo-header-init';
       window.addEventListener('scroll', handleScroll);
       return;
