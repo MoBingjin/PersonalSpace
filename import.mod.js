@@ -8,14 +8,14 @@ const tagComponents = {
     // Vue3
     vue: {
         js: [
-            'https://unpkg.com/vue@3/dist/vue.global.js'
+            'https://cdn.staticfile.org/vue/3.2.37/vue.global.js'
         ]
     },
 
     // Vue3 SFC 加载器
     vue3SfcLoader: {
         js: [
-            'https://unpkg.zhimg.com/vue3-sfc-loader@0.8.4/dist/vue3-sfc-loader.js'
+            'https://npm.elemecdn.com/vue3-sfc-loader@0.8.4/dist/vue3-sfc-loader.js'
         ]
     },
 
@@ -39,12 +39,12 @@ const tagComponents = {
     // EIconPicker图标组件库
     eIconPicker: {
         js: [
-            'https://fastly.jsdelivr.net/npm/e-icon-picker@2.0.7/lib/index.umd.prod.js',
-            'https://fastly.jsdelivr.net/npm/e-icon-picker@2.0.7/lib/symbol.js'
+            'https://npm.elemecdn.com/e-icon-picker@2.0.7/lib/index.umd.prod.js',
+            'https://npm.elemecdn.com/e-icon-picker@2.0.7/lib/symbol.js'
         ],
         css: [
             // EIconPicker图标样式
-            'https://fastly.jsdelivr.net/npm/e-icon-picker@2.0.7/lib/index.css',
+            'https://npm.elemecdn.com/e-icon-picker@2.0.7/lib/index.css',
             // FontAwesome图标样式
             'https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css',
             // ElementPlus图标样式
@@ -64,8 +64,8 @@ const esmComponents = {
     'lodash.js': 'https://cdn.staticfile.org/lodash.js/4.17.21/lodash.js',
 
     // MdEditor富文本插件
-    'md-editor-v3.js': 'https://cdn.jsdelivr.net/npm/md-editor-v3@2.1.2/lib/md-editor-v3.umd.js',
-    'md-editor-v3.css': 'https://cdn.jsdelivr.net/npm/md-editor-v3@2.1.2/lib/style.css'
+    'md-editor-v3.js': 'https://npm.elemecdn.com/md-editor-v3@2.1.2/lib/md-editor-v3.umd.js',
+    'md-editor-v3.css': 'https://npm.elemecdn.com/md-editor-v3@2.1.2/lib/style.css'
 
 }
 

@@ -61,6 +61,7 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import tagService from '@/api/tag-service.mod.js';
 import appConfig from '@/app.config.mod.js';
 
+
 // 回调对象
 const emits = defineEmits(['menu-item']);
 
@@ -86,28 +87,28 @@ const total = ref(0);
 /**
  * 搜索事件
  */
-const search = async () => {
-  await listTagInfoList();
+const search = () => {
+  listTagInfoList();
 };
 
 /**
  * 添加事件
  */
-const add = async () => {
+const add = () => {
   moTagAddOrUpdate.value.init();
 };
 
 /**
  * 更新事件
  */
-const update = async (id) => {
+const update = (id) => {
   moTagAddOrUpdate.value.init(id);
 };
 
 /**
  * 删除事件
  */
-const remove = async (row) => {
+const remove = (row) => {
   ElMessageBox.confirm(`确定要删除标签[${row.name}]吗?`, '系统提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消'
@@ -115,26 +116,17 @@ const remove = async (row) => {
     .then(() => {
       tagService.removeTag(row.id)
         .then(res => {
-          console.log(res.message);
-          if (res.code === 0) {
-            ElMessage({ message: `标签[${row.name}]删除成功!`, type: 'success' });
-            // 刷新列表
-            if (tagInfoList.length > 1) {
-              listTagInfoList(currentPage.value);
-            } else if (currentPage.value > 1 && Math.ceil(total.value / currentPageSize.value) > 1) {
-              listTagInfoList(currentPage - 1);
-            } else {
-              listTagInfoList();
-            }
+          ElMessage({ message: `标签[${row.name}]删除成功!`, type: 'success' });
+          // 刷新列表
+          if (tagInfoList.length > 1) {
+            listTagInfoList(currentPage.value);
+          } else if (currentPage.value > 1 && Math.ceil(total.value / currentPageSize.value) > 1) {
+            listTagInfoList(currentPage - 1);
           } else {
-            ElMessage({ message: `标签[${row.name}]删除失败!`, type: 'error' });
-            console.log(res.data.errorMessage);
+            listTagInfoList();
           }
         })
-        .catch(error => {
-          console.log(error);
-          ElMessage({ message: '标签删除异常!', type: 'error' });
-        });
+        .catch(error => { });
     })
     .catch(() => 'cancel');
 };
@@ -142,7 +134,7 @@ const remove = async (row) => {
 /**
  * 批量删除事件
  */
-const removeBatch = async () => {
+const removeBatch = () => {
   const selectRows = getSelectRows();
   if (selectRows.length === 0) {
     ElMessageBox.alert('请选择需要删除的标签!', '系统提示', { confirmButtonText: '确定' });
@@ -155,26 +147,17 @@ const removeBatch = async () => {
         const ids = selectRows.map(row => row.id);
         tagService.removeBatchTag(ids)
           .then(res => {
-            console.log(res.message);
-            if (res.code === 0) {
-              ElMessage({ message: '标签批量删除成功!', type: 'success' });
-              // 刷新列表
-              if (tagInfoList.length > ids.length) {
-                listTagInfoList(currentPage.value);
-              } else if (currentPage.value > 1 && Math.ceil(total.value / currentPageSize.value) > 1) {
-                listTagInfoList(currentPage - 1);
-              } else {
-                listTagInfoList();
-              }
+            ElMessage({ message: '标签批量删除成功!', type: 'success' });
+            // 刷新列表
+            if (tagInfoList.length > ids.length) {
+              listTagInfoList(currentPage.value);
+            } else if (currentPage.value > 1 && Math.ceil(total.value / currentPageSize.value) > 1) {
+              listTagInfoList(currentPage - 1);
             } else {
-              ElMessage({ message: '标签批量删除失败!', type: 'error' });
-              console.log(res.data.errorMessage);
+              listTagInfoList();
             }
           })
-          .catch(error => {
-            console.log(error);
-            ElMessage({ message: '标签批量删除异常!', type: 'error' });
-          });
+          .catch(error => { });
       })
       .catch(() => 'cancel');
   }
@@ -186,44 +169,31 @@ const removeBatch = async () => {
 const statusChange = (row) => {
   tagService.statusTag(row.id)
     .then(res => {
-      console.log(res.message);
-      if (res.code !== 0 || res.data.status !== row.status) {
+      if (res.data.status !== row.status) {
         row.status = !row.status;
         ElMessage({ message: '标签状态更新失败!', type: 'error' });
-        console.log(res.data.errorMessage);
       } else {
         ElMessage({ message: row.status ? '已启用' : '已禁用', type: row.status ? 'success' : 'error' });
       }
     })
     .catch(error => {
       row.status = !row.status;
-      console.log(error);
-      ElMessage({ message: '标签状态更新异常!', type: 'error' });
     });
 };
 
 /**
  * 获取标签列表
  */
-const listTagInfoList = async (page = 1) => {
+const listTagInfoList = (page = 1) => {
   currentPage.value = page;
-  return new Promise((rev, rej) => {
-    // 获取文章信息列表数据
-    tagService.listTag(form, currentPage.value, currentPageSize.value)
-      .then(res => {
-        if (res.code === 0) {
-          tagInfoList.splice(0, tagInfoList.length);
-          res.data.list.map(item => tagInfoList.push(item));
-          total.value = res.data.total;
-        }
-        console.log(res.message);
-        rev(res.message);
-      })
-      .catch(error => {
-        console.log(error);
-        rej(error);
-      });
-  });
+  // 获取文章信息列表数据
+  tagService.listTag(form, currentPage.value, currentPageSize.value)
+    .then(res => {
+      tagInfoList.splice(0, tagInfoList.length);
+      res.data.list.map(item => tagInfoList.push(item));
+      total.value = res.data.total;
+    })
+    .catch(error => { });
 };
 
 /**
@@ -249,11 +219,6 @@ const getSelectRows = () => {
 
 </script>
 
-<style>
-.mo-el-input .el-input__clear {
-  margin-top: 8px;
-}
-</style>
 <style scoped>
 .el-header {
   padding: 0;

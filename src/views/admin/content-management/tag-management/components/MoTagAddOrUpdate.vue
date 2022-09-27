@@ -66,7 +66,6 @@ const init = (id) => {
         // 获取标签数据
         tagService.infoTag(id)
             .then(res => {
-                console.log(res.message);
                 if (res.code === 0) {
                     dataForm.id = res.data.id;
                     dataForm.name = res.data.name;
@@ -77,9 +76,7 @@ const init = (id) => {
                     ElMessageBox.alert("获取标签信息失败!", '系统提示', { confirmButtonText: '确定' });
                 }
             })
-            .catch(error => {
-                console.log(error);
-            });
+            .catch(error => { });
     } else {
         dialogFormVisible.value = true;
     }
@@ -112,39 +109,27 @@ const confirm = () => {
 /**
  * 添加
  */
-const add = async () => {
+const add = () => {
     tagService.addTag(dataForm)
         .then(res => {
-            if (res.code === 0) {
-                ElMessage({ message: '添加成功！', type: 'success' });
-                refresh();
-                dialogFormVisible.value = false;
-            } else {
-                ElMessageBox.alert(`添加失败！${res.message}: ${res.data.errorMessage}`, '系统提示', { confirmButtonText: '确定' });
-            }
+            ElMessage({ message: '添加成功！', type: 'success' });
+            refresh();
+            dialogFormVisible.value = false;
         })
-        .catch(error => {
-            console.log(error);
-        });
+        .catch(error => { });
 };
 
 /**
  * 更新
  */
-const update = async () => {
+const update = () => {
     tagService.updateTag(dataForm)
         .then(res => {
-            if (res.code === 0) {
-                ElMessage({ message: '更新成功！', type: 'success' });
-                refresh();
-                dialogFormVisible.value = false;
-            } else {
-                ElMessageBox.alert(`更新失败！${res.message}: ${res.data.errorMessage}`, '系统提示', { confirmButtonText: '确定' });
-            }
+            ElMessage({ message: '更新成功！', type: 'success' });
+            refresh();
+            dialogFormVisible.value = false;
         })
-        .catch(error => {
-            console.log(error);
-        });
+        .catch(error => { });
 };
 
 /**
@@ -163,10 +148,7 @@ const clearDataForm = () => {
 const refresh = () => emits('refresh');
 
 // 暴露参数
-defineExpose({
-    dialogFormVisible,
-    init
-});
+defineExpose({ init });
 
 </script>
 

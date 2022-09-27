@@ -1,4 +1,4 @@
-import { ElMessage } from 'element-plus';
+import { ElMessageBox } from 'element-plus';
 import axios from 'axios.js';
 import storage from '@/utils/storage.mod.js';
 
@@ -39,24 +39,16 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         const res = response.data;
+        console.log(res.message);
         if (res.code !== 0) {
-            console.log(res.message);
-            ElMessage({
-                message: res.message || 'Error',
-                type: 'error',
-                duration: 5 * 1000
-            });
-            return Promise.reject(new Error(res.message || 'Error'));
+            ElMessageBox.alert(`${res.message}: ${res.data.errorMessage}`, '系统提示', { confirmButtonText: '确定', type: 'error' });
+            return Promise.reject(new Error(`${res.message}: ${res.data.errorMessage}` || 'Error'));
         }
         return res;
     },
     error => {
         console.log(error);
-        ElMessage({
-            message: error.message,
-            type: 'error',
-            duration: 5 * 1000
-        });
+        ElMessageBox.alert(error.message, '系统提示', { confirmButtonText: '确定', type: 'error' });
         return Promise.reject(error);
     }
 );
