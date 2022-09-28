@@ -1,7 +1,6 @@
 <template>
   <div>
-    <md-editor-v3 v-model="articleData" :previewOnly="true" style="height: 100%">
-    </md-editor-v3>
+    <md-editor-v3 v-model="articleData" :previewOnly="true" style="height: 100%" />
   </div>
 </template>
 

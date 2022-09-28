@@ -6,6 +6,7 @@
 
 import { markRaw, ref } from 'vue';
 import appConfig from '@/app.config.mod.js';
+import '@/style/theme.css';
 
 
 // 当前子组件
