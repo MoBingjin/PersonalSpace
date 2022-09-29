@@ -16,7 +16,7 @@ const service = axios.create({
 
 // 请求拦截器
 service.interceptors.request.use(
-    config => {
+    (config) => {
         const token = storage.get('token');
         if (token) {
             // 配置登录认证token
@@ -24,7 +24,7 @@ service.interceptors.request.use(
         }
         return config;
     },
-    error => {
+    (error) => {
         console.log(error);
         ElMessage({
             message: error.message,
@@ -37,16 +37,19 @@ service.interceptors.request.use(
 
 // 响应拦截器
 service.interceptors.response.use(
-    response => {
+    (response) => {
         const res = response.data;
         console.log(res.message);
         if (res.code !== 0) {
-            ElMessageBox.alert(`${res.message}: ${res.data.errorMessage}`, '系统提示', { confirmButtonText: '确定', type: 'error' });
+            ElMessageBox.alert(`${res.message}: ${res.data.errorMessage}`, '系统提示', {
+                confirmButtonText: '确定',
+                type: 'error'
+            });
             return Promise.reject(new Error(`${res.message}: ${res.data.errorMessage}` || 'Error'));
         }
         return res;
     },
-    error => {
+    (error) => {
         console.log(error);
         ElMessageBox.alert(error.message, '系统提示', { confirmButtonText: '确定', type: 'error' });
         return Promise.reject(error);

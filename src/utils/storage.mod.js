@@ -2,10 +2,9 @@
  * 封装storage
  */
 export default {
-
     /**
      * 存储数据
-     * 
+     *
      * @param {string} key 键
      * @param {any} value 值
      */
@@ -19,21 +18,21 @@ export default {
 
     /**
      * 获取键对应数据
-     * 
+     *
      * @param {string} key 键
      * @returns 值
      */
-    get: key => localStorage.getItem(key),
+    get: (key) => localStorage.getItem(key),
 
     /**
      * 获取键对应对象
-     * 
-     * @param {string} key 
+     *
+     * @param {string} key
      * @returns 值
      */
-    getObject: key => {
+    getObject: (key) => {
         const value = localStorage.getItem(key);
-        if (value && value != "undefined" && value != "null") {
+        if (value && value != 'undefined' && value != 'null') {
             return JSON.parse(value);
         }
         return value;
@@ -41,10 +40,9 @@ export default {
 
     /**
      * 删除键对应数据
-     * 
-     * @param {string} key 
-     * @returns 
+     *
+     * @param {string} key
+     * @returns
      */
-    remove: key => localStorage.removeItem(key)
-
+    remove: (key) => localStorage.removeItem(key)
 };

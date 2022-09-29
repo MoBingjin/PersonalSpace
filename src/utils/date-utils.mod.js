@@ -2,10 +2,9 @@
  * 时间工具
  */
 const dateUtils = {
-
     /**
      * 时间格式化
-     * 
+     *
      * @param {number|string} time 时间戳
      * @param {string} format 时间格式，默认yyyy-MM-dd HH:mm:ss
      * @param {number} offset 时区偏移，默认+8（北京时间）
@@ -20,7 +19,8 @@ const dateUtils = {
         const min = date.getUTCMinutes();
         const sec = date.getUTCSeconds();
         const preArr = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09'];
-        return format.replace(/yyyy/g, year)
+        return format
+            .replace(/yyyy/g, year)
             .replace(/MM/g, preArr[month] || month)
             .replace(/dd/g, preArr[day] || day)
             .replace(/HH/g, preArr[hour] || hour)
@@ -30,10 +30,10 @@ const dateUtils = {
 
     /**
      * 解析时间字符串为时间戳字符串
-     * 
+     *
      * @param {string} dateStr 时间字符串，格式：yyyy-MM-dd HH:mm:ss
      * @param {string} offset 时区偏移，默认+8（北京时间）
-     * @returns 
+     * @returns
      */
     parse2Time: (dateStr, offset = 8) => {
         const offsetDirection = offset < 0 ? '-' : '+';
@@ -42,8 +42,7 @@ const dateUtils = {
         const parseStr = `${dateStr}.000${offsetStr}:00`.replace(' ', 'T');
         return String(Date.parse(parseStr));
     }
-
-}
+};
 
 export default dateUtils;
 export const formatDate = dateUtils.formatDate;
