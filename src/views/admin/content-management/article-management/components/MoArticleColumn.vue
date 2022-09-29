@@ -43,7 +43,6 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
 import { formatDate } from '@/utils/date-utils.mod.js';
 
 // 参数
