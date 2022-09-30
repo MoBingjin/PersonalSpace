@@ -1,7 +1,7 @@
 <template>
     <div class="mo-head">
-        <span>个人空间</span>
-        <span title="退出" @click="emits('loginout', {})">
+        <span class="mo-head__logo">个人空间</span>
+        <span class="mo-head__logout" title="退出" @click="emits('loginout', {})">
             <e-icon icon-name="fa fa-sign-in" />
         </span>
     </div>
@@ -13,6 +13,19 @@ const emits = defineEmits(['loginout']);
 </script>
 
 <style scoped>
+@layer MoHeadMenu {
+    * {
+        --mo-head-logo-font-family: '宋体';
+        --mo-head-logo-font-size: 30px;
+        --mo-head-logo-color: #e6e6e6;
+        --mo-head-logo-border: 1px solid #f5f5f5;
+        --mo-head-logo-border-radius: 5px;
+        --mo-head-logout-font-size: 24px;
+        --mo-head-logout-color: #e6e6e6;
+        --mo-head-logout-color-hover: #ffd04b;
+    }
+}
+
 .mo-head {
     display: flex;
     align-items: center;
@@ -21,24 +34,24 @@ const emits = defineEmits(['loginout']);
     height: 100%;
 }
 
-.mo-head > span:first-child {
-    font-family: '宋体';
-    font-size: 30px;
+.mo-head__logo {
+    font-family: var(--mo-head-logo-font-family);
+    font-size: var(--mo-head-logo-font-size);
     margin-left: 30px;
     padding: 5px;
-    color: #e6e6e6;
-    border: 1px solid #f5f5f5;
-    border-radius: 5px;
+    color: var(--mo-head-logo-color);
+    border: var(--mo-head-logo-border);
+    border-radius: var(--mo-head-logo-border-radius);
 }
 
-.mo-head > span:last-child {
-    font-size: 24px;
+.mo-head__logout {
+    font-size: var(--mo-head-logout-font-size);
     margin-right: 20px;
-    color: #e6e6e6;
+    color: var(--mo-head-logout-color);
 }
 
-.mo-head > span:last-child:hover {
+.mo-head__logout:hover {
     cursor: pointer;
-    color: #ffd04b;
+    color: var(--mo-head-logout-color-hover);
 }
 </style>

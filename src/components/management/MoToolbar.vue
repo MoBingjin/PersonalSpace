@@ -1,6 +1,6 @@
 <template>
     <div class="mo-toolbar">
-        <el-form class="mo-toolbar__form" :model="model" :inline="true">
+        <el-form class="mo-toolbar__form" :model="model" :inline="true" @submit.native.prevent>
             <el-form-item class="mo-toolbar__item">
                 <el-form-item class="mo-toolbar__sub-item">
                     <el-button type="primary" @click="emits('add')">添加</el-button>
@@ -19,6 +19,7 @@
                         clearable
                         :maxlength="inputMaxlength"
                         size="small"
+                        @keyup.enter.native="emits('search', model)"
                     >
                     </el-input>
                 </el-form-item>

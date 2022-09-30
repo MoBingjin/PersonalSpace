@@ -1,25 +1,32 @@
 <template>
-    <div class="login-wrap">
-        <div class="mo-login">
-            <div class="mo-title">后台管理</div>
-            <el-form :model="form" :rules="rules" ref="formComponent" label-width="0px" class="mo-content">
-                <el-form-item prop="userName">
-                    <el-input v-model="form.userName" placeholder="用户名">
+    <div class="mo-login">
+        <div class="mo-login__background"></div>
+        <div class="mo-login__panel">
+            <div class="mo-login__title">后台管理</div>
+            <el-form class="mo-login__form" :model="form" :rules="rules" ref="formComponent" label-width="0px">
+                <el-form-item class="mo-login__item" prop="userName">
+                    <el-input class="mo-login__input" v-model="form.userName" placeholder="用户名">
                         <template #prepend>
                             <e-icon icon-name="fa fa-user" />
                         </template>
                     </el-input>
                 </el-form-item>
-                <el-form-item prop="password">
-                    <el-input type="password" placeholder="密码" v-model="form.password" @keyup.enter.native="login()">
+                <el-form-item class="mo-login__item" prop="password">
+                    <el-input
+                        class="mo-login__input"
+                        type="password"
+                        placeholder="密码"
+                        v-model="form.password"
+                        @keyup.enter.native="login()"
+                    >
                         <template #prepend>
                             <e-icon icon-name="fa fa-lock" />
                         </template>
                     </el-input>
                 </el-form-item>
-                <div class="mo-login-btn">
-                    <el-button type="primary" @click="login()">登录</el-button>
-                </div>
+                <el-form-item class="mo-login__item--last">
+                    <el-button class="mo-login__button" type="primary" @click="login()">登录</el-button>
+                </el-form-item>
             </el-form>
         </div>
     </div>
@@ -74,46 +81,129 @@ const login = () => {
 </script>
 
 <style scoped>
-.login-wrap {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    background-color: #f3f3f4;
+@layer MoLogin {
+    * {
+        --mo-login-background-image: url('https://tva1.sinaimg.cn/large/007q9ZDily1h3mv7fyyjlj32yo1o0hdu.jpg');
+        --mo-login-background-after-background: #f6f6f6b4;
+        --mo-login-panel-background: #ffffff80;
+        --mo-login-panel-box-shadow: 0 0 10px #000;
+        --mo-login-title-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        --mo-login-title-font-size: 30px;
+        --mo-login-title-color: #000;
+    }
+
+    .mo-login {
+        height: 100vh;
+    }
+
+    .mo-login__background {
+        position: fixed;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-image: var(--mo-login-background-image);
+        background-repeat: no-repeat;
+        background-position: -10px -80px;
+        background-size: cover;
+    }
+
+    .mo-login__background:after {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        content: '';
+        background: var(--mo-login-background-after-background);
+    }
+
+    .mo-login__panel {
+        position: relative;
+        top: 15vh;
+        overflow: hidden;
+        margin: 0 auto;
+        border-radius: 5px;
+        background: var(--mo-login-panel-background);
+        box-shadow: var(--mo-login-panel-box-shadow);
+    }
+
+    .mo-login__title {
+        font-family: var(--mo-login-title-font-family);
+        font-size: var(--mo-login-title-font-size);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--mo-login-title-color);
+        border-bottom: 1px solid #ddd;
+    }
+
+    @media screen and (max-width: 1500px) {
+        .mo-login__panel {
+            width: 360px;
+            height: 270px;
+        }
+
+        .mo-login__title {
+            height: 56px;
+        }
+    }
+
+    @media screen and (min-width: 1501px) {
+        .mo-login__panel {
+            width: 24vw;
+            height: 18vw;
+        }
+
+        .mo-login__title {
+            height: 3.67vw;
+        }
+    }
 }
 
-.mo-login {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    overflow: hidden;
-    width: 350px;
-    margin: -190px 0 0 -175px;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 0 10px #000;
+.mo-login__item--last {
+    margin-bottom: 0;
 }
 
-.mo-title {
-    font-size: 30px;
-    line-height: 50px;
-
+.mo-login__button {
     width: 100%;
     text-align: center;
-    color: #000;
-    border-bottom: 1px solid #ddd;
 }
 
-.mo-content {
-    padding: 30px 30px;
+@media screen and (max-width: 1500px) {
+    .mo-login__form {
+        padding: 28.8px;
+    }
+
+    .mo-login__item {
+        margin-bottom: 20.1px;
+    }
+
+    .mo-login__input {
+        height: 36px;
+    }
+
+    .mo-login__button {
+        height: 36px;
+    }
 }
 
-.mo-login-btn {
-    text-align: center;
-}
+@media screen and (min-width: 1501px) {
+    .mo-login__form {
+        padding: 1.92vw;
+    }
 
-.mo-login-btn button {
-    width: 100%;
-    height: 36px;
-    margin-bottom: 10px;
+    .mo-login__item {
+        margin-bottom: 1.34vw;
+    }
+
+    .mo-login__input {
+        height: 2.4vw;
+    }
+
+    .mo-login__button {
+        height: 2.4vw;
+    }
 }
 </style>
