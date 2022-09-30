@@ -59,10 +59,10 @@ const emits = defineEmits(['add', 'remove-batch', 'search']);
     * {
         --mo-toolbar-input-width: 300px;
     }
-}
 
-.mo-toolbar {
-    height: 100%;
+    .mo-toolbar {
+        height: 100%;
+    }
 }
 
 .mo-toolbar__form {

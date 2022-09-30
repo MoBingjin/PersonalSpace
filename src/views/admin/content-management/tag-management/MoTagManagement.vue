@@ -2,7 +2,7 @@
     <div class="mo-tag-management">
         <mo-management
             :model="model"
-            @add="handleAdd"
+            @add="handleOpenAddOrUpdateDialog()"
             @remove-batch="handleRemoveBatch"
             @search="handleSearch"
             @change-page="refresh"
@@ -25,14 +25,16 @@
                     </el-table-column>
                     <el-table-column label="操作" :align="'center'" width="140">
                         <template #default="scope">
-                            <el-button type="primary" size="small" @click="handleUpdate(scope.row.id)">更新</el-button>
+                            <el-button type="primary" size="small" @click="handleOpenAddOrUpdateDialog(scope.row.id)"
+                                >更新</el-button
+                            >
                             <el-button type="danger" size="small" @click="handleRemove(scope.row.id)">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
             </template>
             <template #dialog>
-                <mo-tag-add-or-update ref="tagAddOrUpdateComponent" @confirm="addOrUpdate" />
+                <mo-tag-add-or-update ref="tagAddOrUpdateComponent" @confirm="handleAddOrUpdate" />
             </template>
         </mo-management>
     </div>
@@ -55,12 +57,11 @@ const tagAddOrUpdateComponent = ref();
 const {
     model,
     listData,
+    handleOpenAddOrUpdateDialog,
     handleSearch,
-    handleAdd,
-    handleUpdate,
+    handleAddOrUpdate,
     handleRemove,
     handleRemoveBatch,
-    addOrUpdate,
     refresh
 } = managementViewUtils.create({
     service: tagService,
@@ -104,6 +105,7 @@ const statusChange = (row) => {
         --mo-tag-management-status-off-color: #ff4949;
     }
 }
+
 .mo-tag-management__status {
     --el-switch-on-color: var(--mo-tag-management-status-on-color);
     --el-switch-off-color: var(--mo-tag-management-status-off-color);

@@ -51,6 +51,13 @@ const managementViewUtils = {
         }
 
         /**
+         * 打开添加或更新对话框事件
+         *
+         * @param {string} id ID
+         */
+        const handleOpenAddOrUpdateDialog = (id) => addOrUpdateComponent.value.init(id);
+
+        /**
          * 搜索事件
          *
          * @param {any} params 查询参数
@@ -61,16 +68,15 @@ const managementViewUtils = {
         };
 
         /**
-         * 添加事件
-         */
-        const handleAdd = () => addOrUpdateComponent.value.init();
-
-        /**
-         * 更新事件
+         * 添加或更新事件
          *
-         * @param {string} id ID
+         * @param {any} data 添加或更新数据
+         * @param {Function} callback 回调函数
          */
-        const handleUpdate = (id) => addOrUpdateComponent.value.init(id);
+        const handleAddOrUpdate = async (data, callback) => {
+            await addOrUpdate(data);
+            callback();
+        };
 
         /**
          * 删除事件
@@ -113,7 +119,7 @@ const managementViewUtils = {
          *
          * @param {any} data 添加或更新数据
          */
-        const addOrUpdate = async (data, callback) => {
+        const addOrUpdate = async (data) => {
             const action = !data.id ? service.add : service.update;
             await action(data)
                 .then((res) => {
@@ -123,8 +129,6 @@ const managementViewUtils = {
                     });
                     // 刷新列表
                     refresh({ page: 1 });
-                    // 回调
-                    callback();
                 })
                 .catch((error) => {});
         };
@@ -208,17 +212,17 @@ const managementViewUtils = {
             listData,
             // 获取当前选择行集
             getSelectRows,
+            // 打开添加或更新对话框事件
+            handleOpenAddOrUpdateDialog,
             // 搜索事件
             handleSearch,
-            // 添加事件
-            handleAdd,
-            // 更新事件
-            handleUpdate,
+            // 添加或更新事件
+            handleAddOrUpdate,
             // 删除事件
             handleRemove,
             // 批量删除事件
             handleRemoveBatch,
-            // 添加或更新
+            // 添加或删除
             addOrUpdate,
             // 删除
             remove,

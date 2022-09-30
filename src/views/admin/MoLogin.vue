@@ -26,16 +26,13 @@
 </template>
 
 <script setup>
-
 import { reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import appConfig from '@/app.config.mod.js';
 import storage from '@/utils/storage.mod.js';
 
-
 // 回调对象
 const emits = defineEmits(['change-page']);
-
 
 // 表单对象
 const form = reactive({
@@ -50,19 +47,18 @@ const rules = reactive({
 // 表单组件
 const formComponent = ref();
 
-
 /**
  * 登录
  */
 const login = () => {
-    formComponent.value.validate(valid => {
+    formComponent.value.validate((valid) => {
         if (valid) {
             fetch(appConfig.api.checkUserURL, {
                 method: 'post',
                 body: JSON.stringify(form)
             })
-                .then(res => res.json())
-                .then(data => {
+                .then((res) => res.json())
+                .then((data) => {
                     if (data.code === 0) {
                         ElMessage({ message: '登录成功！', type: 'success' });
                         storage.set('token', data.data);
@@ -74,8 +70,7 @@ const login = () => {
                 .catch(() => ElMessage({ message: '登录异常！', type: 'error' }));
         }
     });
-}
-
+};
 </script>
 
 <style scoped>
@@ -88,21 +83,22 @@ const login = () => {
 
 .mo-login {
     position: absolute;
-    left: 50%;
     top: 40%;
+    left: 50%;
+    overflow: hidden;
     width: 350px;
     margin: -190px 0 0 -175px;
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.5);
-    overflow: hidden;
-    box-shadow: 0px 0px 10px #000;
+    box-shadow: 0 0 10px #000;
 }
 
 .mo-title {
-    width: 100%;
-    line-height: 50px;
-    text-align: center;
     font-size: 30px;
+    line-height: 50px;
+
+    width: 100%;
+    text-align: center;
     color: #000;
     border-bottom: 1px solid #ddd;
 }
