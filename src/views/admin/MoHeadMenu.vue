@@ -24,34 +24,34 @@ const emits = defineEmits(['loginout']);
         --mo-head-logout-color: #e6e6e6;
         --mo-head-logout-color-hover: #ffd04b;
     }
-}
 
-.mo-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    height: 100%;
-}
+    .mo-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+    }
 
-.mo-head__logo {
-    font-family: var(--mo-head-logo-font-family);
-    font-size: var(--mo-head-logo-font-size);
-    margin-left: 30px;
-    padding: 5px;
-    color: var(--mo-head-logo-color);
-    border: var(--mo-head-logo-border);
-    border-radius: var(--mo-head-logo-border-radius);
-}
+    .mo-head__logo {
+        font-family: var(--mo-head-logo-font-family);
+        font-size: var(--mo-head-logo-font-size);
+        margin-left: 30px;
+        padding: 5px;
+        color: var(--mo-head-logo-color);
+        border: var(--mo-head-logo-border);
+        border-radius: var(--mo-head-logo-border-radius);
+    }
 
-.mo-head__logout {
-    font-size: var(--mo-head-logout-font-size);
-    margin-right: 20px;
-    color: var(--mo-head-logout-color);
-}
+    .mo-head__logout {
+        font-size: var(--mo-head-logout-font-size);
+        margin-right: 20px;
+        color: var(--mo-head-logout-color);
+    }
 
-.mo-head__logout:hover {
-    cursor: pointer;
-    color: var(--mo-head-logout-color-hover);
+    .mo-head__logout:hover {
+        cursor: pointer;
+        color: var(--mo-head-logout-color-hover);
+    }
 }
 </style>

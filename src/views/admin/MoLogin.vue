@@ -3,7 +3,14 @@
         <div class="mo-login__background"></div>
         <div class="mo-login__panel">
             <div class="mo-login__title">后台管理</div>
-            <el-form class="mo-login__form" :model="form" :rules="rules" ref="formComponent" label-width="0px">
+            <el-form
+                class="mo-login__form"
+                :model="form"
+                :rules="rules"
+                ref="formComponent"
+                label-width="0px"
+                @submit.native.prevent
+            >
                 <el-form-item class="mo-login__item" prop="userName">
                     <el-input class="mo-login__input" v-model="form.userName" placeholder="用户名">
                         <template #prepend>
@@ -17,7 +24,7 @@
                         type="password"
                         placeholder="密码"
                         v-model="form.password"
-                        @keyup.enter.native="login()"
+                        @keyup.enter.native="handleLogin"
                     >
                         <template #prepend>
                             <e-icon icon-name="fa fa-lock" />
@@ -25,7 +32,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item class="mo-login__item--last">
-                    <el-button class="mo-login__button" type="primary" @click="login()">登录</el-button>
+                    <el-button class="mo-login__button" type="primary" @click="handleLogin">登录</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -35,7 +42,7 @@
 <script setup>
 import { reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import appConfig from '@/app.config.mod.js';
+import userService from '@/api/user-service.mod.js';
 import storage from '@/utils/storage.mod.js';
 
 // 回调对象
@@ -57,24 +64,17 @@ const formComponent = ref();
 /**
  * 登录
  */
-const login = () => {
+const handleLogin = () => {
     formComponent.value.validate((valid) => {
         if (valid) {
-            fetch(appConfig.api.checkUserURL, {
-                method: 'post',
-                body: JSON.stringify(form)
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.code === 0) {
-                        ElMessage({ message: '登录成功！', type: 'success' });
-                        storage.set('token', data.data);
-                        emits('change-page', { componentName: 'mo-panel' });
-                    } else {
-                        ElMessage({ message: '用户名或密码有误！', type: 'error' });
-                    }
+            userService
+                .login(form)
+                .then((res) => {
+                    ElMessage({ message: '登录成功！', type: 'success' });
+                    storage.set('token', res.data.token);
+                    emits('change-page', { componentName: 'MoPanel' });
                 })
-                .catch(() => ElMessage({ message: '登录异常！', type: 'error' }));
+                .catch((error) => {});
         }
     });
 };
@@ -83,11 +83,12 @@ const login = () => {
 <style scoped>
 @layer MoLogin {
     * {
-        --mo-login-background-image: url('https://tva1.sinaimg.cn/large/007q9ZDily1h3mv7fyyjlj32yo1o0hdu.jpg');
+        --mo-login-background-image: url('../../../public/img/background.png');
         --mo-login-background-after-background: #f6f6f6b4;
         --mo-login-panel-background: #ffffff80;
         --mo-login-panel-box-shadow: 0 0 10px #000;
-        --mo-login-title-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        --mo-login-title-font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+            '微软雅黑', Arial, sans-serif;
         --mo-login-title-font-size: 30px;
         --mo-login-title-color: #000;
     }
@@ -162,47 +163,47 @@ const login = () => {
     }
 }
 
-.mo-login__item--last {
+.mo-login__item--last.el-form-item {
     margin-bottom: 0;
 }
 
-.mo-login__button {
+.mo-login__button.el-button {
     width: 100%;
     text-align: center;
 }
 
 @media screen and (max-width: 1500px) {
-    .mo-login__form {
+    .mo-login__form.el-form {
         padding: 28.8px;
     }
 
-    .mo-login__item {
+    .mo-login__item.el-form-item {
         margin-bottom: 20.1px;
     }
 
-    .mo-login__input {
+    .mo-login__input.el-input {
         height: 36px;
     }
 
-    .mo-login__button {
+    .mo-login__button.el-button {
         height: 36px;
     }
 }
 
 @media screen and (min-width: 1501px) {
-    .mo-login__form {
+    .mo-login__form.el-form {
         padding: 1.92vw;
     }
 
-    .mo-login__item {
+    .mo-login__item.el-form-item {
         margin-bottom: 1.34vw;
     }
 
-    .mo-login__input {
+    .mo-login__input.el-input {
         height: 2.4vw;
     }
 
-    .mo-login__button {
+    .mo-login__button.el-button {
         height: 2.4vw;
     }
 }

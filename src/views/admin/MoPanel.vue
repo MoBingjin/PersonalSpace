@@ -1,41 +1,54 @@
 <template>
-    <el-container>
-        <!-- 导航 -->
-        <el-header>
-            <mo-head-menu @loginout="loginout"></mo-head-menu>
-        </el-header>
-        <el-container>
-            <!-- 菜单 -->
-            <el-aside :width="asideWidth">
-                <div>
-                    <span>
-                        <mo-left-menu :isCollapse="isCollapse" @menu-item="openTab"></mo-left-menu>
-                    </span>
-                    <span class="mo-divider">
-                        <span :title="dividerTitle" v-html="dividerIcon" @click="isCollapse = !isCollapse"></span>
-                    </span>
-                </div>
-            </el-aside>
-            <!-- 显示主体 -->
-            <el-main>
-                <el-tabs v-model="editableTabsValue" type="border-card" closable @tab-remove="removeTab">
-                    <el-tab-pane
-                        v-for="item in editableTabs"
-                        :key="item.componentName"
-                        :label="item.title"
-                        :name="item.componentName"
+    <div class="mo-panel">
+        <el-container class="mo-panel__container">
+            <!-- 导航 -->
+            <el-header class="mo-panel__header">
+                <mo-head-menu @loginout="loginout" />
+            </el-header>
+            <el-container>
+                <!-- 菜单 -->
+                <el-aside class="mo-panel__aside" :width="asideWidth">
+                    <div class="mo-panel__left-menu">
+                        <span class="mo-panel__menu-body">
+                            <mo-left-menu :isCollapse="isCollapse" @menu-item="openTab" />
+                        </span>
+                        <span class="mo-panel__menu-divider">
+                            <span
+                                class="mo-panel__divider-icon"
+                                :title="dividerTitle"
+                                v-html="dividerIcon"
+                                @click="isCollapse = !isCollapse"
+                            ></span>
+                        </span>
+                    </div>
+                </el-aside>
+                <!-- 显示主体 -->
+                <el-main class="mo-panel__main">
+                    <el-tabs
+                        class="mo-panel__tabs"
+                        v-model="editableTabsValue"
+                        type="border-card"
+                        closable
+                        @tab-remove="removeTab"
                     >
-                        <component
-                            :is="item.component"
-                            ref="childComponent"
-                            @menu-item="openTab"
-                            :params="childParams"
-                        ></component>
-                    </el-tab-pane>
-                </el-tabs>
-            </el-main>
+                        <el-tab-pane
+                            v-for="item in editableTabs"
+                            :key="item.componentName"
+                            :label="item.title"
+                            :name="item.componentName"
+                        >
+                            <component
+                                :is="item.component"
+                                ref="childComponent"
+                                @menu-item="openTab"
+                                :params="childParams"
+                            ></component>
+                        </el-tab-pane>
+                    </el-tabs>
+                </el-main>
+            </el-container>
         </el-container>
-    </el-container>
+    </div>
 </template>
 
 <script setup>
@@ -60,7 +73,7 @@ const childComponent = ref();
 const childParams = ref({});
 
 // 侧边栏宽度
-const asideWidth = computed(() => (isCollapse.value ? '73px' : '200px'));
+const asideWidth = computed(() => (isCollapse.value ? '73px' : '209px'));
 // 侧边分界线标题
 const dividerTitle = computed(() => (isCollapse.value ? '展开' : '收起'));
 // 侧边分界线显示图标
@@ -161,50 +174,71 @@ const loginout = () => {
 }
 </style>
 <style scoped>
-.el-header {
-    height: 60px;
+@layer MoPanel {
+    * {
+        --mo-panel-header-height: 60px;
+        --mo-panel-header-border-bottom: 1px solid #ffd04b;
+        --mo-panel-header-background-color: #505860;
+        --mo-panel-aside-background-color: #545c64;
+        --mo-panel-main-padding: 5px;
+        --mo-panel-main-background-color: #596172;
+        --mo-panel-tabs-border-radius: 5px;
+    }
+
+    .mo-panel__left-menu {
+        display: flex;
+        flex-flow: row;
+        height: 100%;
+    }
+
+    .mo-panel__menu-body {
+        flex: 1;
+    }
+
+    .mo-panel__menu-divider {
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        width: 9px;
+        height: 100%;
+        background-color: #bebebe;
+    }
+
+    .mo-panel__divider-icon {
+        cursor: pointer;
+        user-select: none;
+    }
+}
+
+.mo-panel__container.el-container {
+    height: 100vh;
+}
+
+.mo-panel__header.el-header {
+    height: var(--mo-panel-header-height);
     padding: 0;
-    border-bottom: 1px solid #ffd04b;
-    background-color: #505860;
+    border-bottom: var(--mo-panel-header-border-bottom);
+    background-color: var(--mo-panel-header-background-color);
 }
 
-.el-aside {
-    background-color: #545c64;
+.mo-panel__aside.el-aside {
+    background-color: var(--mo-panel-aside-background-color);
 }
 
-.el-main {
-    padding: 5px;
-    background-color: #596172;
+.mo-panel__main.el-main {
+    padding: var(--mo-panel-main-padding);
+    background-color: var(--mo-panel-main-background-color);
 }
 
-.el-tabs {
+.mo-panel__tabs.el-tabs {
+    display: flex;
+    flex-flow: column;
     height: 99.5%;
-    border-radius: 5px;
+    border-radius: var(--mo-panel-tabs-border-radius);
 }
 
-.el-aside > div {
-    display: flex;
-    justify-content: space-between;
-
-    height: calc(100vh - 60px);
-}
-
-.el-aside > div > span:first-child {
-    width: 191px;
-}
-
-.mo-divider {
-    z-index: 999;
-    display: flex;
-    align-items: center;
-
-    width: 9px;
-    height: 100%;
-    background-color: #bebebe;
-}
-
-.mo-divider > span {
-    cursor: pointer;
-    user-select: none;
+.mo-panel__tabs.el-tabs >>> .el-tabs__content {
+    flex: 1;
+    box-sizing: border-box;
 }
 </style>

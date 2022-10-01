@@ -21,7 +21,7 @@ const changePage = (data) =>
 // 初始化操作
 (() => {
     window['document'].getElementsByTagName('title')[0].innerHTML = appConfig.title['admin'];
-    changePage({ componentName: 'MoLogin' });
+    changePage({ componentName: 'MoPanel' });
     // const token = storage.get('token');
     // if (token) {
     //   fetch(appConfig.api.checkUserURL, {

@@ -66,26 +66,26 @@ const emits = defineEmits(['add', 'remove-batch', 'search']);
     }
 }
 
-.mo-toolbar__form {
+.mo-toolbar__form.el-form {
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 100%;
 }
 
-.mo-toolbar__form .mo-toolbar__item {
+.mo-toolbar__item.el-form-item {
     margin: 0;
 }
 
-.mo-toolbar__form .mo-toolbar__sub-item {
+.mo-toolbar__sub-item.el-form-item {
     margin-right: 10px;
 }
 
-.mo-toolbar__item .mo-toolbar__sub-item--last {
+.mo-toolbar__sub-item--last.el-form-item {
     margin: 0;
 }
 
-.mo-toolbar__input {
+.mo-toolbar__input.el-input {
     width: var(--mo-toolbar-input-width);
 }
 </style>

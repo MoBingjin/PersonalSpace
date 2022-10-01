@@ -115,7 +115,7 @@ defineExpose({ init });
     padding-bottom: 5px;
 }
 
-.mo-tag-dialog__status {
+.mo-tag-dialog__status.el-switch {
     --el-switch-on-color: var(--mo-tag-dialog-status-on-color);
     --el-switch-off-color: var(--mo-tag-dialog-status-off-color);
 }

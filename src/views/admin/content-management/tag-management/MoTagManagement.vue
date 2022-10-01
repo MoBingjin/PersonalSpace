@@ -106,7 +106,7 @@ const statusChange = (row) => {
     }
 }
 
-.mo-tag-management__status {
+.mo-tag-management__status.el-switch {
     --el-switch-on-color: var(--mo-tag-management-status-on-color);
     --el-switch-off-color: var(--mo-tag-management-status-off-color);
 }

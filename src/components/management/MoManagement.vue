@@ -59,13 +59,13 @@ const emits = defineEmits(['add', 'remove-batch', 'search', 'change-page']);
     }
 }
 
-.mo-management__header {
+.mo-management__header.el-header {
     height: var(--mo-management-header-height);
     padding: 10px 5px;
 }
 
-.mo-management__main,
-.mo-management__footer {
+.mo-management__main.el-main,
+.mo-management__footer.el-footer {
     padding: 0;
 }
 </style>

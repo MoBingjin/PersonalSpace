@@ -9,7 +9,7 @@ export default {
      * @param {any} value 值
      */
     set: (key, value) => {
-        if (value instanceof string) {
+        if (typeof value === 'string') {
             localStorage.setItem(key, value);
         } else {
             localStorage.setItem(key, JSON.stringify(value));

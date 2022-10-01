@@ -39,12 +39,28 @@
     --mo-head-logout-color: #e6e6e6;
     --mo-head-logout-color-hover: #ffd04b;
 
-    /* 登录 */
+    /* 后台管理登录 */
     --mo-login-background-image: url("https://tva1.sinaimg.cn/large/007q9ZDily1h3mv7fyyjlj32yo1o0hdu.jpg");
     --mo-login-background-after-background: #f6f6f6b4;
     --mo-login-panel-background: #ffffff80;
     --mo-login-panel-box-shadow: 0 0 10px #000;
-    --mo-login-title-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    --mo-login-title-font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+        "微软雅黑", Arial, sans-serif;
     --mo-login-title-font-size: 30px;
     --mo-login-title-color: #000;
+
+    /* 后台管理左侧边菜单 */
+    --mo-left-menu-background-color: #545c64;
+    --mo-left-menu-background-color-hover: #434a50;
+    --mo-left-menu-text-color: #fff;
+    --mo-left-menu-active-text-color: #ffd04b;
+
+    /* 后台管理面板 */
+    --mo-panel-header-height: 60px;
+    --mo-panel-header-border-bottom: 1px solid #ffd04b;
+    --mo-panel-header-background-color: #505860;
+    --mo-panel-aside-background-color: #545c64;
+    --mo-panel-main-padding: 5px;
+    --mo-panel-main-background-color: #596172;
+    --mo-panel-tabs-border-radius: 5px;
 }
