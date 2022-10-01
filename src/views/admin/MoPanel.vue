@@ -196,11 +196,9 @@ const loginout = () => {
     }
 
     .mo-panel__menu-divider {
-        z-index: 999;
         display: flex;
         align-items: center;
         width: 9px;
-        height: 100%;
         background-color: #bebebe;
     }
 
@@ -239,6 +237,5 @@ const loginout = () => {
 
 .mo-panel__tabs.el-tabs >>> .el-tabs__content {
     flex: 1;
-    box-sizing: border-box;
 }
 </style>
