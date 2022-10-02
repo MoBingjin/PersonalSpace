@@ -8,7 +8,7 @@
             @change-page="refresh"
         >
             <template #list>
-                <el-table ref="tableComponent" :data="listData" style="width: 100%" height="68vh">
+                <el-table class="mo-tag-management__list" ref="tableComponent" :data="listData">
                     <el-table-column type="selection" width="55" />
                     <el-table-column label="#" type="index" width="50" />
                     <el-table-column label="名称" property="name" width="120" />
@@ -104,6 +104,16 @@ const statusChange = (row) => {
         --mo-tag-management-status-on-color: #13ce66;
         --mo-tag-management-status-off-color: #ff4949;
     }
+
+    .mo-tag-management {
+        display: flex;
+        flex: 1;
+        flex-flow: column;
+    }
+}
+
+.mo-tag-management__list.el-table {
+    height: 100%;
 }
 
 .mo-tag-management__status.el-switch {

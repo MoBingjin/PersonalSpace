@@ -168,11 +168,6 @@ const loginout = () => {
 })();
 </script>
 
-<style>
-.el-tabs__nav .el-tabs__item:nth-child(1) i {
-    display: none;
-}
-</style>
 <style scoped>
 @layer MoPanel {
     * {
@@ -183,6 +178,7 @@ const loginout = () => {
         --mo-panel-main-padding: 5px;
         --mo-panel-main-background-color: #596172;
         --mo-panel-tabs-border-radius: 5px;
+        --mo-panel-menu-divider-background-color: #bebebe;
     }
 
     .mo-panel__left-menu {
@@ -199,7 +195,7 @@ const loginout = () => {
         display: flex;
         align-items: center;
         width: 9px;
-        background-color: #bebebe;
+        background-color: var(--mo-panel-menu-divider-background-color);
     }
 
     .mo-panel__divider-icon {
@@ -210,6 +206,7 @@ const loginout = () => {
 
 .mo-panel__container.el-container {
     height: 100vh;
+    min-height: calc(var(--mo-panel-header-height) * 12);
 }
 
 .mo-panel__header.el-header {
@@ -235,7 +232,14 @@ const loginout = () => {
     border-radius: var(--mo-panel-tabs-border-radius);
 }
 
-.mo-panel__tabs.el-tabs >>> .el-tabs__content {
+.mo-panel__tabs.el-tabs >>> .el-tabs__content,
+.mo-panel__tabs.el-tabs >>> .el-tabs__content .el-tab-pane {
+    display: flex;
     flex: 1;
+    flex-flow: column;
+}
+
+.mo-panel__tabs.el-tabs >>> .el-tabs__header .el-tabs__nav .el-tabs__item:first-child i {
+    display: none;
 }
 </style>

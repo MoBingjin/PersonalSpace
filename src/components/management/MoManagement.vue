@@ -18,7 +18,6 @@
                     :page-size="model.pageSize"
                     :current-page="model.page"
                     :total="model.total"
-                    :hide-on-single-page="true"
                     @current-change="(page) => emits('change-page', page)"
                 />
             </el-footer>
@@ -57,6 +56,12 @@ const emits = defineEmits(['add', 'remove-batch', 'search', 'change-page']);
     * {
         --mo-management-header-height: 56px;
     }
+
+    .mo-management {
+        display: flex;
+        flex: 1;
+        flex-flow: column;
+    }
 }
 
 .mo-management__header.el-header {
@@ -64,8 +69,13 @@ const emits = defineEmits(['add', 'remove-batch', 'search', 'change-page']);
     padding: 10px 5px;
 }
 
-.mo-management__main.el-main,
+.mo-management__main.el-main {
+    padding: 0;
+}
+
 .mo-management__footer.el-footer {
+    display: flex;
+    align-items: center;
     padding: 0;
 }
 </style>
