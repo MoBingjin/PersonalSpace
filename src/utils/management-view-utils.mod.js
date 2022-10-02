@@ -74,8 +74,10 @@ const managementViewUtils = {
          * @param {Function} callback 回调函数
          */
         const handleAddOrUpdate = async (data, callback) => {
-            await addOrUpdate(data);
-            callback();
+            const result = await addOrUpdate(data);
+            if (result) {
+                callback();
+            }
         };
 
         /**
@@ -121,7 +123,7 @@ const managementViewUtils = {
          */
         const addOrUpdate = async (data) => {
             const action = !data.id ? service.add : service.update;
-            await action(data)
+            return await action(data)
                 .then((res) => {
                     ElMessage({
                         message: `${!data.id ? '添加' : '更新'}成功！`,
@@ -129,8 +131,9 @@ const managementViewUtils = {
                     });
                     // 刷新列表
                     refresh({ page: 1 });
+                    return true;
                 })
-                .catch((error) => {});
+                .catch((error) => false);
         };
 
         /**

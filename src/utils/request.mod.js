@@ -51,7 +51,11 @@ service.interceptors.response.use(
     },
     (error) => {
         console.log(error);
-        ElMessageBox.alert(error.message, '系统提示', { confirmButtonText: '确定', type: 'error' });
+        if (error.response.status === 401) {
+            ElMessageBox.alert('登录状态失效!', '系统提示', { confirmButtonText: '确定', type: 'error' });
+        } else {
+            ElMessageBox.alert(error.message, '系统提示', { confirmButtonText: '确定', type: 'error' });
+        }
         return Promise.reject(error);
     }
 );
