@@ -29,6 +29,13 @@
                 </el-menu-item>
                 <el-menu-item
                     index="3-2"
+                    @click="openTab('分类管理', 'content-management/category-management/MoCategoryManagement', {})"
+                >
+                    <e-icon icon-name="el-icon-menu" />
+                    <span>分类管理</span>
+                </el-menu-item>
+                <el-menu-item
+                    index="3-3"
                     @click="openTab('标签管理', 'content-management/tag-management/MoTagManagement', {})"
                 >
                     <e-icon icon-name="el-icon-price-tag" />

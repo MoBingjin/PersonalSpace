@@ -1,26 +1,29 @@
 <template>
-    <div class="mo-tag-dialog">
-        <el-dialog v-model="dialogFormVisible" :title="title" width="400px">
+    <div class="mo-category-dialog">
+        <el-dialog v-model="dialogFormVisible" :title="title" :close-on-press-escape="false" width="400px">
             <el-form :model="formData" ref="formComponent" :rules="rules">
                 <el-form-item label="名称" prop="name">
-                    <el-input v-model="formData.name" placeholder="请输入标签名称" maxlength="128" size="small" />
+                    <el-input v-model="formData.name" placeholder="请输入分类名称" maxlength="128" size="small" />
                 </el-form-item>
                 <el-form-item label="描述" prop="description">
                     <el-input
                         v-model="formData.description"
-                        placeholder="请输入标签描述"
+                        placeholder="请输入分类描述"
                         maxlength="255"
                         size="small"
                     />
                 </el-form-item>
+                <el-form-item class="mo-category-dialog__image" label="图片" prop="image" :label-width="'50px'">
+                    <mo-image-uploader class="mo-category-dialog__uploader" v-model:image-url="formData.image" />
+                </el-form-item>
                 <el-form-item label="状态" prop="status" :label-width="'50px'" v-if="formData.id">
-                    <el-switch v-model="formData.status" class="mo-tag-dialog__status ml-2" size="small" />
+                    <el-switch v-model="formData.status" class="mo-category-dialog__status ml-2" size="small" />
                 </el-form-item>
             </el-form>
             <template #footer>
                 <span>
                     <el-button @click="handleCancel">取消</el-button>
-                    <el-button type="primary" @click="handleConfirm">{{ title }}</el-button>
+                    <el-button type="primary" @click="hancleConfirm">{{ title }}</el-button>
                 </span>
             </template>
         </el-dialog>
@@ -28,8 +31,10 @@
 </template>
 
 <script setup>
+import MoImageUploader from '@/components/upload/MoImageUploader.vue';
 import { reactive, ref } from 'vue';
-import tagService from '@/api/tag-service.mod.js';
+// import { ElMessage } from 'element-plus';
+import categoryService from '@/api/category-service.mod.js';
 
 // 回调事件
 const emits = defineEmits(['confirm']);
@@ -45,12 +50,13 @@ const formData = reactive({
     id: null,
     name: '',
     description: '',
+    image: '',
     status: true
 });
 // 表单校验
 const rules = {
-    name: [{ required: true, message: '标签名称不能为空!', trigger: 'blur' }],
-    description: [{ required: true, message: '标签描述不能为空!', trigger: 'blur' }]
+    name: [{ required: true, message: '分类名称不能为空!', trigger: 'blur' }],
+    description: [{ required: true, message: '分类描述不能为空!', trigger: 'blur' }]
 };
 
 /**
@@ -60,13 +66,14 @@ const init = (id) => {
     clearDataForm();
     title.value = id ? '更新' : '添加';
     if (id) {
-        // 获取标签数据
-        tagService
+        // 获取分类数据
+        categoryService
             .info(id)
             .then((res) => {
                 formData.id = res.data.id;
                 formData.name = res.data.name;
                 formData.description = res.data.description;
+                formData.image = res.data.image;
                 formData.status = res.data.status;
                 dialogFormVisible.value = true;
             })
@@ -79,7 +86,7 @@ const init = (id) => {
 /**
  * 确定操作事件
  */
-const handleConfirm = () => {
+const hancleConfirm = () => {
     formComponent.value.validate((valid) => {
         if (valid) {
             emits('confirm', formData, () => {
@@ -103,6 +110,7 @@ const clearDataForm = () => {
     formData.id = null;
     formData.name = '';
     formData.description = '';
+    formData.image = '';
     formData.status = true;
 };
 
@@ -113,17 +121,25 @@ defineExpose({ init });
 <style scoped>
 @layer {
     * {
-        --mo-tag-dialog-status-on-color: #13ce66;
-        --mo-tag-dialog-status-off-color: #ff4949;
+        --mo-category-dialog-status-on-color: #13ce66;
+        --mo-category-dialog-status-off-color: #ff4949;
+    }
+
+    .mo-category-dialog__uploader.mo-image-uploader {
+        margin-top: 6px;
     }
 }
 
-.mo-tag-dialog >>> .el-dialog__body {
+.mo-category-dialog >>> .el-dialog__body {
     padding-bottom: 5px;
 }
 
-.mo-tag-dialog__status.el-switch {
-    --el-switch-on-color: var(--mo-tag-dialog-status-on-color);
-    --el-switch-off-color: var(--mo-tag-dialog-status-off-color);
+.mo-category-dialog__image.el-form-item {
+    margin-bottom: 8px;
+}
+
+.mo-category-dialog__status.el-switch {
+    --el-switch-on-color: var(--mo-category-dialog-status-on-color);
+    --el-switch-off-color: var(--mo-category-dialog-status-off-color);
 }
 </style>
