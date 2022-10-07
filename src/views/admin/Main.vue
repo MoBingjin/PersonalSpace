@@ -5,6 +5,7 @@
 <script setup>
 import { markRaw, ref } from 'vue';
 import appConfig from '@/app.config.mod.js';
+import service from '@/utils/request.mod.js';
 import storage from '@/utils/storage.mod.js';
 
 // 当前子组件
@@ -21,25 +22,24 @@ const changePage = (data) =>
 // 初始化操作
 (() => {
     window['document'].getElementsByTagName('title')[0].innerHTML = appConfig.title['admin'];
-    changePage({ componentName: 'MoPanel' });
-    // const token = storage.get('token');
-    // if (token) {
-    //   fetch(appConfig.api.checkUserURL, {
-    //     method: 'post',
-    //     body: JSON.stringify({ token })
-    //   })
-    //     .then(res => res.json())
-    //     .then(data => {
-    //       if (data.code === 0) {
-    //         changePage({ componentName: 'mo-panel' });
-    //       } else {
-    //         storage.remove('token');
-    //         changePage({ componentName: 'mo-login' });
-    //       }
-    //     })
-    //     .catch(() => changePage({ componentName: '../common/componets/404' }));
-    // } else {
-    //   changePage({ componentName: 'mo-login' });
-    // }
+    const token = storage.get('token');
+    if (token) {
+        fetch(service.defaults.baseURL, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
+            .then((response) => {
+                if (response.status === 401) {
+                    storage.remove('token');
+                    changePage({ componentName: 'MoLogin' });
+                } else {
+                    changePage({ componentName: 'MoPanel' });
+                }
+            })
+            .catch(() => changePage({ componentName: '@/views/common/404.vue' }));
+    } else {
+        changePage({ componentName: 'MoLogin' });
+    }
 })();
 </script>

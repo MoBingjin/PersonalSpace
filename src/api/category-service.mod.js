@@ -1,6 +1,48 @@
 import service from '@/utils/request.mod.js';
 import appConfig from '@/app.config.mod.js';
 
+const baseURL = service.defaults.baseURL;
+
+/**
+ * 分类接口地址
+ */
+export const categoryApi = {
+    /**
+     * 获取分类列表
+     */
+    list: `${baseURL}/category/list/`,
+
+    /**
+     * 获取分类信息
+     */
+    info: `${baseURL}/category/info/`,
+
+    /**
+     * 添加分类
+     */
+    add: `${baseURL}/category/add/`,
+
+    /**
+     * 更新分类
+     */
+    update: `${baseURL}/category/update/`,
+
+    /**
+     * 删除分类
+     */
+    remove: `${baseURL}/category/remove/`,
+
+    /**
+     * 批量删除分类
+     */
+    removeBatch: `${baseURL}/category/batch/remove/`,
+
+    /**
+     * 修改分类状态
+     */
+    status: `${baseURL}/category/status/`
+};
+
 /**
  * 分类接口服务
  */
@@ -14,7 +56,7 @@ const categoryService = {
      * @returns Promise
      */
     list: async (params, page = 1, size = appConfig.pageSize['admin']) =>
-        service.post(`/category/list?page=${page}&size=${size}`, params),
+        service.post(`${categoryApi.list}?page=${page}&size=${size}`, params),
 
     /**
      * 获取分类信息
@@ -22,7 +64,7 @@ const categoryService = {
      * @param {string} id 分类ID
      * @returns Promise
      */
-    info: async (id) => service.get(`/category/info/${id}`),
+    info: async (id) => service.get(categoryApi.info + id),
 
     /**
      * 添加分类
@@ -30,7 +72,7 @@ const categoryService = {
      * @param {any} params 参数
      * @returns Promise
      */
-    add: async (params) => service.put('/category/add', params),
+    add: async (params) => service.put(categoryApi.add, params),
 
     /**
      * 更新分类
@@ -38,7 +80,7 @@ const categoryService = {
      * @param {any} params 参数
      * @returns Promise
      */
-    update: async (params) => service.post('/category/update', params),
+    update: async (params) => service.post(categoryApi.update, params),
 
     /**
      * 删除分类
@@ -46,7 +88,7 @@ const categoryService = {
      * @param {string} id 分类ID
      * @returns Promise
      */
-    remove: async (id) => service.delete(`/category/remove/${id}`),
+    remove: async (id) => service.delete(categoryApi.remove + id),
 
     /**
      * 批量删除分类
@@ -54,7 +96,7 @@ const categoryService = {
      * @param {Array<string>} ids 分类ID数组
      * @returns Promise
      */
-    removeBatch: async (ids) => service.delete('/category/batch/remove', { data: ids }),
+    removeBatch: async (ids) => service.delete(categoryApi.removeBatch, { data: ids }),
 
     /**
      * 修改分类状态
@@ -62,7 +104,7 @@ const categoryService = {
      * @param {string} id 分类ID
      * @returns
      */
-    status: async (id) => service.post(`/category/status/${id}`)
+    status: async (id) => service.post(categoryApi.status + id)
 };
 
 export default categoryService;

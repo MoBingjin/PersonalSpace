@@ -1,5 +1,17 @@
 import service from '@/utils/request.mod.js';
 
+const baseURL = service.defaults.baseURL;
+
+/**
+ * 用户接口地址
+ */
+export const userApi = {
+    /**
+     * 登录
+     */
+    login: `${baseURL}/user/login/`
+};
+
 /**
  * 用户接口服务
  */
@@ -10,7 +22,7 @@ const userService = {
      * @param {any} params 登录参数
      * @returns
      */
-    login: (params) => service.post('/user/login', params)
+    login: (params) => service.post(userApi.login, params)
 };
 
 export default userService;

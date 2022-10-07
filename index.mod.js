@@ -3,7 +3,6 @@ import { tagComponents, esmComponents } from './import.mod.js';
 // 基础路径信息
 const rootPath = new URL(window.location.href).pathname;
 window['BasePath'] = {
-
     // 根路径
     rootPath,
 
@@ -15,7 +14,7 @@ window['BasePath'] = {
 
     /**
      * 获取实际路径
-     * 
+     *
      * @param {string} path 自定义路径
      * @returns 实际路径
      */
@@ -64,3 +63,20 @@ script.type = 'module';
 script.async = false;
 script.src = './src/main.js';
 body.appendChild(script);
+
+// 全局拦截img标签请求
+// const imageNativeSet = Object.getOwnPropertyDescriptor(Image.prototype, 'src').set;
+// Object.defineProperty(Image.prototype, 'src', {
+//     set: async function (url) {
+//         const pathname = new URL(url).pathname;
+//         // 设置图片地址为解析后的地址
+//         if (pathname.startsWith('/image/download/')) {
+//             const res = await fetch(url).then((response) => response.json());
+//             if (res.code === 0) {
+//                 url = res.data.downloadURL;
+//                 await fetch(url, { mode: 'no-cors' });
+//             }
+//         }
+//         imageNativeSet.call(this, url);
+//     }
+// });

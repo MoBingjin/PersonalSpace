@@ -1,13 +1,14 @@
 import { ElMessageBox } from 'element-plus';
 import axios from 'axios.js';
+import appConfig from '@/app.config.mod.js';
 import storage from '@/utils/storage.mod.js';
 
 // 创建一个axios实例
 const service = axios.create({
     // 基础路径
-    baseURL: 'http://localhost:8233/',
+    baseURL: 'http://localhost:8233',
     // 请求超时时间（毫秒）
-    timeout: 300000,
+    timeout: 30000,
     // header参数配置
     headers: {
         'Content-Type': 'application/json;charset=UTF-8'
@@ -52,7 +53,18 @@ service.interceptors.response.use(
     (error) => {
         console.log(error);
         if (error.response.status === 401) {
-            ElMessageBox.alert('登录状态失效!', '系统提示', { confirmButtonText: '确定', type: 'error' });
+            ElMessageBox.confirm('登录状态已失效, 是否转到登录页面?', '系统提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            })
+                .then(() => {
+                    storage.remove('token');
+                    window.location.href = `/?${appConfig.adminEntrance}`;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         } else {
             ElMessageBox.alert(error.message, '系统提示', { confirmButtonText: '确定', type: 'error' });
         }

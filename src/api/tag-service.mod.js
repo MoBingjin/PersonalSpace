@@ -1,6 +1,48 @@
 import service from '@/utils/request.mod.js';
 import appConfig from '@/app.config.mod.js';
 
+const baseURL = service.defaults.baseURL;
+
+/**
+ * 标签接口地址
+ */
+export const tagApi = {
+    /**
+     * 获取标签列表
+     */
+    list: `${baseURL}/tag/list/`,
+
+    /**
+     * 获取标签信息
+     */
+    info: `${baseURL}/tag/info/`,
+
+    /**
+     * 添加标签
+     */
+    add: `${baseURL}/tag/add/`,
+
+    /**
+     * 更新标签
+     */
+    update: `${baseURL}/tag/update/`,
+
+    /**
+     * 删除标签
+     */
+    remove: `${baseURL}/tag/remove/`,
+
+    /**
+     * 批量删除标签
+     */
+    removeBatch: `${baseURL}/tag/batch/remove/`,
+
+    /**
+     * 修改标签状态
+     */
+    status: `${baseURL}/tag/status/`
+};
+
 /**
  * 标签接口服务
  */
@@ -14,7 +56,7 @@ const tagService = {
      * @returns Promise
      */
     list: async (params, page = 1, size = appConfig.pageSize['admin']) =>
-        service.post(`/tag/list?page=${page}&size=${size}`, params),
+        service.post(`${tagApi.list}?page=${page}&size=${size}`, params),
 
     /**
      * 获取标签信息
@@ -22,7 +64,7 @@ const tagService = {
      * @param {string} id 标签ID
      * @returns Promise
      */
-    info: async (id) => service.get(`/tag/info/${id}`),
+    info: async (id) => service.get(tagApi.info + id),
 
     /**
      * 添加标签
@@ -30,7 +72,7 @@ const tagService = {
      * @param {any} params 参数
      * @returns Promise
      */
-    add: async (params) => service.put('/tag/add', params),
+    add: async (params) => service.put(tagApi.add, params),
 
     /**
      * 更新标签
@@ -38,7 +80,7 @@ const tagService = {
      * @param {any} params 参数
      * @returns Promise
      */
-    update: async (params) => service.post('/tag/update', params),
+    update: async (params) => service.post(tagApi.update, params),
 
     /**
      * 删除标签
@@ -46,7 +88,7 @@ const tagService = {
      * @param {string} id 标签ID
      * @returns Promise
      */
-    remove: async (id) => service.delete(`/tag/remove/${id}`),
+    remove: async (id) => service.delete(tagApi.remove + id),
 
     /**
      * 批量删除标签
@@ -54,7 +96,7 @@ const tagService = {
      * @param {Array<string>} ids 标签ID数组
      * @returns Promise
      */
-    removeBatch: async (ids) => service.delete('/tag/batch/remove', { data: ids }),
+    removeBatch: async (ids) => service.delete(tagApi.removeBatch, { data: ids }),
 
     /**
      * 修改标签状态
@@ -62,7 +104,7 @@ const tagService = {
      * @param {string} id 标签ID
      * @returns
      */
-    status: async (id) => service.post(`/tag/status/${id}`)
+    status: async (id) => service.post(tagApi.status + id)
 };
 
 export default tagService;
