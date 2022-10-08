@@ -20,9 +20,9 @@ const userService = {
      * 登录
      *
      * @param {any} params 登录参数
-     * @returns
+     * @returns Promise
      */
-    login: (params) => service.post(userApi.login, params)
+    login: async (params) => service.post(userApi.login, params)
 };
 
 export default userService;

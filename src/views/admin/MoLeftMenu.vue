@@ -42,6 +42,21 @@
                     <span>标签管理</span>
                 </el-menu-item>
             </el-sub-menu>
+            <el-sub-menu index="4">
+                <template #title>
+                    <el-icon>
+                        <e-icon icon-name="el-icon-s-tools" />
+                    </el-icon>
+                    <span>系统设置</span>
+                </template>
+                <el-menu-item
+                    index="4-1"
+                    @click="openTab('上传设置', 'system-setting/uploud-setting/MoUploadSetting', {})"
+                >
+                    <e-icon icon-name="el-icon-upload2" />
+                    <span>上传设置</span>
+                </el-menu-item>
+            </el-sub-menu>
         </el-menu>
     </div>
 </template>
