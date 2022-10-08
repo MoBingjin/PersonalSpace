@@ -65,18 +65,16 @@ script.src = './src/main.js';
 body.appendChild(script);
 
 // 全局拦截img标签请求
-// const imageNativeSet = Object.getOwnPropertyDescriptor(Image.prototype, 'src').set;
-// Object.defineProperty(Image.prototype, 'src', {
-//     set: async function (url) {
-//         const pathname = new URL(url).pathname;
-//         // 设置图片地址为解析后的地址
-//         if (pathname.startsWith('/image/download/')) {
-//             const res = await fetch(url).then((response) => response.json());
-//             if (res.code === 0) {
-//                 url = res.data.downloadURL;
-//                 await fetch(url, { mode: 'no-cors' });
-//             }
-//         }
-//         imageNativeSet.call(this, url);
-//     }
-// });
+const imageNativeSet = Object.getOwnPropertyDescriptor(Image.prototype, 'src').set;
+Object.defineProperty(Image.prototype, 'src', {
+    set: async function (url) {
+        try {
+            const pathname = new URL(url).pathname;
+            if (pathname.startsWith('/image/download/')) {
+                // 提前缓存图片，防止跨域跳转报错
+                await fetch(url, { mode: 'no-cors' });
+            }
+        } catch (error) {}
+        imageNativeSet.call(this, url);
+    }
+});

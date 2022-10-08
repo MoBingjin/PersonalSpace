@@ -13,10 +13,13 @@
                         size="small"
                     />
                 </el-form-item>
-                <el-form-item class="mo-category-dialog__image" label="图片" prop="image" :label-width="'50px'">
-                    <mo-image-uploader class="mo-category-dialog__uploader" v-model:image-url="formData.image" />
+                <el-form-item class="mo-category-dialog__image" label="图片" :label-width="'50px'">
+                    <mo-image-uploader
+                        class="mo-category-dialog__uploader"
+                        v-model:image-file-list="formData.imageFileList"
+                    />
                 </el-form-item>
-                <el-form-item label="状态" prop="status" :label-width="'50px'" v-if="formData.id">
+                <el-form-item label="状态" :label-width="'50px'" v-if="formData.id">
                     <el-switch v-model="formData.status" class="mo-category-dialog__status ml-2" size="small" />
                 </el-form-item>
             </el-form>
@@ -51,6 +54,7 @@ const formData = reactive({
     name: '',
     description: '',
     image: '',
+    imageFileList: [],
     status: true
 });
 // 表单校验
@@ -74,6 +78,14 @@ const init = (id) => {
                 formData.name = res.data.name;
                 formData.description = res.data.description;
                 formData.image = res.data.image;
+                if (formData.image && formData.image.trim() !== '') {
+                    formData.imageFileList = [
+                        {
+                            url: formData.image,
+                            url2: formData.image
+                        }
+                    ];
+                }
                 formData.status = res.data.status;
                 dialogFormVisible.value = true;
             })
@@ -87,6 +99,7 @@ const init = (id) => {
  * 确定操作事件
  */
 const hancleConfirm = () => {
+    formData.image = formData.imageFileList[0] ? formData.imageFileList[0].url2 : '';
     formComponent.value.validate((valid) => {
         if (valid) {
             emits('confirm', formData, () => {
@@ -101,7 +114,7 @@ const hancleConfirm = () => {
  */
 const handleCancel = () => {
     dialogFormVisible.value = false;
-}
+};
 
 /**
  * 清空表单数据
@@ -111,6 +124,7 @@ const clearDataForm = () => {
     formData.name = '';
     formData.description = '';
     formData.image = '';
+    formData.imageFileList = [];
     formData.status = true;
 };
 

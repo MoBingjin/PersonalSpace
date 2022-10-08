@@ -2,17 +2,16 @@
     <div class="mo-image-uploader">
         <el-upload
             list-type="picture-card"
-            :file-list="fileList"
+            :file-list="imageFileList"
             :action="imageApi.upload"
             :headers="headers"
             :multiple="multiple"
             :before-upload="handleBeforeUpload"
-            :on-progress="handleProgress"
             :on-success="handleSuccess"
             :on-error="handleError"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
-            :style="!multiple ? singleStyleVariable : ''"
+            :style="!multiple ? uploadStyleVariable : ''"
         >
             <e-icon icon-name="el-icon-plus" />
         </el-upload>
@@ -35,10 +34,10 @@ import storage from '@/utils/storage.mod.js';
 
 // 参数
 const props = defineProps({
-    // 已上传图片列表
-    imageFileList: {
-        type: Array,
-        default: []
+    // 已上传图片URL
+    imageUrl: {
+        type: String,
+        default: ''
     },
     // 是否支持多张图片
     multiple: {
@@ -48,96 +47,105 @@ const props = defineProps({
 });
 
 // 回调
-const emits = defineEmits(['update:imageFileList']);
+const emits = defineEmits(['update:imageUrl']);
 
 // 图片预览对话框图片路径
 const dialogImageUrl = ref('');
+// 当multiple为false时, 判断是否存在文件
+const existFileWhenNotMultiple = ref(false);
 // 上传请求headers
 const headers = {
     Authorization: 'Bearer ' + storage.get('token')
 };
 
-// 文件列表
-const fileList = computed({
+// 上传组件样式变量
+const uploadStyleVariable = computed(() =>
+    existFileWhenNotMultiple.value
+        ? '--mo-image-uploader-upload-display: none'
+        : '--mo-image-uploader-upload-display: inline-block'
+);
+
+// 图片文件列表
+const imageFileList = computed({
     get: () => {
-        return props.imageFileList;
+        if (!props.imageUrl) {
+            existFileWhenNotMultiple.value = false;
+            return [];
+        }
+        const imageUrl = props.imageUrl.trim();
+        if (imageUrl === '') {
+            existFileWhenNotMultiple.value = false;
+            return [];
+        }
+        existFileWhenNotMultiple.value = true;
+        const images = imageUrl.split(',');
+        if (!props.multiple) {
+            return [{ url: images[0] }];
+        } else {
+            return images.map((url) => ({ url }));
+        }
     },
     set: (value) => {
-        emits('update:imageFileList', value);
+        emits('update:imageUrl', value.map((image) => image.url).join(','));
     }
 });
-
-// 单文件组件样式变量
-const singleStyleVariable = computed(
-    () => `--mo-image-uploader-upload-display: ${props.imageFileList.length > 0 ? 'none' : 'inline-block'}`
-);
 
 /**
  * 上传文件前事件
  *
- * @param {any} rawFile 上传文件
+ * @param {any} rawImageFile 上传文件
  */
-const handleBeforeUpload = (rawFile) => {
-    if (rawFile.size / 1024 / 1024 > 100) {
+const handleBeforeUpload = (rawImageFile) => {
+    if (rawImageFile.size / 1024 / 1024 > 100) {
         ElMessage({ message: '图片文件不能大于100MB!', type: 'error' });
         return false;
     }
+    existFileWhenNotMultiple.value = true;
     return true;
-};
-
-/**
- * 请求过程事件
- *
- * @param {Event} event 上传过程事件
- * @param {any} uploadFile 上传文件信息
- * @param {any} uploadFiles 上传文件信息列表
- */
-const handleProgress = (event, uploadFile, uploadFiles) => {
-    fileList.value = uploadFiles;
 };
 
 /**
  * 请求成功事件
  *
  * @param {Response} response 请求响应对象
- * @param {any} uploadFile 上传文件信息
- * @param {any} uploadFiles 上传文件信息列表
+ * @param {any} uploadImageFile 已上传图片文件信息
+ * @param {any} uploadImageFiles 已上传图片文件信息列表
  */
-const handleSuccess = (response, uploadFile, uploadFiles) => {
-    uploadFile.url2 = response.data.fileURL;
-    fileList.value = uploadFiles;
+const handleSuccess = async (response, uploadImageFile, uploadImageFiles) => {
+    await fetch(response.data.fileURL, { mode: 'no-cors' });
+    uploadImageFile.url = response.data.fileURL;
+    imageFileList.value = uploadImageFiles;
 };
 
 /**
  * 请求失败事件
  *
  * @param {Error} error 错误
- * @param {any} uploadFile 上传文件信息
- * @param {any} uploadFiles 上传文件信息列表
  */
-const handleError = (error, uploadFile, uploadFiles) => {
+const handleError = (error) => {
     console.log(error.message);
     ElMessage({ message: error.message, type: 'error' });
-    fileList.value = uploadFiles;
+    existFileWhenNotMultiple.value = false;
 };
 
 /**
  * 图片预览事件
  *
- * @param {any} uploadFile 上传文件信息
+ * @param {any} uploadImageFile 已上传图片文件信息
  */
-const handlePictureCardPreview = (uploadFile) => {
-    dialogImageUrl.value = uploadFile.url;
+const handlePictureCardPreview = (uploadImageFile) => {
+    dialogImageUrl.value = uploadImageFile.url;
 };
 
 /**
  * 删除事件
  *
- * @param {any} uploadFile 上传文件信息
- * @param {any} uploadFiles 上传文件信息列表
+ * @param {any} uploadImageFile 删除的已上传图片文件信息
+ * @param {any} uploadImageFiles 已上传图片文件信息列表
  */
-const handleRemove = (uploadFile, uploadFiles) => {
-    fileList.value = uploadFiles;
+const handleRemove = (uploadImageFile, uploadImageFiles) => {
+    existFileWhenNotMultiple.value = false;
+    imageFileList.value = uploadImageFiles;
 };
 </script>
 
