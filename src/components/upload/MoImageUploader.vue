@@ -59,12 +59,8 @@ const headers = {
 
 // 文件列表
 const fileList = computed({
-    get: () => {
-        return props.imageFileList;
-    },
-    set: (value) => {
-        emits('update:imageFileList', value);
-    }
+    get: () => props.imageFileList,
+    set: (value) => emits('update:imageFileList', value)
 });
 
 // 单文件组件样式变量
