@@ -232,7 +232,13 @@ const loginout = () => {
     border-radius: var(--mo-panel-tabs-border-radius);
 }
 
-.mo-panel__tabs.el-tabs >>> .el-tabs__content,
+.mo-panel__tabs.el-tabs >>> .el-tabs__content {
+    display: flex;
+    flex: 1;
+    flex-flow: column;
+    padding: 0;
+}
+
 .mo-panel__tabs.el-tabs >>> .el-tabs__content .el-tab-pane {
     display: flex;
     flex: 1;

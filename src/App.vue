@@ -20,10 +20,10 @@ const currentComponent = ref(null);
             'user',
             // 后台管理入口
             'adminEntrance',
-            // 前台背景图片
-            'backgroundImageURL',
             // 网站用户头像
             'avatarImageURL',
+            // 前台背景图片
+            'backgroundImageURL',
             // 文章默认封面
             'defaultCoverImageURL',
             // 404页面图片

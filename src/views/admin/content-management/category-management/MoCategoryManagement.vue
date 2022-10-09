@@ -8,7 +8,7 @@
             @change-page="refresh"
         >
             <template #list>
-                <el-table class="mo-category-management__list" ref="tableComponent" :data="listData">
+                <el-table class="mo-category-management__list" ref="tableComponent" :data="listData" height="100%">
                     <el-table-column type="selection" width="55" />
                     <el-table-column label="#" type="index" width="50" />
                     <el-table-column label="名称" property="name" width="120" />
@@ -124,11 +124,8 @@ const statusChange = (row) => {
         display: flex;
         flex: 1;
         flex-flow: column;
+        padding: 15px;
     }
-}
-
-.mo-category-management__list.el-table {
-    height: 100%;
 }
 
 .mo-category-management__status.el-switch {
@@ -143,7 +140,7 @@ const statusChange = (row) => {
 }
 
 .mo-category-management__image.el-image >>> .el-image__inner {
-    max-height: 100px;
     max-width: 100px;
+    max-height: 100px;
 }
 </style>

@@ -51,6 +51,13 @@
                 </template>
                 <el-menu-item
                     index="4-1"
+                    @click="openTab('常规设置', 'system-setting/general-setting/MoGeneralSetting', {})"
+                >
+                    <e-icon icon-name="el-icon-s-operation" />
+                    <span>常规设置</span>
+                </el-menu-item>
+                <el-menu-item
+                    index="4-2"
                     @click="openTab('上传设置', 'system-setting/uploud-setting/MoUploadSetting', {})"
                 >
                     <e-icon icon-name="el-icon-upload2" />
