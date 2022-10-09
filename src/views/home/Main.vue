@@ -25,12 +25,13 @@ import MoHeadMenu from './MoHeadMenu.vue';
 import MoSideMenu from './MoSideMenu.vue';
 import { computed, getCurrentInstance, ref, watch } from 'vue';
 import router from '@/router/router.mod.js';
-import appConfig from '@/app.config.mod.js';
+import storage from '@/utils/storage.mod.js';
 
 
 // 设置路由
 getCurrentInstance().appContext.app.use(router);
 
+const title = storage.getObject('title');
 
 // 导航栏class
 const headerClass = ref('mo-hidden');
@@ -74,14 +75,14 @@ const handleScroll = event => {
 
     // 404
     if (route.matched[0].path === '/:other') {
-      window['document'].getElementsByTagName('title')[0].innerHTML = appConfig.title['_404'];
+      window['document'].getElementsByTagName('title')[0].innerHTML = title['_404'];
       window['document'].getElementsByClassName('mo-side-menu-btn')[0].style['display'] = 'none';
       headerClass.value = 'mo-hidden';
       window.removeEventListener('scroll', handleScroll);
       return;
     }
 
-    window['document'].getElementsByTagName('title')[0].innerHTML = `${route.matched[0].name} | ${appConfig.title['home']}`;
+    window['document'].getElementsByTagName('title')[0].innerHTML = `${route.matched[0].name} | ${title['home']}`;
 
     // 主页
     if (['/', '/main'].includes(route.path)) {

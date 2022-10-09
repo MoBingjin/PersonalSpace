@@ -7,6 +7,10 @@ const baseURL = service.defaults.baseURL;
  */
 export const settingApi = {
     /**
+     * 获取公开设置项
+     */
+    public: `${baseURL}/setting/public/`,
+    /**
      * 获取设置项
      */
     map: `${baseURL}/setting/map/`,
@@ -21,6 +25,14 @@ export const settingApi = {
  * 设置接口服务
  */
 const settingService = {
+    /**
+     * 获取公开设置项
+     *
+     * @param {any} keys 设置项key数组
+     * @returns Promise
+     */
+    public: async (keys) => service.post(settingApi.public, keys),
+
     /**
      * 获取设置项
      *

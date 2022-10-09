@@ -1,7 +1,8 @@
 import service from '@/utils/request.mod.js';
-import appConfig from '@/app.config.mod.js';
+import storage from '@/utils/storage.mod.js';
 
 const baseURL = service.defaults.baseURL;
+const pageSize = storage.getObject('pageSize')['admin'];
 
 /**
  * 标签接口地址
@@ -55,7 +56,7 @@ const tagService = {
      * @param {number} size 每页数据条数
      * @returns Promise
      */
-    list: async (params, page = 1, size = appConfig.pageSize['admin']) =>
+    list: async (params, page = 1, size = pageSize) =>
         service.post(`${tagApi.list}?page=${page}&size=${size}`, params),
 
     /**

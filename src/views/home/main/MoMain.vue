@@ -1,6 +1,6 @@
 <template>
     <div>
-        <figure class="mo-home-background" :backgroundImg="appConfig.backgroundImageURL">
+        <figure class="mo-home-background" :backgroundImg="backgroundImagePath">
             <div class="mo-top">
                 <div><img class="mo-avatar" :src="avatarPath" alt="头像" referrerpolicy="no-referrer" /></div>
                 <div>
@@ -19,20 +19,21 @@
                             <el-row>
                                 <el-col :span="10">
                                     <div class="mo-article-cover" @click="view(item.articleId)">
-                                        <img :src="item.cover || defaultCoverPath" alt="cover">
+                                        <img :src="item.cover || defaultCoverPath" alt="cover" />
                                     </div>
                                 </el-col>
                                 <el-col :span="14">
                                     <div class="mo-article-info">
                                         <div>
-                                            <div class="mo-article-title" @click="view(item.articleId)">{{ item.title }}
+                                            <div class="mo-article-title" @click="view(item.articleId)">
+                                                {{ item.title }}
                                             </div>
                                             <div class="mo-article-description">{{ item.description }}</div>
                                         </div>
                                         <div class="mo-article-footer">
                                             <span class="mo-article-date">
                                                 <e-icon icon-name="el-icon-time" />
-                                                <span>{{ formatDate(item.createTime, "yyyy-MM-dd HH:mm:ss") }}</span>
+                                                <span>{{ formatDate(item.createTime, 'yyyy-MM-dd HH:mm:ss') }}</span>
                                             </span>
                                             <span class="mo-article-type">
                                                 <e-icon icon-name="el-icon-price-tag" />
@@ -46,9 +47,15 @@
                     </div>
                 </div>
                 <div class="mo-home-pager">
-                    <el-pagination background layout="prev, pager, next" :page-size="currentPageSize"
-                        :current-page="currentPage" :total="total" :hide-on-single-page="true"
-                        @current-change="listArticleInfoList" />
+                    <el-pagination
+                        background
+                        layout="prev, pager, next"
+                        :page-size="currentPageSize"
+                        :current-page="currentPage"
+                        :total="total"
+                        :hide-on-single-page="true"
+                        @current-change="listArticleInfoList"
+                    />
                 </div>
             </div>
             <el-backtop />
@@ -57,13 +64,13 @@
 </template>
 
 <script setup>
-
 import { getCurrentInstance, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import appConfig from '@/app.config.mod.js';
+import storage from '@/utils/storage.mod.js';
 import { formatDate } from '@/utils/date-utils.mod.js';
 import _ from 'lodash.js';
 
+const api = storage.getObject('api');
 
 // 获取真实路径函数
 const getActualPath = getCurrentInstance().proxy.$getActualPath;
@@ -73,11 +80,13 @@ const router = useRouter();
 // 文章信息列表
 const articleInfoList = reactive([]);
 // 头像路径
-const avatarPath = appConfig.avatarImageURL || getActualPath('static/img/avatar.png');
+const avatarPath = storage.get('avatarImageURL') || getActualPath('static/img/avatar.png');
+// 背景图片路径
+const backgroundImagePath = storage.get('backgroundImageURL') || getActualPath('/static/img/background.png');
 // 默认封面路径
-const defaultCoverPath = appConfig.defaultCoverImageURL || getActualPath('static/img/default_cover.png');
+const defaultCoverPath = storage.get('defaultCoverImageURL') || getActualPath('static/img/default_cover.png');
 // 分页每页数目
-const currentPageSize = ref(appConfig.pageSize['home']);
+const currentPageSize = ref(storage.getObject('pageSize')['home']);
 // 当前页
 const currentPage = ref(1);
 // 分页总数
@@ -87,10 +96,9 @@ const key = ref('');
 // 搜索条件
 const searchParams = ref({});
 
-
 /**
  * 获取文章信息列表
- * 
+ *
  * @param {number} page 当前页
  */
 const listArticleInfoList = async (page = 1, isToBody = true) => {
@@ -101,21 +109,21 @@ const listArticleInfoList = async (page = 1, isToBody = true) => {
     searchParams.value['page'] = page;
     return new Promise((rev, rej) => {
         // 获取文章信息列表数据
-        fetch(appConfig.api.listArticleURL, {
+        fetch(api.listArticleURL, {
             method: 'post',
             body: JSON.stringify(searchParams.value)
         })
-            .then(res => res.json())
-            .then(data => {
+            .then((res) => res.json())
+            .then((data) => {
                 if (data.code === 0) {
                     articleInfoList.splice(0, articleInfoList.length);
-                    data.data.list.map(item => articleInfoList.push(item));
+                    data.data.list.map((item) => articleInfoList.push(item));
                     total.value = data.data.total;
                 }
                 console.log(data.message);
                 rev(data.message);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log(error);
                 rej(error);
             });
@@ -124,16 +132,15 @@ const listArticleInfoList = async (page = 1, isToBody = true) => {
 
 /**
  * 浏览文章
- * 
+ *
  * @param {string} articleId 文章ID
  */
-const view = articleId => router.push(`/article/${articleId}`);
+const view = (articleId) => router.push(`/article/${articleId}`);
 
 /**
  * 搜索事件
  */
 const search = async () => {
-
     // 搜索参数
     searchParams.value = { limit: currentPageSize.value };
 
@@ -151,14 +158,18 @@ const search = async () => {
 /**
  * 移动至主体头部
  */
-const toBody = _.debounce(() => {
-    const targetTop = window['document'].getElementsByClassName('mo-body')[0].offsetTop;
-    moveScroll(targetTop);
-}, 1000, { leading: true, trailing: false });
+const toBody = _.debounce(
+    () => {
+        const targetTop = window['document'].getElementsByClassName('mo-body')[0].offsetTop;
+        moveScroll(targetTop);
+    },
+    1000,
+    { leading: true, trailing: false }
+);
 
 /**
  * 将滚动条移动至目标高度
- * 
+ *
  * @param {number} targetTop 目标高度
  */
 const moveScroll = (targetTop) => {
@@ -176,16 +187,13 @@ const moveScroll = (targetTop) => {
     }, 5);
 };
 
-
 //初始化操作
 (async () => {
-
     // 动态样式设置
     setTimeout(() => {
-
         // 主背景设置
         const backgroundElement = window['document'].getElementsByClassName('mo-home-background')[0];
-        backgroundElement.style.setProperty('--mo-home-bg', `url(${appConfig.backgroundImageURL})`);
+        backgroundElement.style.setProperty('--mo-home-bg', `url(${storage.get('backgroundImageURL')})`);
 
         // 波浪背景设置
         const waveElement = window['document'].getElementsByClassName('mo-wave')[0];
@@ -194,25 +202,21 @@ const moveScroll = (targetTop) => {
         setInterval(() => {
             waveElement.style.setProperty('--mo-wave-position-x', `${--backgroundPositionX}px`);
         }, 30);
-
     }, 0);
 
     // 获取文章信息列表
     await search();
 })();
-
 </script>
 
 <style>
 @media screen and (max-width: 960px) {
-
     .mo-article .el-row .el-col-10,
     .mo-article .el-row .el-col-14 {
         max-width: 100%;
         max-height: 50%;
         flex: 0 0 100%;
     }
-
 }
 
 .mo-home-pager .el-pagination.is-background .btn-prev,
@@ -227,13 +231,12 @@ const moveScroll = (targetTop) => {
 </style>
 <style scoped>
 @media screen and (max-width: 960px) {
-
     .mo-home-background {
         height: 300px;
         background-attachment: scroll;
     }
 
-    .mo-top>div:first-child {
+    .mo-top > div:first-child {
         margin-top: 80px;
         animation: avatarDown 1.5s 1;
     }
@@ -287,7 +290,7 @@ const moveScroll = (targetTop) => {
         flex-direction: column;
     }
 
-    .mo-article-list>div {
+    .mo-article-list > div {
         padding: 10px 0 10px 0;
     }
 
@@ -319,11 +322,11 @@ const moveScroll = (targetTop) => {
         padding: 0 0 10px 10px;
     }
 
-    .mo-article-footer>span {
+    .mo-article-footer > span {
         padding-right: 10px;
     }
 
-    .mo-article-footer>span>span {
+    .mo-article-footer > span > span {
         padding-left: 3px;
     }
 
@@ -331,7 +334,6 @@ const moveScroll = (targetTop) => {
         right: 10px !important;
         bottom: 10px !important;
     }
-
 }
 
 @media screen and (min-width: 961px) {
@@ -340,7 +342,7 @@ const moveScroll = (targetTop) => {
         background-attachment: fixed;
     }
 
-    .mo-top>div:first-child {
+    .mo-top > div:first-child {
         margin-top: 35vh;
         animation: avatarDown 1.5s 1;
     }
@@ -360,7 +362,7 @@ const moveScroll = (targetTop) => {
         height: 130px;
     }
 
-    .mo-top>div:last-child {
+    .mo-top > div:last-child {
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -410,7 +412,7 @@ const moveScroll = (targetTop) => {
         padding-top: 80px;
     }
 
-    .mo-article-list>div {
+    .mo-article-list > div {
         padding: 20px 0 20px 0;
     }
 
@@ -442,11 +444,11 @@ const moveScroll = (targetTop) => {
         padding: 0 0 20px 20px;
     }
 
-    .mo-article-footer>span {
+    .mo-article-footer > span {
         padding-right: 20px;
     }
 
-    .mo-article-footer>span>span {
+    .mo-article-footer > span > span {
         padding-left: 5px;
     }
 
@@ -454,7 +456,6 @@ const moveScroll = (targetTop) => {
         right: 100px !important;
         bottom: 100px !important;
     }
-
 }
 
 .mo-home-background {
@@ -521,7 +522,7 @@ const moveScroll = (targetTop) => {
     box-shadow: 0 5px 10px 5px rgb(110 110 110 / 40%);
 }
 
-.mo-article:hover .mo-article-cover>img {
+.mo-article:hover .mo-article-cover > img {
     transform: scale(1.1);
 }
 
@@ -536,7 +537,7 @@ const moveScroll = (targetTop) => {
     overflow: hidden;
 }
 
-.mo-article-cover>img {
+.mo-article-cover > img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -551,10 +552,11 @@ const moveScroll = (targetTop) => {
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
-    font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
+    font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB',
+        'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
 }
 
-.mo-article-info>div:first-child {
+.mo-article-info > div:first-child {
     width: 100%;
 }
 

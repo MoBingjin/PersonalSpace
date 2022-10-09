@@ -13,17 +13,14 @@
 </template>
 
 <script setup>
-
 import { reactive } from 'vue';
-import appConfig from '@/app.config.mod.js';
-
+import storage from '@/utils/storage.mod.js';
 
 // 回调对象
 const emits = defineEmits(['close-side-menu']);
 
-
 // logo
-const logo = appConfig.title['home'];
+const logo = storage.getObject('title')['home'];
 // 菜单项
 const menus = reactive([
     {
@@ -43,12 +40,10 @@ const menus = reactive([
     }
 ]);
 
-
 /**
  * 关闭侧边栏
  */
 const closeSideMenu = () => emits('close-side-menu', {});
-
 </script>
 
 <style scoped>
@@ -61,8 +56,9 @@ const closeSideMenu = () => emits('close-side-menu', {});
     justify-content: flex-start;
 }
 
-.mo-side>span:first-child {
-    font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
+.mo-side > span:first-child {
+    font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB',
+        'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
     color: #464646;
     font-size: 28px;
     font-weight: 800;

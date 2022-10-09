@@ -4,7 +4,6 @@
 
 <script setup>
 import { markRaw, ref } from 'vue';
-import appConfig from '@/app.config.mod.js';
 import service from '@/utils/request.mod.js';
 import storage from '@/utils/storage.mod.js';
 
@@ -21,7 +20,7 @@ const changePage = (data) =>
 
 // 初始化操作
 (() => {
-    window['document'].getElementsByTagName('title')[0].innerHTML = appConfig.title['admin'];
+    window['document'].getElementsByTagName('title')[0].innerHTML = storage.getObject('title')['admin'];
     const token = storage.get('token');
     if (token) {
         fetch(service.defaults.baseURL, {

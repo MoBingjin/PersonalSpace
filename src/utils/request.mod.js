@@ -1,6 +1,5 @@
 import { ElMessageBox } from 'element-plus';
 import axios from 'axios.js';
-import appConfig from '@/app.config.mod.js';
 import storage from '@/utils/storage.mod.js';
 
 // 创建一个axios实例
@@ -60,7 +59,7 @@ service.interceptors.response.use(
             })
                 .then(() => {
                     storage.remove('token');
-                    window.location.href = `/?${appConfig.adminEntrance}`;
+                    window.location.href = `/?${storage.get('adminEntrance')}`;
                 })
                 .catch((error) => {
                     console.log(error);

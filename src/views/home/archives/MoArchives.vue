@@ -1,9 +1,16 @@
 <template>
     <div class="mo-archives">
         <el-timeline>
-            <el-timeline-item v-for="item in archives" v-infinite-scroll="load" :class="item.isTime && 'mo-time'"
-                placement="top" type="primary" :size="item.isTime ? 'large' : 'normal'" :hollow="!item.isTime"
-                :timestamp="item.timestamp">
+            <el-timeline-item
+                v-for="item in archives"
+                v-infinite-scroll="load"
+                :class="item.isTime && 'mo-time'"
+                placement="top"
+                type="primary"
+                :size="item.isTime ? 'large' : 'normal'"
+                :hollow="!item.isTime"
+                :timestamp="item.timestamp"
+            >
                 <span v-if="item.isTime">{{ item.content }}</span>
                 <router-link v-else :to="`/article/${item.articleId}`">{{ item.content }}</router-link>
             </el-timeline-item>
@@ -14,18 +21,15 @@
 </template>
 
 <script setup>
-
 import { computed, reactive, ref } from 'vue';
-import appConfig from '@/app.config.mod.js';
+import storage from '@/utils/storage.mod.js';
 
-
-const { archivesArticleURL } = appConfig.api;
-
+const { archivesArticleURL } = storage.getObject('api');
 
 // 当前页数
 const page = ref(0);
 // 分页每页数目
-const currentPageSize = ref(appConfig.pageSize['home']);
+const currentPageSize = ref(storage.getObject('pageSize')['home']);
 // 分页总数
 const total = ref(0);
 // 归档信息列表
@@ -33,10 +37,8 @@ const archives = reactive([]);
 // 是否加载中
 const loading = ref(false);
 
-
 // 是否没有更多数据
 const noMore = computed(() => page.value * currentPageSize.value >= total.value && page.value > 0);
-
 
 /**
  * 文章归档信息数据加载
@@ -51,8 +53,8 @@ const load = () => {
                 page: page.value + 1
             })
         })
-            .then(res => res.json())
-            .then(data => {
+            .then((res) => res.json())
+            .then((data) => {
                 loading.value = false;
                 if (data.code === 0) {
                     if (archives.length === 0 && data.data.archives.length > 0) {
@@ -63,7 +65,7 @@ const load = () => {
                             isTime: true
                         });
                     }
-                    data.data.archives.map(item => {
+                    data.data.archives.map((item) => {
                         const lastItem = archives[archives.length - 1];
                         if (item['yearAndMonth'] !== lastItem['yearAndMonth']) {
                             archives.push({
@@ -79,19 +81,17 @@ const load = () => {
                 }
                 console.log(data.message);
             })
-            .catch(error => {
+            .catch((error) => {
                 loading.value = false;
                 console.log(error);
             });
     }
-}
-
+};
 
 (() => {
     // 文章归档信息数据加载
     load();
 })();
-
 </script>
 
 <style>
@@ -130,7 +130,7 @@ const load = () => {
     color: #ffd04b;
 }
 
-.mo-archives>span {
+.mo-archives > span {
     width: calc(50% + 20px);
     min-width: 240px;
     font-size: 15px;

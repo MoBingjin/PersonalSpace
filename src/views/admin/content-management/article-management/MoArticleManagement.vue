@@ -110,7 +110,9 @@ import MoArticleColumn from './components/MoArticleColumn.vue';
 import { computed, reactive, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { formatDate, parse2Time } from '@/utils/date-utils.mod.js';
-import appConfig from '@/app.config.mod.js';
+import storage from '@/utils/storage.mod.js';
+
+const api = storage.getObject('api');
 
 // 回调对象
 const emits = defineEmits(['menu-item']);
@@ -154,7 +156,7 @@ const typeList = reactive(['不限', '原创', '转载', '其他']);
 // 文章信息列表
 const articleInfoList = reactive([]);
 // 分页每页数目
-const currentPageSize = ref(appConfig.pageSize['admin']);
+const currentPageSize = ref(storage.getObject('pageSize')['admin']);
 // 当前页
 const currentPage = ref(1);
 // 分页总数
@@ -194,7 +196,7 @@ const listArticleInfoList = async (page = 1) => {
   searchParams.value['page'] = page;
   return new Promise((rev, rej) => {
     // 获取文章信息列表数据
-    fetch(appConfig.api.listArticleURL, {
+    fetch(api.listArticleURL, {
       method: 'post',
       body: JSON.stringify(searchParams.value)
     })
@@ -222,7 +224,7 @@ const listArticleInfoList = async (page = 1) => {
  */
 const view = (articleId) => {
   // 获取文章数据
-  fetch(appConfig.api.dataArticleURL, {
+  fetch(api.dataArticleURL, {
     method: 'post',
     body: JSON.stringify({ articleId })
   })
@@ -249,7 +251,7 @@ const view = (articleId) => {
  */
 const edit = (articleId) => {
   // 获取文章数据
-  fetch(appConfig.api.dataArticleURL, {
+  fetch(api.dataArticleURL, {
     method: 'post',
     body: JSON.stringify({ articleId })
   })
@@ -284,7 +286,7 @@ const remove = ({ articleId, title }) => {
     }
   )
     .then(() => {
-      fetch(appConfig.api.deleteArticleURL, {
+      fetch(api.deleteArticleURL, {
         method: 'post',
         body: JSON.stringify({ articleId })
       })

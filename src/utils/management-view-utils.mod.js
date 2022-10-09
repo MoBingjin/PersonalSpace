@@ -1,6 +1,6 @@
 import { reactive } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import appConfig from '@/app.config.mod.js';
+import storage from '@/utils/storage.mod.js';
 
 /**
  * 管理相关视图工具
@@ -23,7 +23,7 @@ const managementViewUtils = {
             toolbar: {
                 key: ''
             },
-            pageSize: appConfig.pageSize['admin'],
+            pageSize: storage.getObject('pageSize')['admin'],
             page: 1,
             total: 0
         });

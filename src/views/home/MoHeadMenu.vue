@@ -13,17 +13,15 @@
 </template>
 
 <script setup>
-
 import { computed, reactive } from 'vue';
 import { useRoute } from 'vue-router';
-import appConfig from '@/app.config.mod.js';
-
+import storage from '@/utils/storage.mod.js';
 
 // 跳转路由对象
 const route = useRoute();
 
 // logo
-const logo = appConfig.title['home'];
+const logo = storage.getObject('title')['home'];
 // 菜单项
 const menus = reactive([
     {
@@ -52,12 +50,10 @@ const defaultActive = computed(() => {
     return '/main';
 });
 
-
 /**
  * 回到主页
  */
-const goHome = () => window.location.href = '/';
-
+const goHome = () => (window.location.href = '/');
 </script>
 
 <style scoped>
@@ -69,8 +65,9 @@ const goHome = () => window.location.href = '/';
     justify-content: space-between;
 }
 
-.mo-head>span:first-child {
-    font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
+.mo-head > span:first-child {
+    font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB',
+        'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
     color: #464646;
     font-size: 28px;
     font-weight: 800;
@@ -78,13 +75,13 @@ const goHome = () => window.location.href = '/';
     padding: 5px;
 }
 
-.mo-head>span:first-child:hover {
+.mo-head > span:first-child:hover {
     color: #ffd04b;
     cursor: pointer;
     user-select: none;
 }
 
-.mo-head>span:last-child {
+.mo-head > span:last-child {
     margin-right: 30px;
 }
 
@@ -99,7 +96,7 @@ const goHome = () => window.location.href = '/';
     user-select: none;
 }
 
-.el-menu>.el-menu-item:hover {
+.el-menu > .el-menu-item:hover {
     background-color: #dddddd88;
 }
 </style>

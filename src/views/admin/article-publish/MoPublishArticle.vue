@@ -32,10 +32,11 @@
 
 import { computed, reactive, ref } from 'vue';
 import { ElMessageBox } from 'element-plus';
-import appConfig from '@/app.config.mod.js';
+import storage from '@/utils/storage.mod.js';
 import MdEditorV3 from 'md-editor-v3.js';
 import 'md-editor-v3.css';
 
+const api = storage.getObject('api');
 
 // 参数
 const props = defineProps({
@@ -96,7 +97,7 @@ const onUploadImg = async (files, callback) => {
         reader.onload = function () {
           const result = String(reader.result);
           const imageBase64 = result.substring(result.indexOf(',') + 1);
-          fetch(appConfig.api.uploadImageURL, {
+          fetch(api.uploadImageURL, {
             method: 'post',
             body: JSON.stringify({ type, imageBase64 }),
             headers: {
@@ -134,7 +135,7 @@ const onSave = value => {
       }
       // 显示加载动画
       loading.value = true;
-      fetch(appConfig.api.publishArticleURL, {
+      fetch(api.publishArticleURL, {
         method: 'post',
         body: JSON.stringify(form),
       })

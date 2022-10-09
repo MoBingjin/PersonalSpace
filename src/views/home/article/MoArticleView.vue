@@ -5,7 +5,7 @@
                 <div class="mo-article-title">{{ articleData.title }}</div>
                 <div class="mo-info">
                     <span><a href="/"><img class="mo-avatar" :src="avatarPath" alt="头像" /></a></span>
-                    <span>{{ appConfig.user }}</span>
+                    <span>{{ user }}</span>
                     <span>·</span>
                     <span>{{ formatDate(articleData.createTime) }}</span>
                 </div>
@@ -24,20 +24,22 @@
 
 import { getCurrentInstance, ref  } from 'vue';
 import { useRoute } from 'vue-router';
-import appConfig from '@/app.config.mod.js';
+import storage from '@/utils/storage.mod.js';
 import { formatDate } from '@/utils/date-utils.mod.js';
 import MdEditorV3 from 'md-editor-v3.js';
 import 'md-editor-v3.css';
 
+const api = storage.getObject('api');
 
 // 获取真实路径函数
 const getActualPath = getCurrentInstance().proxy.$getActualPath;
 // 跳转路由对象
 const route = useRoute();
 
-
+// 用户
+const user = storage.get('user');
 // 头像路径
-const avatarPath = appConfig.avatarImageURL || getActualPath('static/img/avatar.png');
+const avatarPath = storage.get('avatarImageURL') || getActualPath('static/img/avatar.png');
 // 文章数据
 const articleData = ref({});
 
@@ -48,7 +50,7 @@ const articleData = ref({});
  * @param {string} articleId 文章ID
  */
 const dataArticle = articleId => {
-    fetch(appConfig.api.dataArticleURL, {
+    fetch(api.dataArticleURL, {
         method: 'post',
         body: JSON.stringify({ articleId })
     })
@@ -56,7 +58,7 @@ const dataArticle = articleId => {
         .then(data => {
             if (data.code === 0) {
                 articleData.value = data.data;
-                setCover(data.data['cover'] || appConfig.defaultCoverImageURL || getActualPath('static/img/default_cover.png'));
+                setCover(data.data['cover'] || storage.getObject('defaultCoverImageURL') || getActualPath('static/img/default_cover.png'));
             }
             console.log(data.message);
         })
