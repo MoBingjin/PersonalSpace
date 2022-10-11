@@ -81,6 +81,7 @@
 import { reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import settingService from '@/api/setting-service.mod.js';
+import storage from '@/utils/storage.mod.js';
 
 // 表单数据组件
 const formComponent = ref();
@@ -150,19 +151,24 @@ const init = () => {
 const handleSave = () => {
     formComponent.value.validate((valid) => {
         if (valid) {
+            const params = {
+                user: form.user,
+                avatarImageURL: form.avatarImageURL,
+                backgroundImageURL: form.backgroundImageURL,
+                defaultCoverImageURL: form.defaultCoverImageURL,
+                _404ImageURL: form._404ImageURL,
+                title: JSON.stringify(form.title),
+                pageSize: JSON.stringify(form.pageSize),
+                adminEntrance: form.adminEntrance
+            };
             settingService
-                .update({
-                    user: form.user,
-                    avatarImageURL: form.avatarImageURL,
-                    backgroundImageURL: form.backgroundImageURL,
-                    defaultCoverImageURL: form.defaultCoverImageURL,
-                    _404ImageURL: form._404ImageURL,
-                    title: JSON.stringify(form.title),
-                    pageSize: JSON.stringify(form.pageSize),
-                    adminEntrance: form.adminEntrance
-                })
+                .update(params)
                 .then((res) => {
                     ElMessage({ message: '保存成功!', type: 'success' });
+                    // 更新相关设置
+                    for (const key in params) {
+                        storage.set(key, params[key]);
+                    }
                 })
                 .catch((error) => {});
         }

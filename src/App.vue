@@ -50,7 +50,7 @@ const currentComponent = ref(null);
         archivesArticleURL: 'https://mine.mobingc.ml/article/archives'
     });
 
-    const mainDir = new URL(window.location.href).searchParams.has(storage.get('adminEntrance')) ? 'admin' : 'home';
+    const mainDir = new URL(window.location.href).searchParams.has(storage.get('adminEntrance') || 'admin') ? 'admin' : 'home';
     try {
         currentComponent.value = markRaw(await import(`./views/${mainDir}/Main.vue`));
     } catch (error) {
