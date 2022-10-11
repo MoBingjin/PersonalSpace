@@ -15,6 +15,10 @@
     --mo-article-column-action-color: #222226;
     --mo-article-column-button-hover: #666;
 
+    /* 文章预览 */
+    --mo-article-view-title-font-size: 32px;
+    --mo-article-view-title-font-weight: bold;
+
     /* 工具条 */
     --mo-toolbar-input-width: 300px;
 

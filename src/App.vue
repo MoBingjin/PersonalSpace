@@ -49,7 +49,9 @@ const currentComponent = ref(null);
         archivesArticleURL: 'https://mine.mobingc.ml/article/archives'
     });
 
-    const mainDir = new URL(window.location.href).searchParams.has(storage.get('adminEntrance') || 'admin') ? 'admin' : 'home';
+    const mainDir = new URL(window.location.href).searchParams.has(storage.get('adminEntrance') || 'admin')
+        ? 'admin'
+        : 'home';
     try {
         currentComponent.value = markRaw(await import(`./views/${mainDir}/Main.vue`));
     } catch (error) {
@@ -69,5 +71,18 @@ const currentComponent = ref(null);
 .el-input__suffix-inner {
     align-items: center;
     justify-content: center;
+}
+
+/* 修改全局滚动条样式 */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #0003;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+}
+::-webkit-scrollbar-track {
+    border-radius: 10px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <figure class="mo-home-background" :backgroundImg="backgroundImagePath">
+        <figure class="mo-home-background">
             <div class="mo-top">
                 <div><img class="mo-avatar" :src="avatarPath" alt="头像" referrerpolicy="no-referrer" /></div>
                 <div>
@@ -82,7 +82,7 @@ const articleInfoList = reactive([]);
 // 头像路径
 const avatarPath = storage.get('avatarImageURL') || getActualPath('static/img/avatar.png');
 // 背景图片路径
-const backgroundImagePath = storage.get('backgroundImageURL') || getActualPath('/static/img/background.png');
+const backgroundImagePath = storage.get('backgroundImageURL') || getActualPath('static/img/background.png');
 // 默认封面路径
 const defaultCoverPath = storage.get('defaultCoverImageURL') || getActualPath('static/img/default_cover.png');
 // 分页每页数目
@@ -193,7 +193,7 @@ const moveScroll = (targetTop) => {
     setTimeout(() => {
         // 主背景设置
         const backgroundElement = window['document'].getElementsByClassName('mo-home-background')[0];
-        backgroundElement.style.setProperty('--mo-home-bg', `url(${storage.get('backgroundImageURL')})`);
+        backgroundElement.style.setProperty('--mo-home-bg', `url(${backgroundImagePath})`);
 
         // 波浪背景设置
         const waveElement = window['document'].getElementsByClassName('mo-wave')[0];

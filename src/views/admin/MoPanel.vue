@@ -252,7 +252,6 @@ const loginout = () => {
     margin: 15px;
 }
 
-.mo-panel__scrollbar.el-scrollbar >>> .el-scrollbar__wrap,
 .mo-panel__scrollbar.el-scrollbar >>> .el-scrollbar__view {
     height: 100%;
 }
