@@ -8,7 +8,13 @@
             @change-page="refresh"
         >
             <template #list>
-                <el-table class="mo-category-management__list" ref="tableComponent" :data="listData" height="100%">
+                <el-table
+                    class="mo-category-management__list"
+                    ref="tableComponent"
+                    :key="tableKey"
+                    :data="listData"
+                    height="100%"
+                >
                     <el-table-column type="selection" width="55" />
                     <el-table-column label="#" type="index" width="50" />
                     <el-table-column label="名称" property="name" width="120" />
@@ -58,7 +64,7 @@
 <script setup>
 import MoManagement from '@/components/management/MoManagement.vue';
 import MoCategoryAddOrUpdate from './components/MoCategoryAddOrUpdate.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { ElMessage } from 'element-plus';
 import categoryService from '@/api/category-service.mod.js';
 import managementViewUtils from '@/utils/management-view-utils.mod.js';
@@ -67,6 +73,8 @@ import managementViewUtils from '@/utils/management-view-utils.mod.js';
 const tableComponent = ref();
 // 标签添加或更新组件对象
 const tagAddOrUpdateComponent = ref();
+// 表格组件key
+const tableKey = ref(0);
 
 // 创建属性函数
 const {
@@ -82,6 +90,11 @@ const {
     service: categoryService,
     addOrUpdateComponent: tagAddOrUpdateComponent,
     listComponent: tableComponent
+});
+
+// 监听列表数据，刷新列表组件（解决表格滚动条显示问题）
+watch(listData, () => {
+    tableKey.value++;
 });
 
 /**
@@ -121,10 +134,7 @@ const statusChange = (row) => {
     }
 
     .mo-category-management {
-        display: flex;
-        flex: 1;
-        flex-flow: column;
-        padding: 15px;
+        height: 100%;
     }
 }
 

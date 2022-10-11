@@ -37,12 +37,14 @@
                             :label="item.title"
                             :name="item.componentName"
                         >
-                            <component
-                                :is="item.component"
-                                ref="childComponent"
-                                @menu-item="openTab"
-                                :params="childParams"
-                            ></component>
+                            <el-scrollbar class="mo-panel__scrollbar">
+                                <component
+                                    :is="item.component"
+                                    ref="childComponent"
+                                    @menu-item="openTab"
+                                    :params="childParams"
+                                ></component>
+                            </el-scrollbar>
                         </el-tab-pane>
                     </el-tabs>
                 </el-main>
@@ -233,16 +235,26 @@ const loginout = () => {
 }
 
 .mo-panel__tabs.el-tabs >>> .el-tabs__content {
-    display: flex;
     flex: 1;
-    flex-flow: column;
     padding: 0;
 }
 
 .mo-panel__tabs.el-tabs >>> .el-tabs__content .el-tab-pane {
-    display: flex;
-    flex: 1;
-    flex-flow: column;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.mo-panel__scrollbar.el-scrollbar {
+    position: absolute;
+    width: calc(100% - 30px);
+    height: calc(100% - 30px);
+    margin: 15px;
+}
+
+.mo-panel__scrollbar.el-scrollbar >>> .el-scrollbar__wrap,
+.mo-panel__scrollbar.el-scrollbar >>> .el-scrollbar__view {
+    height: 100%;
 }
 
 .mo-panel__tabs.el-tabs >>> .el-tabs__header .el-tabs__nav .el-tabs__item:first-child i {

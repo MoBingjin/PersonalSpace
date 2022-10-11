@@ -1,6 +1,6 @@
 <template>
     <div class="mo-management">
-        <el-container>
+        <el-container class="mo-management__container">
             <el-header class="mo-management__header">
                 <mo-toolbar
                     :model="model.toolbar"
@@ -58,10 +58,12 @@ const emits = defineEmits(['add', 'remove-batch', 'search', 'change-page']);
     }
 
     .mo-management {
-        display: flex;
-        flex: 1;
-        flex-flow: column;
+        height: 100%;
     }
+}
+
+.mo-management__container.el-container {
+    height: 100%;
 }
 
 .mo-management__header.el-header {

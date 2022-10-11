@@ -1,40 +1,38 @@
 <template>
     <div class="mo-upload-setting">
-        <el-scrollbar class="mo-upload-setting__scrollbar">
-            <el-card class="mo-upload-setting__box-card">
-                <template #header>
-                    <div class="mo-upload-setting__card-header">
-                        <span>蓝奏云配置</span>
-                        <el-button type="primary" @click="handleSave">保存</el-button>
-                    </div>
-                </template>
-                <el-form :model="form" ref="formComponent" :rules="rules" label-width="110px">
-                    <el-form-item label="蓝奏云登录ID" prop="yLogin">
-                        <el-input v-model="form.yLogin" placeholder="登录蓝奏云 >> Cookie >> woozooo.com >> ylogin" />
-                    </el-form-item>
-                    <el-form-item label="PHP磁盘信息" prop="phpDiskInfo">
-                        <el-input
-                            v-model="form.phpDiskInfo"
-                            type="textarea"
-                            :autosize="{ minRows: 2, maxRows: 4 }"
-                            placeholder="登录蓝奏云 >> Cookie >> up.woozooo.com >> phpdisk_info"
-                        />
-                    </el-form-item>
-                    <el-form-item label="存储文件夹ID" prop="folderId">
-                        <el-input
-                            v-model="form.folderId"
-                            placeholder="登录蓝奏云 >> F12点击文件夹 >> 网络下查看doupload.php请求负载 >> folder_id, 根文件夹ID为-1"
-                        />
-                    </el-form-item>
-                    <el-form-item label="文件下载源站" prop="downloadOrigin">
-                        <el-input
-                            v-model="form.downloadOrigin"
-                            placeholder="文件分享外链，获取外链中的域，如：https://wwd.lanzouw.com/"
-                        />
-                    </el-form-item>
-                </el-form>
-            </el-card>
-        </el-scrollbar>
+        <el-card class="mo-upload-setting__box-card">
+            <template #header>
+                <div class="mo-upload-setting__card-header">
+                    <span>蓝奏云配置</span>
+                    <el-button type="primary" @click="handleSave">保存</el-button>
+                </div>
+            </template>
+            <el-form :model="form" ref="formComponent" :rules="rules" label-width="110px">
+                <el-form-item label="蓝奏云登录ID" prop="yLogin">
+                    <el-input v-model="form.yLogin" placeholder="登录蓝奏云 >> Cookie >> woozooo.com >> ylogin" />
+                </el-form-item>
+                <el-form-item label="PHP磁盘信息" prop="phpDiskInfo">
+                    <el-input
+                        v-model="form.phpDiskInfo"
+                        type="textarea"
+                        :autosize="{ minRows: 2, maxRows: 4 }"
+                        placeholder="登录蓝奏云 >> Cookie >> up.woozooo.com >> phpdisk_info"
+                    />
+                </el-form-item>
+                <el-form-item label="存储文件夹ID" prop="folderId">
+                    <el-input
+                        v-model="form.folderId"
+                        placeholder="登录蓝奏云 >> F12点击文件夹 >> 网络下查看doupload.php请求负载 >> folder_id, 根文件夹ID为-1"
+                    />
+                </el-form-item>
+                <el-form-item label="文件下载源站" prop="downloadOrigin">
+                    <el-input
+                        v-model="form.downloadOrigin"
+                        placeholder="文件分享外链，获取外链中的域，如：https://wwd.lanzouw.com/"
+                    />
+                </el-form-item>
+            </el-form>
+        </el-card>
     </div>
 </template>
 
@@ -107,24 +105,20 @@ const handleSave = () => {
 </script>
 
 <style scoped>
-.mo-upload-setting {
-    flex: 1;
+@layer MoUploadSetting {
+    .mo-upload-setting {
+        height: 100%;
+    }
+    
+    .mo-upload-setting__card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 }
 
-.mo-upload-setting__scrollbar {
-    position: absolute;
-    box-sizing: border-box;
-    padding: 15px;
-}
-
-.mo-upload-setting__box-card {
+.mo-upload-setting__box-card.el-card {
     min-width: 850px;
     width: 60%;
-}
-
-.mo-upload-setting__card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 </style>
