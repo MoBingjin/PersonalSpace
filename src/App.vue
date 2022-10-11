@@ -41,7 +41,6 @@ const currentComponent = ref(null);
 
     // api
     storage.set('api', {
-        checkUserURL: 'https://mine.mobingc.ml/user/check',
         uploadImageURL: 'https://mine.mobingc.ml/image/upload',
         publishArticleURL: 'https://mine.mobingc.ml/article/publish',
         listArticleURL: 'https://mine.mobingc.ml/article/list',
