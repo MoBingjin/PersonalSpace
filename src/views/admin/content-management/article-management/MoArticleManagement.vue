@@ -1,373 +1,190 @@
 <template>
-  <el-container>
-    <el-header>
-      <el-form :model="form" ref="formComponent" :inline="true">
-        <el-form-item>
-          <el-select
-            v-model="form.year"
-            placeholder="年"
-            size="small"
-            @change="yearChange"
-            style="width: 80px"
-          >
-            <el-option
-              v-for="item in yearList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-select
-            v-model="form.month"
-            placeholder="月"
-            size="small"
-            style="width: 80px"
-          >
-            <el-option
-              v-for="item in monthList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-select
-            v-model="form.type"
-            placeholder="文章类型"
-            size="small"
-            style="width: 120px"
-          >
-            <el-option
-              v-for="item in typeList"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-input
-            v-model="form.key"
-            placeholder="请输入关键词"
-            maxlength="100"
-            :show-word-limit="true"
-            size="small"
-            style="width: 25vw"
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" round @click="search">
-            <e-icon icon-name="el-icon-search"></e-icon>
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </el-header>
-    <el-main>
-      <el-scrollbar>
-        <div
-          v-if="articleInfoList.length > 0"
-          v-for="(item, index) in articleInfoList"
-          :key="item"
-          style="padding: 0 10px 0 10px"
-        >
-          <mo-article-column
-            :model="item"
-            @view="view"
-            @edit="edit"
-            @remove="remove"
-          />
-        </div>
-        <div v-if="isFinish && articleInfoList.length === 0">
-          <el-empty description="没有找到符合条件的数据！">
-            <el-button
-              type="primary"
-              @click="openTab('发布文章', 'MoPublishArticle', {})"
-              >发布文章</el-button
-            >
-          </el-empty>
-        </div>
-      </el-scrollbar>
-    </el-main>
-    <el-footer>
-      <el-pagination
-        layout="prev, pager, next"
-        :page-size="currentPageSize"
-        :current-page="currentPage"
-        :total="total"
-        :hide-on-single-page="true"
-        @current-change="listArticleInfoList"
-      />
-    </el-footer>
-  </el-container>
+    <div class="mo-article-management">
+        <el-container class="mo-article-management__container">
+            <el-header class="mo-article-management__header">
+                <el-form class="mo-article-management__form" :model="form" :inline="true" @submit.native.prevent>
+                    <el-form-item class="mo-article-management__form-item">
+                        <el-date-picker
+                            class="mo-article-management__date-picker"
+                            v-model="form.yearMonth"
+                            type="month"
+                            placeholder="文章年月"
+                            size="small"
+                            :disabled-date="handleDisableDate"
+                            value-format="YYYY-MM"
+                        />
+                    </el-form-item>
+                    <el-form-item class="mo-article-management__form-item">
+                        <el-select
+                            class="mo-article-management__select"
+                            v-model="form.categoryId"
+                            placeholder="文章分类"
+                            size="small"
+                            clearable
+                        >
+                            <el-option
+                                v-for="category in categoryList"
+                                :key="category.id"
+                                :label="category.name"
+                                :value="category.id"
+                            />
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item class="mo-article-management__form-item mo-article-management__form-item--input">
+                        <el-input
+                            class="mo-article-management__input"
+                            v-model="form.key"
+                            placeholder="请输入关键词"
+                            maxlength="100"
+                            size="small"
+                            clearable
+                            @keyup.enter.native="handleSearch(form)"
+                        >
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item class="mo-article-management__form-item">
+                        <el-button type="primary" round @click="handleSearch(form)">
+                            <e-icon icon-name="el-icon-search"></e-icon>
+                        </el-button>
+                    </el-form-item>
+                </el-form>
+            </el-header>
+            <el-main class="mo-article-management__main">
+                <div v-if="listData.length > 0" v-for="articleInfo in listData" :key="articleInfo.id">
+                    <mo-article-column
+                        :model="articleInfo"
+                        @view="handleView"
+                        @edit="handleEdit"
+                        @remove="handleRemove"
+                    />
+                </div>
+                <div v-else>
+                    <el-empty description="没有找到符合条件的数据！">
+                        <el-button type="primary" @click="openTab('发布文章', 'MoPublishArticle', {})"
+                            >发布文章</el-button
+                        >
+                    </el-empty>
+                </div>
+            </el-main>
+            <el-footer class="mo-article-management__footer">
+                <el-pagination
+                    class="mo-article-management__pagination"
+                    layout="prev, pager, next"
+                    :page-size="model.pageSize"
+                    :current-page="model.Page"
+                    :total="model.total"
+                    :hide-on-single-page="true"
+                    @current-change="refresh"
+                />
+            </el-footer>
+        </el-container>
+    </div>
 </template>
 
 <script setup>
 import MoArticleColumn from './components/MoArticleColumn.vue';
-import { computed, reactive, ref } from 'vue';
-import { ElMessage, ElMessageBox } from 'element-plus';
-import { formatDate, parse2Time } from '@/utils/date-utils.mod.js';
-import storage from '@/utils/storage.mod.js';
-
-const api = storage.getObject('api');
+import { computed, reactive } from 'vue';
+import articleService from '@/api/article-service.mod.js';
+import categoryService from '@/api/category-service.mod.js';
+import managementViewUtils from '@/utils/management-view-utils.mod.js';
 
 // 回调对象
 const emits = defineEmits(['menu-item']);
 
 // 表单对象
 const form = reactive({
-  year: '',
-  month: '',
-  type: '',
-  key: ''
-});
-// 年列表
-const yearList = reactive(
-  (() => {
-    const yearList = [
-      {
-        value: 'all',
-        label: '不限'
-      }
-    ];
-    const nowYear = formatDate(new Date().getTime(), 'yyyy');
-    const lastYear = String(Number(nowYear) - 1);
-    const previousYear = String(Number(nowYear) - 2);
-    yearList.push({
-      value: previousYear,
-      label: previousYear
-    });
-    yearList.push({
-      value: lastYear,
-      label: lastYear
-    });
-    yearList.push({
-      value: nowYear,
-      label: nowYear
-    });
-    return yearList;
-  })()
-);
-// 文章类型列表
-const typeList = reactive(['不限', '原创', '转载', '其他']);
-// 文章信息列表
-const articleInfoList = reactive([]);
-// 分页每页数目
-const currentPageSize = ref(storage.getObject('pageSize')['admin']);
-// 当前页
-const currentPage = ref(1);
-// 分页总数
-const total = ref(0);
-// 搜索条件
-const searchParams = ref({});
-// 是否初始完成
-const isFinish = ref(false);
-
-// 月列表
-const monthList = computed(() => {
-  const monthList = [
-    {
-      value: 'all',
-      label: '不限'
-    }
-  ];
-  if (form.year !== '' && form.year !== 'all') {
-    for (let i = 1; i <= 12; ++i) {
-      const month = i < 10 ? '0' + i : String(i);
-      monthList.push({
-        value: month,
-        label: month
-      });
-    }
-  }
-  return monthList;
-});
-
-/**
- * 获取文章信息列表
- *
- * @param {number} page 当前页
- */
-const listArticleInfoList = async (page = 1) => {
-  currentPage.value = page;
-  searchParams.value['page'] = page;
-  return new Promise((rev, rej) => {
-    // 获取文章信息列表数据
-    fetch(api.listArticleURL, {
-      method: 'post',
-      body: JSON.stringify(searchParams.value)
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.code === 0) {
-          articleInfoList.splice(0, articleInfoList.length);
-          data.data.list.map((item) => articleInfoList.push(item));
-          total.value = data.data.total;
+    yearMonth: '',
+    categoryId: '',
+    key: '',
+    startTime: computed(() => {
+        if (!form.yearMonth) {
+            return undefined;
         }
-        console.log(data.message);
-        rev(data.message);
-      })
-      .catch((error) => {
-        console.log(error);
-        rej(error);
-      });
-  });
-};
-
-/**
- * 浏览文章
- *
- * @param {string} articleId 文章ID
- */
-const view = (articleId) => {
-  // 获取文章数据
-  fetch(api.dataArticleURL, {
-    method: 'post',
-    body: JSON.stringify({ articleId })
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.code === 0) {
-        openTab(
-          data.data.title,
-          'content-management/article-management/MoArticleView',
-          { articleData: data.data }
-        );
-      }
-      console.log(data.message);
+        return `${form.yearMonth}-01`;
+    }),
+    endTime: computed(() => {
+        if (!form.yearMonth) {
+            return undefined;
+        }
+        const yearMonth = form.yearMonth.split('-');
+        let year;
+        let month = Number(yearMonth[1]);
+        month++;
+        if (month > 12) {
+            year = String(Number(yearMonth[0]) + 1);
+            month = '01';
+        } else {
+            year = yearMonth[0];
+            month = month > 9 ? String(month) : `0${month}`;
+        }
+        return `${year}-${month}-01`;
     })
-    .catch((error) => {
-      console.log(error);
-    });
+});
+// 文章分类选项列表
+const categoryList = reactive([]);
+
+const {
+    // 页面数据
+    model,
+    // 文章信息列表
+    listData,
+    handleSearch,
+    handleRemove,
+    refresh
+} = managementViewUtils.create({ service: articleService });
+
+/**
+ * 浏览文章事件
+ *
+ * @param {any} article 文章对象
+ */
+const handleView = (article) => {
+    openTab(article.title, 'content-management/article-management/MoArticleView', { articleId: article.id });
 };
 
 /**
- * 编辑文章
+ * 编辑文章事件
  *
  * @param {string} articleId 文章ID
  */
-const edit = (articleId) => {
-  // 获取文章数据
-  fetch(api.dataArticleURL, {
-    method: 'post',
-    body: JSON.stringify({ articleId })
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.code === 0) {
-        openTab('编辑文章', 'article-publish/MoPublishArticle', {
-          articleData: data.data
-        });
-      }
-      console.log(data.message);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
-
-/**
- * 删除文章
- *
- * @param {string} articleId 文章ID
- */
-const remove = ({ articleId, title }) => {
-  ElMessageBox.confirm(
-    `确定要删除标题为'${
-      title.length < 10 ? title : title.substring(0, 8) + '...'
-    }'的文章吗？`,
-    '系统提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消'
-    }
-  )
-    .then(() => {
-      fetch(api.deleteArticleURL, {
+const handleEdit = (articleId) => {
+    // 获取文章数据
+    fetch(api.dataArticleURL, {
         method: 'post',
         body: JSON.stringify({ articleId })
-      })
+    })
         .then((res) => res.json())
         .then((data) => {
-          if (data.code === 0) {
-            listArticleInfoList();
-            ElMessage({ message: '删除成功！', type: 'success' });
-          } else {
-            ElMessage({ message: '删除失败！', type: 'error' });
-          }
+            if (data.code === 0) {
+                openTab('编辑文章', 'article-publish/MoPublishArticle', {
+                    articleData: data.data
+                });
+            }
+            console.log(data.message);
         })
         .catch((error) => {
-          ElMessage({ message: '删除异常！', type: 'error' });
-          console.log(error);
+            console.log(error);
         });
-    })
-    .catch(() => {});
 };
 
 /**
- * 年选择事件
+ * 时间禁用事件
  *
- * @param {any} value
+ * @param {Date} date 时间
  */
-const yearChange = (value) => value === 'all' && (form.month = 'all');
+const handleDisableDate = (date) => date.getTime() > Date.now();
 
 /**
- * 搜索事件
+ * 加载文章分类选项列表
  */
-const search = async () => {
-  // 搜索参数
-  searchParams.value = { limit: currentPageSize.value };
-
-  // 关键词
-  const keyValue = form.key.trim();
-  if (keyValue !== '') {
-    searchParams.value['title'] = keyValue;
-    searchParams.value['description'] = keyValue;
-  }
-
-  // 文章类型
-  const typeValue = form.type;
-  if (typeValue !== '' && typeValue !== '不限') {
-    searchParams.value['type'] = typeValue;
-  }
-
-  // 时间
-  const yearValue = form.year;
-  if (yearValue !== '' && yearValue !== 'all') {
-    const monthValue = form.month;
-    if (monthValue !== '' && monthValue !== 'all') {
-      let endTimeYear;
-      let endTimeMonth;
-      let endMonthNumber = Number(monthValue) + 1;
-      if (endMonthNumber > 12) {
-        endTimeYear = Number(yearValue) + 1;
-        endTimeMonth = '01';
-      } else {
-        endTimeYear = yearValue;
-        endTimeMonth =
-          endMonthNumber < 10 ? '0' + endMonthNumber : endMonthNumber;
-      }
-      searchParams.value['startTime'] = parse2Time(
-        `${yearValue}-${monthValue}-01 00:00:00`
-      );
-      searchParams.value['endTime'] = parse2Time(
-        `${endTimeYear}-${endTimeMonth}-01 00:00:00`
-      );
-    } else {
-      searchParams.value['startTime'] = parse2Time(
-        `${yearValue}-01-01 00:00:00`
-      );
-      searchParams.value['endTime'] = parse2Time(
-        `${Number(yearValue) + 1}-01-01 00:00:00`
-      );
-    }
-  }
-
-  // 获取文章信息列表
-  await listArticleInfoList(1);
+const loadCategoryList = () => {
+    categoryService
+        .simpleList()
+        .then((res) => {
+            categoryList.splice(0, categoryList.length);
+            res.data.map((category) => categoryList.push(category));
+        })
+        .catch((error) => {});
 };
 
 /**
@@ -377,38 +194,69 @@ const search = async () => {
  * @param {string} componentName 组件名称
  * @param {any} params 组件参数
  */
-const openTab = (title, componentName, params) =>
-  emits('menu-item', { title, componentName, params });
+const openTab = (title, componentName, params) => emits('menu-item', { title, componentName, params });
 
 // 初始化操作
 (async () => {
-  // 获取文章信息列表
-  await search();
-  isFinish.value = true;
+    // 加载文章分类选项列表
+    loadCategoryList();
+    // 获取文章信息列表
+    refresh(1);
 })();
 </script>
 
 <style scoped>
-.el-header {
-  height: 20px;
-  margin: 0 13px 30px 13px;
-  padding: 0;
+@layer MoArticleManagement {
+    * {
+        --mo-article-management-header-height: 56px;
+    }
+
+    .mo-article-management {
+        height: 100%;
+    }
 }
 
-.el-main,
-.el-footer {
-  padding: 0;
+.mo-article-management__container.el-container {
+    height: 100%;
 }
 
-.el-form-item {
-  margin-right: 10px;
+.mo-article-management__header.el-header {
+    height: var(--mo-article-management-header-height);
+    padding: 10px 0;
+    box-sizing: border-box;
 }
 
-.el-scrollbar {
-  height: 68vh;
+.mo-article-management__form.el-form {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
 }
 
-.el-pagination {
-  margin-top: 20px;
+.mo-article-management__form-item.el-form-item {
+    margin-right: 10px;
+    margin-bottom: 0;
+}
+
+.mo-article-management__form-item.el-form-item >>> .mo-article-management__date-picker.el-date-editor,
+.mo-article-management__select.el-select {
+    width: 130px;
+}
+
+.mo-article-management__form-item.mo-article-management__form-item--input.el-form-item {
+    flex: 0.35;
+}
+
+.mo-article-management__input.el-input {
+    min-width: 260px;
+}
+
+.mo-article-management__main.el-main,
+.mo-article-management__footer.el-footer {
+    padding: 0;
+}
+
+.mo-article-management__pagination.el-pagination {
+    margin-top: 20px;
 }
 </style>

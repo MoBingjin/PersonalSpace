@@ -73,6 +73,12 @@ const currentComponent = ref(null);
     justify-content: center;
 }
 
+/* element plus 日期选择框图标错位修复 */
+.el-input__prefix-inner {
+    align-items: center;
+    justify-content: center;
+}
+
 /* 修改全局滚动条样式 */
 ::-webkit-scrollbar {
     width: 6px;

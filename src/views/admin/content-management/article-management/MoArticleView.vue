@@ -1,18 +1,20 @@
 <template>
     <div class="mo-article-view">
-        <span class="mo-article-view__title">{{ props.params.articleData.title }}</span>
+        <span class="mo-article-view__title">{{ article.title }}</span>
         <p>
-            类型：<el-tag type="danger" size="small">{{ props.params.articleData.type }}</el-tag>
+            类型：<el-tag type="danger" size="small">{{ article.categoryName }}</el-tag>
         </p>
-        <p>摘要：{{ props.params.articleData.description }}</p>
-        <md-editor-v3 v-model="props.params.articleData.content" :previewOnly="true" />
+        <p>摘要：{{ article.description }}</p>
+        <md-editor-v3 v-model="article.content" :previewOnly="true" />
         <el-backtop target=".mo-article-view" />
     </div>
 </template>
 
 <script setup>
+import articleService from '@/api/article-service.mod.js';
 import MdEditorV3 from 'md-editor-v3.js';
 import 'md-editor-v3.css';
+import { reactive } from 'vue';
 
 // 参数
 const props = defineProps({
@@ -21,6 +23,44 @@ const props = defineProps({
         default: () => ({})
     }
 });
+
+// 文章对象
+const article = reactive({
+    id: '',
+    title: '',
+    description: '',
+    cover: '',
+    content: '',
+    categoryId: '',
+    categoryName: '',
+    tags: [],
+    views: 0,
+    topping: false,
+    status: 1,
+    createTime: ''
+});
+
+/**
+ * 获取文章信息
+ *
+ * @param {String} id 文章ID
+ */
+const getArticleInfo = (id) => {
+    articleService
+        .info(id)
+        .then((res) => {
+            for (const key in res.data) {
+                article[key] = res.data[key];
+            }
+        })
+        .catch((error) => {});
+};
+
+// 初始化操作
+(() => {
+    // 获取文章信息
+    getArticleInfo(props.params.articleId);
+})();
 </script>
 
 <style scoped>

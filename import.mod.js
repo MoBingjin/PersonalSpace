@@ -21,7 +21,11 @@ const tagComponents = {
 
     // ElementPlus组件库
     elementPlus: {
-        js: ['https://cdn.staticfile.org/element-plus/2.0.1/index.full.js'],
+        js: [
+            'https://cdn.staticfile.org/element-plus/2.0.1/index.full.js',
+            // 语言包
+            'https://cdn.staticfile.org/element-plus/2.0.1/locale/zh-cn.js'
+        ],
         css: ['https://cdn.staticfile.org/element-plus/2.0.1/index.css']
     },
 

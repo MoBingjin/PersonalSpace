@@ -1,6 +1,6 @@
 * {
     /* 文章列表 */
-    --mo-article-column-height: 100px;
+    --mo-article-column-height: 120px;
     --mo-article-column-row-border-radius: 10px;
     --mo-article-column-row-background-color-hover: #f5f7fa;
     --mo-article-column-title-font-size: 16px;
@@ -9,6 +9,10 @@
     --mo-article-column-title-color-hover: red;
     --mo-article-column-description-font-size: 14px;
     --mo-article-column-description-color: #999aaa;
+    --mo-article-column-info-font-size: 14px;
+    --mo-article-column-info-color: #999aaa;
+    --mo-article-column-info-icon-font-size: 14px;
+    --mo-article-column-info-icon-color: #989898;
     --mo-article-column-time-font-size: 14px;
     --mo-article-column-time-color: #999;
     --mo-article-column-action-font-size: 14px;

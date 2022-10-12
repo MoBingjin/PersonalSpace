@@ -14,6 +14,11 @@ export const categoryApi = {
     list: `${baseURL}/category/list/`,
 
     /**
+     * 获取分类简要信息列表
+     */
+    simpleList: `${baseURL}/category/simple/list/`,
+
+    /**
      * 获取分类信息
      */
     info: `${baseURL}/category/info/`,
@@ -58,6 +63,13 @@ const categoryService = {
      */
     list: async (params, page = 1, size = pageSize) =>
         service.post(`${categoryApi.list}?page=${page}&size=${size}`, params),
+
+    /**
+     * 获取分类简要信息列表
+     *
+     * @returns Promise
+     */
+    simpleList: async () => service.get(categoryApi.simpleList),
 
     /**
      * 获取分类信息
