@@ -2,7 +2,15 @@
     <div class="mo-article-view">
         <span class="mo-article-view__title">{{ article.title }}</span>
         <p>
-            类型：<el-tag type="danger" size="small">{{ article.categoryName }}</el-tag>
+            <span>分类：</span>
+            <el-tag type="danger" size="small">{{ article.categoryName || '未分类' }}</el-tag>
+        </p>
+        <p v-if="article.tags.length > 0">
+            <span>标签：</span>
+            <span v-for="(tag, index) in article.tags" :key="tag.id">
+                <el-tag size="small">{{ tag.name }}</el-tag>
+                <span v-if="index < article.tags.length - 1">、</span>
+            </span>
         </p>
         <p>摘要：{{ article.description }}</p>
         <md-editor-v3 v-model="article.content" :previewOnly="true" />

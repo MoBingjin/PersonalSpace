@@ -10,7 +10,7 @@
                 </div>
                 <div class="mo-article-column__info">
                     <e-icon class="mo-article-column__info-icon" icon-name="fa fa-folder" />
-                    <span>{{ model.categoryName }}</span>
+                    <span>{{ model.categoryName || '未分类' }}</span>
                     <span class="mo-article-column__info-split">·</span>
                     <e-icon v-if="model.tags.length > 0" class="mo-article-column__info-icon" icon-name="fa fa-tags" />
                     <span v-if="model.tags.length > 0" v-for="tag in model.tags" :key="tag.id">

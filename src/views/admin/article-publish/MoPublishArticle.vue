@@ -158,7 +158,7 @@ const handleAddOrUpdate = (value) => {
                         duration: 2 * 1000
                     });
                     form.id = res.data.id;
-                    oldForm.value = JSON.stringify(form);
+                    oldFormString.value = JSON.stringify(form);
                 })
                 .catch((error) => {
                     // 关闭加载动画

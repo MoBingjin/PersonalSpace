@@ -73,7 +73,7 @@
                 </div>
                 <div v-else>
                     <el-empty description="没有找到符合条件的数据！">
-                        <el-button type="primary" @click="openTab('发布文章', 'MoPublishArticle', {}, Date.now())"
+                        <el-button type="primary" @click="openTab('发布文章', 'article-publish/MoPublishArticle', {}, Date.now())"
                             >发布文章</el-button
                         >
                     </el-empty>
