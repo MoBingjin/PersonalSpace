@@ -1,4 +1,4 @@
-import { ElMessageBox } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import axios from 'axios.js';
 import storage from '@/utils/storage.mod.js';
 

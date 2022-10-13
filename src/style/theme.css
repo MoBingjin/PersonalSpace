@@ -19,6 +19,12 @@
     --mo-article-column-action-color: #222226;
     --mo-article-column-button-hover: #666;
 
+    /* 文章管理 */
+    --mo-article-management-header-height: 56px;
+
+    /* 文章发布 */
+    --mo-publish-article-header-height: 176px;
+
     /* 文章预览 */
     --mo-article-view-title-font-size: 32px;
     --mo-article-view-title-font-weight: bold;

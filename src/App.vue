@@ -79,14 +79,19 @@ const currentComponent = ref(null);
     justify-content: center;
 }
 
+/* element plus 选择器选择标签文字显示不完修复 */
+.el-select__tags-text {
+    height: 14px;
+}
+
 /* 修改全局滚动条样式 */
 ::-webkit-scrollbar {
     width: 6px;
 }
 ::-webkit-scrollbar-thumb {
-    background-color: #0003;
-    border-radius: 10px;
     transition: all 0.2s ease-in-out;
+    border-radius: 10px;
+    background-color: #0003;
 }
 ::-webkit-scrollbar-track {
     border-radius: 10px;

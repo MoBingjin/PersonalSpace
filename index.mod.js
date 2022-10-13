@@ -71,7 +71,7 @@ Object.defineProperty(Image.prototype, 'src', {
         try {
             const pathname = new URL(url).pathname;
             if (pathname.startsWith('/image/download/')) {
-                // 提前缓存图片，防止跨域跳转报错
+                // 提前缓存图片，防止跳转跨域报错
                 await fetch(url, { mode: 'no-cors' });
             }
         } catch (error) {}

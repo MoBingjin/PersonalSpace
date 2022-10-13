@@ -10,7 +10,7 @@
                 <el-aside class="mo-panel__aside" :width="asideWidth">
                     <div class="mo-panel__left-menu">
                         <span class="mo-panel__menu-body">
-                            <mo-left-menu :isCollapse="isCollapse" @menu-item="openTab" />
+                            <mo-left-menu :isCollapse="isCollapse" @open-tab="handleOpenTab" />
                         </span>
                         <span class="mo-panel__menu-divider">
                             <span
@@ -29,20 +29,20 @@
                         v-model="editableTabsValue"
                         type="border-card"
                         closable
-                        @tab-remove="removeTab"
+                        @tab-remove="handleRemoveTab"
                     >
                         <el-tab-pane
                             v-for="item in editableTabs"
-                            :key="item.componentName"
+                            :key="item.componentId"
                             :label="item.title"
-                            :name="item.componentName"
+                            :name="item.componentId"
                         >
                             <el-scrollbar class="mo-panel__scrollbar">
                                 <component
                                     :is="item.component"
-                                    ref="childComponent"
-                                    @menu-item="openTab"
-                                    :params="childParams"
+                                    v-model:not-saved="item.notSaved"
+                                    :params="item.params"
+                                    @open-tab="handleOpenTab"
                                 ></component>
                             </el-scrollbar>
                         </el-tab-pane>
@@ -69,10 +69,6 @@ const isCollapse = ref(false);
 const editableTabsValue = ref('');
 // 标签数组
 const editableTabs = ref([]);
-// 子组件
-const childComponent = ref();
-// 子组件参数
-const childParams = ref({});
 
 // 侧边栏宽度
 const asideWidth = computed(() => (isCollapse.value ? '73px' : '209px'));
@@ -82,33 +78,38 @@ const dividerTitle = computed(() => (isCollapse.value ? '展开' : '收起'));
 const dividerIcon = computed(() => (isCollapse.value ? '&raquo;' : '&laquo;'));
 
 /**
- * 打开菜单对应标签页
+ * 打开菜单对应标签页事件
  *
  * @param {Object} data 打开标签数据：data.title（标题）、data.componentName（组件名）
  */
-const openTab = (data) => {
-    const { title, componentName, params } = data;
+const handleOpenTab = (data) => {
+    const { title, componentName, params, multipleId } = data;
     const tabs = editableTabs.value;
-    childParams.value = params || {};
+    const componentId = !multipleId ? title : title + String(multipleId);
     import(`./${componentName}.vue`).then((component) => {
-        if (!containsObject(tabs, { componentName })) {
+        if (!containsObject(tabs, { componentId })) {
             tabs.push({
                 title,
-                componentName,
-                component: markRaw(component)
+                componentId,
+                component: markRaw(component),
+                params: params || {},
+                notSaved: false
             });
         }
-        editableTabsValue.value = componentName;
+        editableTabsValue.value = componentId;
     });
 };
 
 /**
- * 删除标签页
+ * 删除标签页事件
  *
- * @param {string} targetName 删除的目标标签页名称
+ * @param {string} targetId 删除的目标标签页标识
  */
-const removeTab = async (targetName) => {
-    if (childComponent.value.notSaved) {
+const handleRemoveTab = async (targetId) => {
+    const currentRemoveTab = getTabByComponentId(targetId);
+    let activeId = editableTabsValue.value;
+    if (currentRemoveTab.notSaved) {
+        editableTabsValue.value = currentRemoveTab.componentId;
         const result = await ElMessageBox.confirm('存在修改内容未保存，确定要关闭?', '系统提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消'
@@ -116,21 +117,37 @@ const removeTab = async (targetName) => {
         if (result === 'cancel') {
             return;
         }
+        if (activeId !== targetId) {
+            editableTabsValue.value = activeId;
+        }
     }
     const tabs = editableTabs.value;
-    let activeName = editableTabsValue.value;
-    if (activeName === targetName) {
+    if (activeId === targetId) {
         tabs.forEach((tab, index) => {
-            if (tab.componentName === targetName) {
+            if (tab.componentId === targetId) {
                 const nextTab = tabs[index + 1] || tabs[index - 1];
                 if (nextTab) {
-                    activeName = nextTab.componentName;
+                    activeId = nextTab.componentId;
                 }
             }
         });
     }
-    editableTabsValue.value = activeName;
-    editableTabs.value = tabs.filter((tab) => tab.componentName !== targetName);
+    editableTabsValue.value = activeId;
+    editableTabs.value = tabs.filter((tab) => tab.componentId !== targetId);
+};
+
+/**
+ * 通过组件ID获取组件信息对象
+ *
+ * @param {string} componentId 组件ID
+ */
+const getTabByComponentId = (componentId) => {
+    for (const tab of editableTabs.value) {
+        if (tab.componentId === componentId) {
+            return tab;
+        }
+    }
+    return null;
 };
 
 /**
@@ -163,7 +180,7 @@ const loginout = () => {
 // 初始化操作
 (() => {
     // 打开首页
-    openTab({
+    handleOpenTab({
         title: '首页',
         componentName: 'main/MoMain'
     });

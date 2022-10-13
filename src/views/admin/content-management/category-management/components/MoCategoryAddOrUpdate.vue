@@ -36,7 +36,6 @@
 <script setup>
 import MoImageUploader from '@/components/upload/MoImageUploader.vue';
 import { reactive, ref } from 'vue';
-// import { ElMessage } from 'element-plus';
 import categoryService from '@/api/category-service.mod.js';
 
 // 回调事件

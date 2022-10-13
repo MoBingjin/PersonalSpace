@@ -7,7 +7,7 @@
                 </el-icon>
                 <span>首页</span>
             </el-menu-item>
-            <el-menu-item index="2" @click="openTab('发布文章', 'article-publish/MoPublishArticle', {})">
+            <el-menu-item index="2" @click="openTab('发布文章', 'article-publish/MoPublishArticle', {}, Date.now())">
                 <el-icon>
                     <e-icon icon-name="el-icon-s-opportunity" />
                 </el-icon>
@@ -74,8 +74,8 @@ defineProps({
     isCollapse: Boolean
 });
 
-// 回调对象
-const emits = defineEmits(['menu-item']);
+// 回调
+const emits = defineEmits(['open-tab']);
 
 /**
  * 打开标签
@@ -83,8 +83,10 @@ const emits = defineEmits(['menu-item']);
  * @param {string} title 菜单标题
  * @param {string} componentName 组件名称
  * @param {any} params 组件参数
+ * @param {any} multipleId 多标签唯一ID
  */
-const openTab = (title, componentName, params) => emits('menu-item', { title, componentName, params });
+const openTab = (title, componentName, params, multipleId) =>
+    emits('open-tab', { title, componentName, params, multipleId });
 </script>
 
 <style scoped>

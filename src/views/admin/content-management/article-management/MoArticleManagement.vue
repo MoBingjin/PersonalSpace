@@ -30,6 +30,19 @@
                             />
                         </el-select>
                     </el-form-item>
+                    <el-form-item class="mo-article-management__form-item">
+                        <el-select
+                            class="mo-article-management__select--multiple"
+                            v-model="form.tabIds"
+                            placeholder="文章标签"
+                            size="small"
+                            :multiple-limit="3"
+                            multiple
+                            clearable
+                        >
+                            <el-option v-for="tag in tagList" :key="tag.id" :label="tag.name" :value="tag.id" />
+                        </el-select>
+                    </el-form-item>
                     <el-form-item class="mo-article-management__form-item mo-article-management__form-item--input">
                         <el-input
                             class="mo-article-management__input"
@@ -60,7 +73,7 @@
                 </div>
                 <div v-else>
                     <el-empty description="没有找到符合条件的数据！">
-                        <el-button type="primary" @click="openTab('发布文章', 'MoPublishArticle', {})"
+                        <el-button type="primary" @click="openTab('发布文章', 'MoPublishArticle', {}, Date.now())"
                             >发布文章</el-button
                         >
                     </el-empty>
@@ -86,15 +99,17 @@ import MoArticleColumn from './components/MoArticleColumn.vue';
 import { computed, reactive } from 'vue';
 import articleService from '@/api/article-service.mod.js';
 import categoryService from '@/api/category-service.mod.js';
+import tagService from '@/api/tag-service.mod.js';
 import managementViewUtils from '@/utils/management-view-utils.mod.js';
 
-// 回调对象
-const emits = defineEmits(['menu-item']);
+// 回调
+const emits = defineEmits(['open-tab']);
 
 // 表单对象
 const form = reactive({
     yearMonth: '',
     categoryId: '',
+    tabIds: [],
     key: '',
     startTime: computed(() => {
         if (!form.yearMonth) {
@@ -122,6 +137,8 @@ const form = reactive({
 });
 // 文章分类选项列表
 const categoryList = reactive([]);
+// 文章标签选项列表
+const tagList = reactive([]);
 
 const {
     // 页面数据
@@ -139,7 +156,12 @@ const {
  * @param {any} article 文章对象
  */
 const handleView = (article) => {
-    openTab(article.title, 'content-management/article-management/MoArticleView', { articleId: article.id });
+    openTab(
+        `浏览-${article.title.substring(0, 3)}...`,
+        'content-management/article-management/MoArticleView',
+        { articleId: article.id },
+        article.id
+    );
 };
 
 /**
@@ -147,24 +169,13 @@ const handleView = (article) => {
  *
  * @param {string} articleId 文章ID
  */
-const handleEdit = (articleId) => {
-    // 获取文章数据
-    fetch(api.dataArticleURL, {
-        method: 'post',
-        body: JSON.stringify({ articleId })
-    })
-        .then((res) => res.json())
-        .then((data) => {
-            if (data.code === 0) {
-                openTab('编辑文章', 'article-publish/MoPublishArticle', {
-                    articleData: data.data
-                });
-            }
-            console.log(data.message);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+const handleEdit = (article) => {
+    openTab(
+        `编辑-${article.title.substring(0, 3)}...`,
+        'article-publish/MoPublishArticle',
+        { articleId: article.id },
+        article.id
+    );
 };
 
 /**
@@ -188,18 +199,35 @@ const loadCategoryList = () => {
 };
 
 /**
+ * 加载文章标签选项列表
+ */
+const loadTagList = () => {
+    tagService
+        .simpleList()
+        .then((res) => {
+            tagList.splice(0, tagList.length);
+            res.data.map((tag) => tagList.push(tag));
+        })
+        .catch((error) => {});
+};
+
+/**
  * 打开标签
  *
  * @param {string} title 菜单标题
  * @param {string} componentName 组件名称
  * @param {any} params 组件参数
+ * @param {any} multipleId 多标签唯一ID
  */
-const openTab = (title, componentName, params) => emits('menu-item', { title, componentName, params });
+const openTab = (title, componentName, params, multipleId) =>
+    emits('open-tab', { title, componentName, params, multipleId });
 
 // 初始化操作
 (async () => {
     // 加载文章分类选项列表
     loadCategoryList();
+    // 加载文章标签选项列表
+    loadTagList();
     // 获取文章信息列表
     refresh(1);
 })();
@@ -221,9 +249,9 @@ const openTab = (title, componentName, params) => emits('menu-item', { title, co
 }
 
 .mo-article-management__header.el-header {
+    box-sizing: border-box;
     height: var(--mo-article-management-header-height);
     padding: 10px 0;
-    box-sizing: border-box;
 }
 
 .mo-article-management__form.el-form {
@@ -241,6 +269,10 @@ const openTab = (title, componentName, params) => emits('menu-item', { title, co
 .mo-article-management__form-item.el-form-item >>> .mo-article-management__date-picker.el-date-editor,
 .mo-article-management__select.el-select {
     width: 130px;
+}
+
+.mo-article-management__select--multiple.el-select {
+    width: 300px;
 }
 
 .mo-article-management__form-item.mo-article-management__form-item--input.el-form-item {

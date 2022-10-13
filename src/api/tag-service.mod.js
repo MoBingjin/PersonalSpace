@@ -14,6 +14,11 @@ export const tagApi = {
     list: `${baseURL}/tag/list/`,
 
     /**
+     * 获取标签简要信息列表
+     */
+    simpleList: `${baseURL}/tag/simple/list/`,
+
+    /**
      * 获取标签信息
      */
     info: `${baseURL}/tag/info/`,
@@ -56,8 +61,14 @@ const tagService = {
      * @param {number} size 每页数据条数
      * @returns Promise
      */
-    list: async (params, page = 1, size = pageSize) =>
-        service.post(`${tagApi.list}?page=${page}&size=${size}`, params),
+    list: async (params, page = 1, size = pageSize) => service.post(`${tagApi.list}?page=${page}&size=${size}`, params),
+
+    /**
+     * 获取标签简要信息列表
+     *
+     * @returns Promise
+     */
+    simpleList: async () => service.get(tagApi.simpleList),
 
     /**
      * 获取标签信息
