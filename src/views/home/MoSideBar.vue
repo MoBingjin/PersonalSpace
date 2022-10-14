@@ -24,7 +24,7 @@ const logo = storage.getObject('title')['home'];
 // 菜单项
 const menus = reactive([
     {
-        index: '/home',
+        index: '/main',
         icon: 'el-icon-s-home',
         name: '首页'
     },

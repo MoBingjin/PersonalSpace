@@ -1,234 +1,213 @@
 <template>
-  <div :class="homeAppClass">
-    <span :class="sideMenuClass">
-      <mo-side-menu @close-side-menu="sideMenuStatus = false"></mo-side-menu>
-    </span>
-    <span :class="mainContainerClass">
-      <div :class="sideMenuBtnClass" @click="sideMenuStatus = !sideMenuStatus">
-        <e-icon v-if="sideMenuStatus" class="mo-side-menu-btn-icon" icon-name="fa fa-remove" />
-        <e-icon v-if="!sideMenuStatus" class="mo-side-menu-btn-icon" icon-name="fa fa-navicon" />
-      </div>
-      <div :class="hiddenAreaClass" @click="sideMenuStatus = !sideMenuStatus"></div>
-      <div :class="headerClass">
-        <mo-head-menu></mo-head-menu>
-      </div>
-      <div>
-        <router-view></router-view>
-      </div>
-    </span>
-  </div>
+    <div :class="`mo-home-main ${isOpenSideBar ? 'mo-home-main--behind' : ''}`">
+        <span
+            v-if="existSideBar"
+            :class="`mo-home-main__side-bar ${isOpenSideBar ? 'mo-home-main__side-bar--open' : ''}`"
+        >
+            <mo-side-bar @close-side-menu="isOpenSideBar = false" />
+        </span>
+        <span :class="`mo-home-main__container ${isOpenSideBar ? 'mo-home-main__container--move' : ''}`">
+            <div v-if="existSideBar" class="mo-home-main__side-switch" @click="isOpenSideBar = !isOpenSideBar">
+                <e-icon
+                    class="mo-home-main__switch-icon"
+                    :icon-name="`fa fa-${isOpenSideBar ? 'remove' : 'navicon'}`"
+                />
+            </div>
+            <div v-if="isOpenSideBar" class="mo-home-main__mask" @click="isOpenSideBar = false"></div>
+            <div v-if="existHeaderBar" class="mo-home-main__header-bar" :class="headerBarClass">
+                <mo-header-bar />
+            </div>
+            <router-view />
+        </span>
+    </div>
 </template>
 
 <script setup>
-
-import MoHeadMenu from './MoHeadMenu.vue';
-import MoSideMenu from './MoSideMenu.vue';
-import { computed, getCurrentInstance, ref, watch } from 'vue';
+import MoHeaderBar from './MoHeaderBar.vue';
+import MoSideBar from './MoSideBar.vue';
+import { getCurrentInstance, ref, watch } from 'vue';
 import router from '@/router/router.mod.js';
 import storage from '@/utils/storage.mod.js';
-
 
 // 设置路由
 getCurrentInstance().appContext.app.use(router);
 
+// 页面标题
 const title = storage.getObject('title');
+// 是否启用侧边栏
+const enableSideBar = ref(true);
+// 是否启用导航栏
+const enableHeaderBar = ref(true);
+// 是否存在侧边栏
+const existSideBar = ref(enableSideBar.value && window.screen.width <= 960);
+// 是否存在导航栏
+const existHeaderBar = ref(enableHeaderBar.value && window.screen.width > 960);
+// 侧边栏是否打开
+const isOpenSideBar = ref(false);
 
 // 导航栏class
-const headerClass = ref('mo-hidden');
-// 侧边栏打开状态
-const sideMenuStatus = ref(false);
-
-
-const homeAppClass = computed(() => sideMenuStatus.value ? 'mo-home-app open' : 'mo-home-app');
-const sideMenuClass = computed(() => sideMenuStatus.value ? 'mo-side-menu open' : 'mo-side-menu');
-const mainContainerClass = computed(() => sideMenuStatus.value ? 'mo-main-container open' : 'mo-main-container');
-const sideMenuBtnClass = computed(() => sideMenuStatus.value ? 'mo-side-menu-btn open' : 'mo-side-menu-btn');
-const hiddenAreaClass = computed(() => sideMenuStatus.value ? 'mo-hidden-area open' : 'mo-hidden-area');
-
+const headerBarClass = ref('');
 
 /**
  * 滚动条监听事件
- * 
+ *
  * @param {Event} event 事件对象
  */
-const handleScroll = event => {
-  if (event.target.documentElement.scrollTop > 0) {
-    headerClass.value = 'mo-header mo-header-show';
-  } else {
-    headerClass.value = 'mo-header mo-header-hidden';
-  }
-}
-
+const handleScroll = (event) => {
+    headerBarClass.value = `mo-home-main__header-bar--bg-${
+        event.target.documentElement.scrollTop > 0 ? 'show' : 'hidden'
+    }`;
+};
 
 // 初始化操作
 (() => {
+    // 监听屏幕宽度变化
+    window.onresize = () => {
+        existSideBar.value = enableSideBar.value && window.screen.width <= 960;
+        existHeaderBar.value = enableHeaderBar.value && window.screen.width > 960;
+    };
 
-  // 淡入效果
-  window['document'].body.style.opacity = '0';
-  setTimeout(() => {
-    window['document'].body.style.transition = 'opacity 1.5s';
-    window['document'].body.style.opacity = '1';
-  }, 0);
+    // 淡入效果
+    document.body.style.opacity = '0';
+    setTimeout(() => {
+        document.body.style.transition = 'opacity 1.5s';
+        document.body.style.opacity = '1';
+    }, 0);
 
-  // 路由监听
-  watch(router.currentRoute, (route) => {
+    // 路由监听
+    watch(router.currentRoute, (route) => {
+        // 404
+        if (route.matched[0].path === '/:other') {
+            document.getElementsByTagName('title')[0].innerHTML = title['_404'];
+            enableSideBar.value = false;
+            enableHeaderBar.value = false;
+            window.removeEventListener('scroll', handleScroll);
+            return;
+        }
 
-    // 404
-    if (route.matched[0].path === '/:other') {
-      window['document'].getElementsByTagName('title')[0].innerHTML = title['_404'];
-      window['document'].getElementsByClassName('mo-side-menu-btn')[0].style['display'] = 'none';
-      headerClass.value = 'mo-hidden';
-      window.removeEventListener('scroll', handleScroll);
-      return;
-    }
+        document.getElementsByTagName('title')[0].innerHTML = `${route.matched[0].name} | ${title['home']}`;
+        enableSideBar.value = true;
+        enableHeaderBar.value = true;
 
-    window['document'].getElementsByTagName('title')[0].innerHTML = `${route.matched[0].name} | ${title['home']}`;
+        // 主页
+        if (['/', '/main'].includes(route.path)) {
+            headerBarClass.value = 'mo-home-main__header-bar--bg-hidden';
+            window.addEventListener('scroll', handleScroll);
+            return;
+        }
 
-    // 主页
-    if (['/', '/main'].includes(route.path)) {
-      headerClass.value = 'mo-header mo-header-init';
-      window.addEventListener('scroll', handleScroll);
-      return;
-    }
-
-    // 其他
-    headerClass.value = 'mo-header mo-header-show';
-    window.removeEventListener('scroll', handleScroll);
-  });
-
+        // 其他
+        headerBarClass.value = 'mo-home-main__header-bar--bg-show';
+        window.removeEventListener('scroll', handleScroll);
+    });
 })();
-
 </script>
 
 <style scoped>
-@media screen and (max-width: 960px) {
+@layer {
+    * {
+        --mo-home-main-header-bar-height: 60px;
+        --mo-home-main-header-bar-background-color: rgba(255, 255, 255, 0.95);
+        --mo-home-main-header-bar-background-color-hover: rgba(255, 255, 255, 1);
+        --mo-home-main-header-bar-background-color-hidden: rgba(255, 255, 255, 0);
+        --mo-home-main-header-bar-box-shadow: 0 1px 40px -8px rgb(0 0 0 / 50%);
+        --mo-home-main-header-bar-transition: all 0.8s;
+        --mo-home-main-header-bar-transition-bg-show: all 0.5s;
+        --mo-home-main-side-bar-width: 250px;
+        --mo-home-main-side-bar-background-color: #fff;
+        --mo-home-main-side-bar-transition: left 0.3s ease;
+        --mo-home-main-side-switch-width: 50px;
+        --mo-home-main-side-switch-height: 50px;
+        --mo-home-main-side-switch-text-shadow: 2px 2px 10px #000;
+        --mo-home-main-side-switch-icon-font-size: 40px;
+        --mo-home-main-side-switch-icon-color: #fff;
+        --mo-home-main-mask-background-color: #99999957;
+    }
 
-  .mo-home-app.open {
+    .mo-home-main__header-bar {
+        position: fixed;
+        z-index: 998;
+        width: 100%;
+        height: var(--mo-home-main-header-bar-height);
+        transition: var(--mo-home-main-header-bar-transition);
+        background-color: var(--mo-home-main-header-bar-background-color);
+    }
+
+    .mo-home-main__header-bar:hover {
+        transition: var(--mo-home-main-header-bar-transition-bg-show);
+        background-color: var(--mo-home-main-header-bar-background-color-hover);
+        box-shadow: var(--mo-home-main-header-bar-box-shadow);
+    }
+
+    .mo-home-main__header-bar--bg-show {
+        transition: var(--mo-home-main-header-bar-transition-bg-show);
+        background-color: var(--mo-home-main-header-bar-background-color);
+        box-shadow: var(--mo-home-main-header-bar-box-shadow);
+    }
+
+    .mo-home-main__header-bar--bg-hidden {
+        background-color: var(--mo-home-main-header-bar-background-color-hidden);
+    }
+
+    @media screen and (max-width: 960px) {
+        .mo-home-main--behind {
+            position: fixed;
+            overflow: hidden;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .mo-home-main__side-bar {
+            position: absolute;
+            z-index: 999;
+            left: calc(-1 * var(--mo-home-main-side-bar-width));
+            display: block;
+            width: var(--mo-home-main-side-bar-width);
+            height: 100%;
+            transition: var(--mo-home-main-side-bar-transition);
+            background-color: var(--mo-home-main-side-bar-background-color);
+        }
+
+        .mo-home-main__side-bar--open {
+            left: 0;
+        }
+
+        .mo-home-main__container {
+            display: block;
+            width: 100%;
+            padding-left: 0;
+            transition-duration: 0.5s;
+        }
+
+        .mo-home-main__container--move {
+            padding-left: var(--mo-home-main-side-bar-width);
+        }
+
+        .mo-home-main__side-switch {
+            position: absolute;
+            z-index: 2;
+            width: var(--mo-home-main-side-switch-width);
+            height: var(--mo-home-main-side-switch-height);
+            text-shadow: var(--mo-home-main-side-switch-text-shadow);
+        }
+
+        .mo-home-main__mask {
+            position: absolute;
+            z-index: 1;
+            display: block;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--mo-home-main-mask-background-color);
+        }
+    }
+}
+
+.mo-home-main__switch-icon {
+    font-size: var(--mo-home-main-side-switch-icon-font-size);
+    line-height: var(--mo-home-main-side-switch-height);
     width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    position: fixed;
-  }
-
-  .mo-side-menu {
-    width: 0;
     height: 100%;
-    max-width: 250px;
-    position: absolute;
-    display: none;
-    background-color: #fff;
-    transition: all .3s ease;
-    z-index: 999;
-  }
-
-  .mo-side-menu.open {
-    display: block;
-    width: 250px;
-  }
-
-  .mo-main-container {
-    width: 100%;
-    display: block;
-    padding-left: 0;
-    transition-duration: .5s;
-  }
-
-  .mo-main-container.open {
-    padding-left: 250px;
-  }
-
-  .mo-side-menu-btn {
-    width: 50px;
-    height: 50px;
-    position: absolute;
-    text-shadow: 2px 2px 10px #000;
-    z-index: 2;
-  }
-
-  .mo-side-menu-btn-icon {
-    width: 100%;
-    height: 100%;
-    font-size: 40px;
     text-align: center;
-    line-height: 50px;
-    color: #ffffff;
-  }
-
-  .mo-hidden-area.open {
-    width: 100%;
-    height: 100vh;
-    display: block;
-    position: absolute;
-    background-color: #99999957;
-    z-index: 1;
-  }
-
-  .mo-header {
-    display: none;
-  }
-
-}
-
-@media screen and (min-width: 961px) {
-
-  .mo-side-menu,
-  .mo-side-menu-btn {
-    display: none;
-  }
-
-}
-
-.mo-header {
-  position: fixed;
-  width: 100%;
-  height: 60px;
-  top: 0;
-  background-color: rgba(255, 255, 255, 0.95);
-  z-index: 998;
-}
-
-.mo-header:hover {
-  background-color: rgba(255, 255, 255, 1);
-  box-shadow: 0 1px 40px -8px rgb(0 0 0 / 50%);
-  animation: headerShow 0.5s 1;
-}
-
-.mo-header-init {
-  background-color: rgba(255, 255, 255, 0);
-}
-
-.mo-header-show {
-  background-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 1px 40px -8px rgb(0 0 0 / 50%);
-  animation: headerShow 0.5s 1;
-}
-
-@keyframes headerShow {
-  from {
-    background-color: rgba(255, 255, 255, 0);
-  }
-
-  to {
-    background-color: rgba(255, 255, 255, 0.95);
-  }
-}
-
-.mo-header-hidden {
-  background-color: rgba(255, 255, 255, 0);
-  animation: headerHidden 0.8s 1;
-}
-
-@keyframes headerHidden {
-  from {
-    background-color: rgba(255, 255, 255, 1);
-  }
-
-  to {
-    background-color: rgba(255, 255, 255, 0);
-  }
-}
-
-.mo-hidden {
-  display: none;
+    color: var(--mo-home-main-side-switch-icon-color);
 }
 </style>

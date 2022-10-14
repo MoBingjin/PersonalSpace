@@ -1,5 +1,5 @@
 <template>
-    <div class="mo-head">
+    <div class="mo-header-bar">
         <span @click="goHome">{{ logo }}</span>
         <span>
             <el-menu :default-active="defaultActive" mode="horizontal" :ellipsis="false" :router="true">
@@ -40,6 +40,7 @@ const menus = reactive([
         name: '关于'
     }
 ]);
+
 // 默认激活菜单项
 const defaultActive = computed(() => {
     for (let menu of menus) {
@@ -57,7 +58,7 @@ const goHome = () => (window.location.href = '/');
 </script>
 
 <style scoped>
-.mo-head {
+.mo-header-bar {
     width: 100%;
     height: 100%;
     display: flex;
@@ -65,7 +66,7 @@ const goHome = () => (window.location.href = '/');
     justify-content: space-between;
 }
 
-.mo-head > span:first-child {
+.mo-header-bar > span:first-child {
     font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB',
         'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
     color: #464646;
@@ -75,13 +76,13 @@ const goHome = () => (window.location.href = '/');
     padding: 5px;
 }
 
-.mo-head > span:first-child:hover {
+.mo-header-bar > span:first-child:hover {
     color: #ffd04b;
     cursor: pointer;
     user-select: none;
 }
 
-.mo-head > span:last-child {
+.mo-header-bar > span:last-child {
     margin-right: 30px;
 }
 
@@ -94,6 +95,14 @@ const goHome = () => (window.location.href = '/');
     --el-color-primary-light-9: #ffffff00;
     border-bottom: none;
     user-select: none;
+}
+
+.el-menu--horizontal > .el-menu-item.is-active:focus {
+    background-color: #ffffff00;
+}
+
+.el-menu--horizontal > .el-menu-item.is-active:focus:hover {
+    background-color: var(--el-menu-hover-bg-color);
 }
 
 .el-menu > .el-menu-item:hover {

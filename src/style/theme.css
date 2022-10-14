@@ -1,4 +1,26 @@
 * {
+    /***************************** 前台 *****************************/
+
+    /* 前台主界面 */
+    --mo-home-main-header-bar-height: 60px;
+    --mo-home-main-header-bar-background-color: rgba(255, 255, 255, 0.95);
+    --mo-home-main-header-bar-background-color-hover: rgba(255, 255, 255, 1);
+    --mo-home-main-header-bar-background-color-hidden: rgba(255, 255, 255, 0);
+    --mo-home-main-header-bar-box-shadow: 0 1px 40px -8px rgb(0 0 0 / 50%);
+    --mo-home-main-header-bar-transition: all 0.8s;
+    --mo-home-main-header-bar-transition-bg-show: all 0.5s;
+    --mo-home-main-side-bar-width: 250px;
+    --mo-home-main-side-bar-background-color: #fff;
+    --mo-home-main-side-bar-transition: left 0.3s ease;
+    --mo-home-main-side-switch-width: 50px;
+    --mo-home-main-side-switch-height: 50px;
+    --mo-home-main-side-switch-text-shadow: 2px 2px 10px #000;
+    --mo-home-main-side-switch-icon-font-size: 40px;
+    --mo-home-main-side-switch-icon-color: #fff;
+    --mo-home-main-mask-background-color: #99999957;
+
+    /***************************** 后台 *****************************/
+
     /* 文章列表 */
     --mo-article-column-height: 120px;
     --mo-article-column-row-border-radius: 10px;
