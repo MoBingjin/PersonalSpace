@@ -17,12 +17,7 @@
             <e-icon icon-name="el-icon-plus" />
         </el-upload>
         <teleport to="body">
-            <el-image-viewer
-                class="mo-image-uploader__preview"
-                v-if="dialogImageUrl !== ''"
-                :url-list="[dialogImageUrl]"
-                @close="dialogImageUrl = ''"
-            />
+            <el-image-viewer v-if="dialogImageUrl !== ''" :url-list="[dialogImageUrl]" @close="dialogImageUrl = ''" />
         </teleport>
     </div>
 </template>
@@ -65,7 +60,7 @@ const fileList = computed({
 
 // 单文件组件样式变量
 const singleStyleVariable = computed(
-    () => `--mo-image-uploader-upload-display: ${props.imageFileList.length > 0 ? 'none' : 'inline-block'}`
+    () => `--mo-image-uploader-upload-display: ${props.imageFileList.length > 0 ? 'none' : 'inline-flex'}`
 );
 
 /**
@@ -140,7 +135,7 @@ const handleRemove = (uploadFile, uploadFiles) => {
 <style scoped>
 @layer MoImageUploader {
     * {
-        --mo-image-uploader-upload-display: inline-block;
+        --mo-image-uploader-upload-display: inline-flex;
     }
 }
 
@@ -157,14 +152,5 @@ const handleRemove = (uploadFile, uploadFiles) => {
     width: 72px;
     height: 72px;
     margin: 0 4px 4px 0;
-}
-
-.mo-image-uploader >>> .el-upload.el-upload--picture-card i {
-    font-size: 20px;
-    margin-top: 26px;
-}
-
-.mo-image-uploader__preview.el-image-viewer__wrapper {
-    z-index: 3000 !important;
 }
 </style>

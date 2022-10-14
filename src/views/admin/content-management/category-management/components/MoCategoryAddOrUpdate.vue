@@ -3,15 +3,10 @@
         <el-dialog v-model="dialogFormVisible" :title="title" :close-on-press-escape="false" width="400px">
             <el-form :model="formData" ref="formComponent" :rules="rules">
                 <el-form-item label="名称" prop="name">
-                    <el-input v-model="formData.name" placeholder="请输入分类名称" maxlength="128" size="small" />
+                    <el-input v-model="formData.name" placeholder="请输入分类名称" maxlength="128" />
                 </el-form-item>
                 <el-form-item label="描述" prop="description">
-                    <el-input
-                        v-model="formData.description"
-                        placeholder="请输入分类描述"
-                        maxlength="255"
-                        size="small"
-                    />
+                    <el-input v-model="formData.description" placeholder="请输入分类描述" maxlength="255" />
                 </el-form-item>
                 <el-form-item class="mo-category-dialog__image" label="图片" :label-width="'50px'">
                     <mo-image-uploader
@@ -20,7 +15,7 @@
                     />
                 </el-form-item>
                 <el-form-item label="状态" :label-width="'50px'" v-if="formData.id">
-                    <el-switch v-model="formData.status" class="mo-category-dialog__status ml-2" size="small" />
+                    <el-switch v-model="formData.status" class="mo-category-dialog__status" />
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -149,6 +144,10 @@ defineExpose({ init });
 
 .mo-category-dialog__image.el-form-item {
     margin-bottom: 8px;
+}
+
+.mo-category-dialog__image.el-form-item >>> .el-form-item__content {
+    line-height: unset;
 }
 
 .mo-category-dialog__status.el-switch {

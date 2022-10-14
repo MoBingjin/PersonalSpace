@@ -30,41 +30,30 @@
                     <el-input v-model="form._404ImageURL" placeholder="404页面图片, 默认为/public/img/404.png" />
                 </el-form-item>
                 <el-form-item label="网页标题">
-                    <el-input
-                        class="mo-general-setting__input"
-                        v-model="form.title.home"
-                        size="small"
-                        placeholder="前台网页标题"
-                    >
+                    <el-input class="mo-general-setting__input" v-model="form.title.home" placeholder="前台网页标题">
                         <template #prepend>前台</template>
                     </el-input>
-                    <el-input
-                        class="mo-general-setting__input"
-                        v-model="form.title.admin"
-                        size="small"
-                        placeholder="后台网页标题"
-                    >
+                    <el-input class="mo-general-setting__input" v-model="form.title.admin" placeholder="后台网页标题">
                         <template #prepend>后台</template>
                     </el-input>
                     <el-input
                         class="mo-general-setting__input mo-general-setting__input--last"
                         v-model="form.title._404"
-                        size="small"
                         placeholder="错误网页标题"
                     >
                         <template #prepend>错误</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item label="分页数据条数">
+                    <label class="el-form-item__label">前台</label>
                     <span class="mo-general-setting__selector">
-                        <label class="el-form-item__label">前台</label>
-                        <el-select v-model="form.pageSize.home" size="small">
+                        <el-select v-model="form.pageSize.home">
                             <el-option v-for="index of 100" :key="index" :label="index" :value="index" />
                         </el-select>
                     </span>
-                    <span class="mo-general-setting__selector--last">
-                        <label class="el-form-item__label">后台</label>
-                        <el-select v-model="form.pageSize.admin" size="small">
+                    <label class="el-form-item__label">后台</label>
+                    <span class="mo-general-setting__selector mo-general-setting__selector--last">
+                        <el-select v-model="form.pageSize.admin">
                             <el-option v-for="index of 100" :key="index" :label="index" :value="index" />
                         </el-select>
                     </span>
@@ -194,7 +183,8 @@ const handleSave = () => {
     }
 
     .mo-general-setting__selector {
-        margin-right: 20px;
+        margin-right: 12px;
+        width: 130px;
     }
 
     .mo-general-setting__selector--last {

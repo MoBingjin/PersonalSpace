@@ -112,7 +112,8 @@ const handleRemoveTab = async (targetId) => {
         editableTabsValue.value = currentRemoveTab.componentId;
         const result = await ElMessageBox.confirm('存在修改内容未保存，确定要关闭?', '系统提示', {
             confirmButtonText: '确定',
-            cancelButtonText: '取消'
+            cancelButtonText: '取消',
+            type: 'warning'
         }).catch(() => 'cancel');
         if (result === 'cancel') {
             return;

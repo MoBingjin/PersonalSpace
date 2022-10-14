@@ -1,4 +1,4 @@
-/*! Element Plus v2.0.1 */
+/*! Element Plus v2.2.18 */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :

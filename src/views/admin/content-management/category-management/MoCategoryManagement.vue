@@ -27,7 +27,7 @@
                                 :src="scope.row.image ? scope.row.image : undefined"
                                 :preview-src-list="[scope.row.image]"
                                 :initial-index="0"
-                                :append-to-body="true"
+                                :preview-teleported="true"
                             >
                                 <template #error>
                                     <e-icon icon-name="el-icon-picture-outline" />

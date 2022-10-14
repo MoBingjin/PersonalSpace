@@ -63,26 +63,27 @@ const currentComponent = ref(null);
 
 <style>
 /* element plus 消息对话框图标错位修复 */
-.el-message-box__status {
+/* .el-message-box__status {
     position: absolute !important;
-}
+} */
 
 /* element plus 输入框一键清空按钮错位修复 */
-.el-input__suffix-inner {
+/* .el-input__suffix-inner {
     align-items: center;
     justify-content: center;
-}
+} */
 
 /* element plus 日期选择框图标错位修复 */
-.el-input__prefix-inner {
+/* .el-input__prefix-inner {
     align-items: center;
     justify-content: center;
-}
+} */
 
 /* element plus 选择器选择标签文字显示不完修复 */
-.el-select__tags-text {
+/* .el-select__tags-text {
     height: 14px;
-}
+} */
+
 
 /* 修改全局滚动条样式 */
 ::-webkit-scrollbar {

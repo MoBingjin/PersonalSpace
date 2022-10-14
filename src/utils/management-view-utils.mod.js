@@ -88,7 +88,8 @@ const managementViewUtils = {
         const handleRemove = (id) => {
             ElMessageBox.confirm(`确定要删除吗?`, '系统提示', {
                 confirmButtonText: '确定',
-                cancelButtonText: '取消'
+                cancelButtonText: '取消',
+                type: 'warning'
             })
                 .then(() => remove(id))
                 .catch(() => 'cancel');
@@ -101,12 +102,14 @@ const managementViewUtils = {
             const selectRows = getSelectRows();
             if (selectRows.length === 0) {
                 ElMessageBox.alert('请选择需要删除的元素!', '系统提示', {
-                    confirmButtonText: '确定'
+                    confirmButtonText: '确定',
+                    type: 'info'
                 });
             } else {
                 ElMessageBox.confirm('确定要删除所选元素吗?', '系统提示', {
                     confirmButtonText: '确定',
-                    cancelButtonText: '取消'
+                    cancelButtonText: '取消',
+                    type: 'warning'
                 })
                     .then(() => {
                         const ids = selectRows.map((row) => row.id);

@@ -3,18 +3,17 @@
         <el-dialog v-model="dialogFormVisible" :title="title" width="400px">
             <el-form :model="formData" ref="formComponent" :rules="rules">
                 <el-form-item label="名称" prop="name">
-                    <el-input v-model="formData.name" placeholder="请输入标签名称" maxlength="128" size="small" />
+                    <el-input v-model="formData.name" placeholder="请输入标签名称" maxlength="128" />
                 </el-form-item>
                 <el-form-item label="描述" prop="description">
                     <el-input
                         v-model="formData.description"
                         placeholder="请输入标签描述"
                         maxlength="255"
-                        size="small"
                     />
                 </el-form-item>
                 <el-form-item label="状态" prop="status" :label-width="'50px'" v-if="formData.id">
-                    <el-switch v-model="formData.status" class="mo-tag-dialog__status ml-2" size="small" />
+                    <el-switch v-model="formData.status" class="mo-tag-dialog__status" />
                 </el-form-item>
             </el-form>
             <template #footer>

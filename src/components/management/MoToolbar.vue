@@ -16,9 +16,8 @@
                         class="mo-toolbar__input"
                         v-model="model.key"
                         placeholder="请输入关键词"
-                        clearable
                         :maxlength="inputMaxlength"
-                        size="small"
+                        clearable
                         @keyup.enter.native="emits('search', model)"
                     >
                     </el-input>

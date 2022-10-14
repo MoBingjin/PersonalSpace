@@ -9,7 +9,6 @@
                             v-model="form.yearMonth"
                             type="month"
                             placeholder="文章年月"
-                            size="small"
                             :disabled-date="handleDisableDate"
                             value-format="YYYY-MM"
                         />
@@ -19,7 +18,6 @@
                             class="mo-article-management__select"
                             v-model="form.categoryId"
                             placeholder="文章分类"
-                            size="small"
                             clearable
                         >
                             <el-option
@@ -35,9 +33,10 @@
                             class="mo-article-management__select--multiple"
                             v-model="form.tabIds"
                             placeholder="文章标签"
-                            size="small"
                             :multiple-limit="3"
                             multiple
+                            collapse-tags
+                            collapse-tags-tooltip
                             clearable
                         >
                             <el-option v-for="tag in tagList" :key="tag.id" :label="tag.name" :value="tag.id" />
@@ -49,7 +48,6 @@
                             v-model="form.key"
                             placeholder="请输入关键词"
                             maxlength="100"
-                            size="small"
                             clearable
                             @keyup.enter.native="handleSearch(form)"
                         >
@@ -73,7 +71,9 @@
                 </div>
                 <div v-else>
                     <el-empty description="没有找到符合条件的数据！">
-                        <el-button type="primary" @click="openTab('发布文章', 'article-publish/MoPublishArticle', {}, Date.now())"
+                        <el-button
+                            type="primary"
+                            @click="openTab('发布文章', 'article-publish/MoPublishArticle', {}, Date.now())"
                             >发布文章</el-button
                         >
                     </el-empty>
@@ -262,8 +262,7 @@ const openTab = (title, componentName, params, multipleId) =>
 }
 
 .mo-article-management__form-item.el-form-item {
-    margin-right: 10px;
-    margin-bottom: 0;
+    margin: 0 10px 0 0;
 }
 
 .mo-article-management__form-item.el-form-item >>> .mo-article-management__date-picker.el-date-editor,
@@ -272,7 +271,7 @@ const openTab = (title, componentName, params, multipleId) =>
 }
 
 .mo-article-management__select--multiple.el-select {
-    width: 300px;
+    width: 200px;
 }
 
 .mo-article-management__form-item.mo-article-management__form-item--input.el-form-item {
@@ -283,12 +282,14 @@ const openTab = (title, componentName, params, multipleId) =>
     min-width: 260px;
 }
 
-.mo-article-management__main.el-main,
-.mo-article-management__footer.el-footer {
+.mo-article-management__main.el-main {
     padding: 0;
 }
 
-.mo-article-management__pagination.el-pagination {
-    margin-top: 20px;
+.mo-article-management__footer.el-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
 }
 </style>

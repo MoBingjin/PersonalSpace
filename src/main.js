@@ -59,7 +59,7 @@ vm.use(ElementPlus, {
 vm.use(EIconPicker, {
     FontAwesome: true,
     ElementUI: true,
-    eIcon: true,
+    eIcon: false,
     eIconSymbol: true,
     addIconList: [],
     removeIconList: [],

@@ -22,11 +22,11 @@ const tagComponents = {
     // ElementPlus组件库
     elementPlus: {
         js: [
-            'https://cdn.staticfile.org/element-plus/2.0.1/index.full.js',
+            'https://cdn.staticfile.org/element-plus/2.2.18/index.full.js',
             // 语言包
-            'https://cdn.staticfile.org/element-plus/2.0.1/locale/zh-cn.js'
+            'https://cdn.staticfile.org/element-plus/2.2.18/locale/zh-cn.js'
         ],
-        css: ['https://cdn.staticfile.org/element-plus/2.0.1/index.css']
+        css: ['https://cdn.staticfile.org/element-plus/2.2.18/index.css']
     },
 
     // EIconPicker图标组件库
@@ -36,8 +36,8 @@ const tagComponents = {
             'https://npm.elemecdn.com/e-icon-picker@2.0.7/lib/symbol.js'
         ],
         css: [
-            // EIconPicker图标样式
-            'https://npm.elemecdn.com/e-icon-picker@2.0.7/lib/index.css',
+            // EIconPicker自带图标样式，与Element Plus有冲突
+            // 'https://npm.elemecdn.com/e-icon-picker@2.0.7/lib/index.css',
             // FontAwesome图标样式
             'https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css',
             // ElementPlus图标样式

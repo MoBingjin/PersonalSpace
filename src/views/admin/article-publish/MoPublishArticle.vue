@@ -33,7 +33,15 @@
                     <el-form-item
                         class="mo-publish-article__form-item mo-publish-article__form-item--inline mo-publish-article__tag"
                     >
-                        <el-select v-model="form.tagIds" placeholder="无标签" :multiple-limit="3" multiple clearable>
+                        <el-select
+                            v-model="form.tagIds"
+                            :multiple-limit="3"
+                            placeholder="无标签"
+                            multiple
+                            collapse-tags
+                            collapse-tags-tooltip
+                            clearable
+                        >
                             <el-option v-for="tag in tagList" :key="tag.id" :label="tag.name" :value="tag.id" />
                         </el-select>
                     </el-form-item>
@@ -139,7 +147,8 @@ const handleAddOrUpdate = (value) => {
             if (!value) {
                 const result = await ElMessageBox.confirm('当前没有文章内容，是否保存?', '系统提示', {
                     confirmButtonText: '确定',
-                    cancelButtonText: '取消'
+                    cancelButtonText: '取消',
+                    type: 'warning'
                 }).catch(() => 'cancel');
                 if (result === 'cancel') {
                     return;
@@ -242,7 +251,7 @@ const handleUploadImage = async (files, callback) => {
 <style scoped>
 @layer MoPublishArticle {
     * {
-        --mo-publish-article-header-height: 176px;
+        --mo-publish-article-header-height: 166px;
     }
 
     .mo-publish-article {
@@ -278,11 +287,7 @@ const handleUploadImage = async (files, callback) => {
 }
 
 .mo-publish-article__tag.el-form-item {
-    width: 300px;
-}
-
-.mo-publish-article__tag.el-form-item .el-select {
-    flex: 1;
+    width: 200px;
 }
 
 .mo-publish-article__main.el-main {
