@@ -19,7 +19,80 @@
     --mo-home-main-side-switch-icon-color: #fff;
     --mo-home-main-mask-background-color: #99999957;
 
+    /* 前台导航栏 */
+    --mo-header-bar-logo-font-family: "HYWenHei-85W", "Merriweather Sans", Helvetica, Tahoma, Arial, "PingFang SC",
+        "Hiragino Sans GB", "Microsoft Yahei", "WenQuanYi Micro Hei", "sans-serif";
+    --mo-header-bar-logo-font-size: 28px;
+    --mo-header-bar-logo-font-weight: 800;
+    --mo-header-bar-logo-margin: 0 0 0 10px;
+    --mo-header-bar-logo-padding: 5px;
+    --mo-header-bar-logo-color: #464646;
+    --mo-header-bar-logo-color-hover: #ffd04b;
+    --mo-header-bar-menu-margin: 0 30px 0 0;
+    --mo-header-bar-menu-text-color: #666;
+    --mo-header-bar-menu-text-color-hover: #409eff;
+    --mo-header-bar-menu-text-color-active: #ffd04b;
+    --mo-header-bar-menu-background-color: #fff0;
+    --mo-header-bar-menu-background-color-hover: #ddd8;
+
+    /* 前台侧边栏 */
+    --mo-side-bar-logo-font-family: "HYWenHei-85W", "Merriweather Sans", Helvetica, Tahoma, Arial, "PingFang SC",
+        "Hiragino Sans GB", "Microsoft Yahei", "WenQuanYi Micro Hei", "sans-serif";
+    --mo-side-bar-logo-font-size: 28px;
+    --mo-side-bar-logo-font-weight: 800;
+    --mo-side-bar-logo-padding: 200px 0 50px 0;
+    --mo-side-bar-logo-color: #464646;
+    --mo-side-bar-menu-text-color: #666;
+    --mo-side-bar-menu-text-color-active: #ffd04b;
+    --mo-side-bar-menu-background-color: #fff0;
+
     /***************************** 后台 *****************************/
+
+    /* 后台管理登录 */
+    --mo-login-background-image: url("https://tva1.sinaimg.cn/large/007q9ZDily1h3mv7fyyjlj32yo1o0hdu.jpg");
+    --mo-login-background-after-background: #f6f6f6b4;
+    --mo-login-panel-background: #ffffff80;
+    --mo-login-panel-box-shadow: 0 0 10px #000;
+    --mo-login-title-font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+        "微软雅黑", Arial, sans-serif;
+    --mo-login-title-font-size: 30px;
+    --mo-login-title-color: #000;
+
+    /* 后台管理面板 */
+    --mo-panel-header-height: 60px;
+    --mo-panel-header-border-bottom: 1px solid #ffd04b;
+    --mo-panel-header-background-color: #505860;
+    --mo-panel-aside-background-color: #545c64;
+    --mo-panel-main-padding: 5px;
+    --mo-panel-main-background-color: #596172;
+    --mo-panel-tabs-border-radius: 5px;
+    --mo-panel-menu-divider-background-color: #bebebe;
+
+    /* 后台管理头部 */
+    --mo-head-logo-font-family: "宋体";
+    --mo-head-logo-font-size: 30px;
+    --mo-head-logo-color: #e6e6e6;
+    --mo-head-logo-border: 1px solid #f5f5f5;
+    --mo-head-logo-border-radius: 5px;
+    --mo-head-logout-font-size: 24px;
+    --mo-head-logout-color: #e6e6e6;
+    --mo-head-logout-color-hover: #ffd04b;
+
+    /* 后台管理左侧边菜单 */
+    --mo-left-menu-background-color: #545c64;
+    --mo-left-menu-background-color-hover: #434a50;
+    --mo-left-menu-text-color: #fff;
+    --mo-left-menu-active-text-color: #ffd04b;
+
+    /* 文章发布 */
+    --mo-publish-article-header-height: 166px;
+
+    /* 文章管理 */
+    --mo-article-management-header-height: 56px;
+
+    /* 文章预览 */
+    --mo-article-view-title-font-size: 32px;
+    --mo-article-view-title-font-weight: bold;
 
     /* 文章列表 */
     --mo-article-column-height: 120px;
@@ -41,63 +114,25 @@
     --mo-article-column-action-color: #222226;
     --mo-article-column-button-hover: #666;
 
-    /* 文章管理 */
-    --mo-article-management-header-height: 56px;
+    /* 分类管理视图 */
+    --mo-category-management-status-on-color: #13ce66;
+    --mo-category-management-status-off-color: #ff4949;
 
-    /* 文章发布 */
-    --mo-publish-article-header-height: 166px;
-
-    /* 文章预览 */
-    --mo-article-view-title-font-size: 32px;
-    --mo-article-view-title-font-weight: bold;
-
-    /* 工具条 */
-    --mo-toolbar-input-width: 300px;
-
-    /* 管理相关视图 */
-    --mo-management-header-height: 56px;
-
-    /* 标签添加或更新对话框 */
-    --mo-tag-dialog-status-on-color: #13ce66;
-    --mo-tag-dialog-status-off-color: #ff4949;
+    /* 分类添加或更新对话框 */
+    --mo-category-dialog-status-on-color: #13ce66;
+    --mo-category-dialog-status-off-color: #ff4949;
 
     /* 标签管理视图 */
     --mo-tag-management-status-on-color: #13ce66;
     --mo-tag-management-status-off-color: #ff4949;
 
-    /* 后台管理头部 */
-    --mo-head-logo-font-family: "宋体";
-    --mo-head-logo-font-size: 30px;
-    --mo-head-logo-color: #e6e6e6;
-    --mo-head-logo-border: 1px solid #f5f5f5;
-    --mo-head-logo-border-radius: 5px;
-    --mo-head-logout-font-size: 24px;
-    --mo-head-logout-color: #e6e6e6;
-    --mo-head-logout-color-hover: #ffd04b;
+    /* 标签添加或更新对话框 */
+    --mo-tag-dialog-status-on-color: #13ce66;
+    --mo-tag-dialog-status-off-color: #ff4949;
 
-    /* 后台管理登录 */
-    --mo-login-background-image: url("https://tva1.sinaimg.cn/large/007q9ZDily1h3mv7fyyjlj32yo1o0hdu.jpg");
-    --mo-login-background-after-background: #f6f6f6b4;
-    --mo-login-panel-background: #ffffff80;
-    --mo-login-panel-box-shadow: 0 0 10px #000;
-    --mo-login-title-font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-        "微软雅黑", Arial, sans-serif;
-    --mo-login-title-font-size: 30px;
-    --mo-login-title-color: #000;
+    /* 管理相关视图 */
+    --mo-management-header-height: 56px;
 
-    /* 后台管理左侧边菜单 */
-    --mo-left-menu-background-color: #545c64;
-    --mo-left-menu-background-color-hover: #434a50;
-    --mo-left-menu-text-color: #fff;
-    --mo-left-menu-active-text-color: #ffd04b;
-
-    /* 后台管理面板 */
-    --mo-panel-header-height: 60px;
-    --mo-panel-header-border-bottom: 1px solid #ffd04b;
-    --mo-panel-header-background-color: #505860;
-    --mo-panel-aside-background-color: #545c64;
-    --mo-panel-main-padding: 5px;
-    --mo-panel-main-background-color: #596172;
-    --mo-panel-tabs-border-radius: 5px;
-    --mo-panel-menu-divider-background-color: #bebebe;
+    /* 工具条 */
+    --mo-toolbar-input-width: 300px;
 }

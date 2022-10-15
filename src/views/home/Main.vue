@@ -4,7 +4,7 @@
             v-if="existSideBar"
             :class="`mo-home-main__side-bar ${isOpenSideBar ? 'mo-home-main__side-bar--open' : ''}`"
         >
-            <mo-side-bar @close-side-menu="isOpenSideBar = false" />
+            <mo-side-bar @close-side-bar="isOpenSideBar = false" />
         </span>
         <span :class="`mo-home-main__container ${isOpenSideBar ? 'mo-home-main__container--move' : ''}`">
             <div v-if="existSideBar" class="mo-home-main__side-switch" @click="isOpenSideBar = !isOpenSideBar">
@@ -25,28 +25,22 @@
 <script setup>
 import MoHeaderBar from './MoHeaderBar.vue';
 import MoSideBar from './MoSideBar.vue';
-import { getCurrentInstance, ref, watch } from 'vue';
+import { computed, getCurrentInstance, ref, watch } from 'vue';
 import router from '@/router/router.mod.js';
-import storage from '@/utils/storage.mod.js';
 
-// 设置路由
-getCurrentInstance().appContext.app.use(router);
-
-// 页面标题
-const title = storage.getObject('title');
-// 是否启用侧边栏
-const enableSideBar = ref(true);
-// 是否启用导航栏
-const enableHeaderBar = ref(true);
-// 是否存在侧边栏
-const existSideBar = ref(enableSideBar.value && window.screen.width <= 960);
-// 是否存在导航栏
-const existHeaderBar = ref(enableHeaderBar.value && window.screen.width > 960);
+// 屏幕宽度
+const screenWidth = ref(window.screen.width);
+// 是否启用工具栏
+const enableBar = ref(true);
 // 侧边栏是否打开
 const isOpenSideBar = ref(false);
-
 // 导航栏class
 const headerBarClass = ref('');
+
+// 是否存在侧边栏
+const existSideBar = computed(() => enableBar.value && screenWidth.value <= 960);
+// 是否存在导航栏
+const existHeaderBar = computed(() => enableBar.value && screenWidth.value > 960);
 
 /**
  * 滚动条监听事件
@@ -61,12 +55,6 @@ const handleScroll = (event) => {
 
 // 初始化操作
 (() => {
-    // 监听屏幕宽度变化
-    window.onresize = () => {
-        existSideBar.value = enableSideBar.value && window.screen.width <= 960;
-        existHeaderBar.value = enableHeaderBar.value && window.screen.width > 960;
-    };
-
     // 淡入效果
     document.body.style.opacity = '0';
     setTimeout(() => {
@@ -74,37 +62,33 @@ const handleScroll = (event) => {
         document.body.style.opacity = '1';
     }, 0);
 
+    // 监听屏幕宽度变化
+    window.onresize = () => {
+        screenWidth.value = window.screen.width;
+    };
+
+    // 设置路由
+    getCurrentInstance().appContext.app.use(router);
+
     // 路由监听
     watch(router.currentRoute, (route) => {
-        // 404
-        if (route.matched[0].path === '/:other') {
-            document.getElementsByTagName('title')[0].innerHTML = title['_404'];
-            enableSideBar.value = false;
-            enableHeaderBar.value = false;
-            window.removeEventListener('scroll', handleScroll);
-            return;
-        }
-
-        document.getElementsByTagName('title')[0].innerHTML = `${route.matched[0].name} | ${title['home']}`;
-        enableSideBar.value = true;
-        enableHeaderBar.value = true;
-
-        // 主页
-        if (['/', '/main'].includes(route.path)) {
+        document.getElementsByTagName('title')[0].innerHTML = route.meta.title;
+        enableBar.value = route.meta.enableBar;
+        if (route.name === 'main') {
             headerBarClass.value = 'mo-home-main__header-bar--bg-hidden';
             window.addEventListener('scroll', handleScroll);
-            return;
+        } else if (route.name === '404') {
+            window.removeEventListener('scroll', handleScroll);
+        } else {
+            headerBarClass.value = 'mo-home-main__header-bar--bg-show';
+            window.removeEventListener('scroll', handleScroll);
         }
-
-        // 其他
-        headerBarClass.value = 'mo-home-main__header-bar--bg-show';
-        window.removeEventListener('scroll', handleScroll);
     });
 })();
 </script>
 
 <style scoped>
-@layer {
+@layer MoMain {
     * {
         --mo-home-main-header-bar-height: 60px;
         --mo-home-main-header-bar-background-color: rgba(255, 255, 255, 0.95);
@@ -141,7 +125,6 @@ const handleScroll = (event) => {
 
     .mo-home-main__header-bar--bg-show {
         transition: var(--mo-home-main-header-bar-transition-bg-show);
-        background-color: var(--mo-home-main-header-bar-background-color);
         box-shadow: var(--mo-home-main-header-bar-box-shadow);
     }
 

@@ -1,9 +1,15 @@
 <template>
     <div class="mo-header-bar">
-        <span @click="goHome">{{ logo }}</span>
+        <span class="mo-header-bar__logo" @click="goHome">{{ logo }}</span>
         <span>
-            <el-menu :default-active="defaultActive" mode="horizontal" :ellipsis="false" :router="true">
-                <el-menu-item v-for="item in menus" :index="item.index">
+            <el-menu
+                class="mo-header-bar__menu"
+                :default-active="defaultActive"
+                mode="horizontal"
+                :ellipsis="false"
+                :router="true"
+            >
+                <el-menu-item class="mo-header-bar__menu-item" v-for="item in menus" :index="item.index">
                     <e-icon :icon-name="item.icon" />
                     <span>{{ item.name }}</span>
                 </el-menu-item>
@@ -58,54 +64,63 @@ const goHome = () => (window.location.href = '/');
 </script>
 
 <style scoped>
-.mo-header-bar {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+@layer MoHeaderBar {
+    * {
+        --mo-header-bar-logo-font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC',
+            'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
+        --mo-header-bar-logo-font-size: 28px;
+        --mo-header-bar-logo-font-weight: 800;
+        --mo-header-bar-logo-margin: 0 0 0 10px;
+        --mo-header-bar-logo-padding: 5px;
+        --mo-header-bar-logo-color: #464646;
+        --mo-header-bar-logo-color-hover: #ffd04b;
+        --mo-header-bar-menu-margin: 0 30px 0 0;
+        --mo-header-bar-menu-text-color: #666;
+        --mo-header-bar-menu-text-color-hover: #409eff;
+        --mo-header-bar-menu-text-color-active: #ffd04b;
+        --mo-header-bar-menu-background-color: #fff0;
+        --mo-header-bar-menu-background-color-hover: #ddd8;
+    }
+
+    .mo-header-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .mo-header-bar__logo {
+        font-family: var(--mo-header-bar-logo-font-family);
+        font-size: var(--mo-header-bar-logo-font-size);
+        font-weight: var(--mo-header-bar-logo-font-weight);
+        margin: var(--mo-header-bar-logo-margin);
+        padding: var(--mo-header-bar-logo-padding);
+        color: var(--mo-header-bar-logo-color);
+    }
+
+    .mo-header-bar__logo:hover {
+        cursor: pointer;
+        user-select: none;
+        color: var(--mo-header-bar-logo-color-hover);
+    }
 }
 
-.mo-header-bar > span:first-child {
-    font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB',
-        'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
-    color: #464646;
-    font-size: 28px;
-    font-weight: 800;
-    margin-left: 10px;
-    padding: 5px;
-}
-
-.mo-header-bar > span:first-child:hover {
-    color: #ffd04b;
-    cursor: pointer;
+.mo-header-bar__menu.el-menu {
+    margin: var(--mo-header-bar-menu-margin);
     user-select: none;
-}
-
-.mo-header-bar > span:last-child {
-    margin-right: 30px;
-}
-
-.el-menu {
-    --el-font-size-base: 16px;
-    --el-menu-bg-color: #ffffff00;
-    --el-menu-text-color: #666666;
-    --el-menu-hover-text-color: #666666;
-    --el-menu-active-color: #ffd04b;
-    --el-color-primary-light-9: #ffffff00;
     border-bottom: none;
-    user-select: none;
+    --el-menu-text-color: var(--mo-header-bar-menu-text-color);
+    --el-menu-hover-text-color: var(--mo-header-bar-menu-text-color-hover);
+    --el-menu-active-color: var(--mo-header-bar-menu-text-color-active);
+    --el-menu-bg-color: var(--mo-header-bar-menu-background-color);
+    --el-menu-hover-bg-color: var(--mo-header-bar-menu-background-color-hover);
 }
 
-.el-menu--horizontal > .el-menu-item.is-active:focus {
-    background-color: #ffffff00;
+.mo-header-bar__menu-item.el-menu-item.is-active:focus {
+    background-color: var(--mo-header-bar-menu-background-color);
 }
 
-.el-menu--horizontal > .el-menu-item.is-active:focus:hover {
-    background-color: var(--el-menu-hover-bg-color);
-}
-
-.el-menu > .el-menu-item:hover {
-    background-color: #dddddd88;
+.mo-header-bar__menu-item.el-menu-item.is-active:hover {
+    background-color: var(--mo-header-bar-menu-background-color-hover);
 }
 </style>

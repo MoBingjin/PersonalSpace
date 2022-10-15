@@ -1,9 +1,9 @@
 <template>
-    <div class="mo-side">
-        <span>{{ logo }}</span>
+    <div class="mo-side-bar">
+        <span class="mo-side-bar__logo">{{ logo }}</span>
         <span>
-            <el-menu :ellipsis="false" :router="true">
-                <el-menu-item v-for="item in menus" :index="item.index" @click="closeSideMenu">
+            <el-menu class="mo-side-bar__menu" :ellipsis="false" :router="true">
+                <el-menu-item v-for="item in menus" :index="item.index" @click="emits('close-side-bar')">
                     <e-icon :icon-name="item.icon" />
                     <span>{{ item.name }}</span>
                 </el-menu-item>
@@ -17,7 +17,7 @@ import { reactive } from 'vue';
 import storage from '@/utils/storage.mod.js';
 
 // 回调对象
-const emits = defineEmits(['close-side-menu']);
+const emits = defineEmits(['close-side-bar']);
 
 // logo
 const logo = storage.getObject('title')['home'];
@@ -39,41 +39,45 @@ const menus = reactive([
         name: '关于'
     }
 ]);
-
-/**
- * 关闭侧边栏
- */
-const closeSideMenu = () => emits('close-side-menu', {});
 </script>
 
 <style scoped>
-.mo-side {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+@layer {
+    * {
+        --mo-side-bar-logo-font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC',
+            'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
+        --mo-side-bar-logo-font-size: 28px;
+        --mo-side-bar-logo-font-weight: 800;
+        --mo-side-bar-logo-padding: 200px 0 50px 0;
+        --mo-side-bar-logo-color: #464646;
+        --mo-side-bar-menu-text-color: #666;
+        --mo-side-bar-menu-text-color-active: #ffd04b;
+        --mo-side-bar-menu-background-color: #fff0;
+    }
+
+    .mo-side-bar {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: flex-start;
+        width: 100%;
+        height: 100%;
+    }
+
+    .mo-side-bar__logo {
+        font-family: var(--mo-side-bar-logo-font-family);
+        font-size: var(--mo-side-bar-logo-font-size);
+        font-weight: var(--mo-side-bar-logo-font-weight);
+        padding: var(--mo-side-bar-logo-padding);
+        color: var(--mo-side-bar-logo-color);
+    }
 }
 
-.mo-side > span:first-child {
-    font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB',
-        'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
-    color: #464646;
-    font-size: 28px;
-    font-weight: 800;
-    padding-top: 200px;
-    padding-bottom: 50px;
-}
-
-.el-menu {
-    --el-font-size-base: 16px;
-    --el-menu-bg-color: #ffffff00;
-    --el-menu-text-color: #666666;
-    --el-menu-hover-text-color: #666666;
-    --el-menu-active-color: #ffd04b;
-    --el-color-primary-light-9: #ffffff00;
-    border-right: none;
+.mo-side-bar__menu.el-menu {
     user-select: none;
+    border-right: none;
+    --el-menu-text-color: var(--mo-side-bar-menu-text-color);
+    --el-menu-active-color: var(--mo-side-bar-menu-text-color-active);
+    --el-menu-bg-color: var(--mo-side-bar-menu-background-color);
 }
 </style>
