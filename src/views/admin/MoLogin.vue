@@ -85,7 +85,7 @@ const handleLogin = () => {
     * {
         --mo-login-background-image: url('../../../public/img/background.png');
         --mo-login-background-after-background: #f6f6f6b4;
-        --mo-login-panel-background: #ffffff80;
+        --mo-login-panel-background: #fff80;
         --mo-login-panel-box-shadow: 0 0 10px #000;
         --mo-login-title-font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
             '微软雅黑', Arial, sans-serif;
@@ -106,7 +106,7 @@ const handleLogin = () => {
         height: 100vh;
         background-image: var(--mo-login-background-image);
         background-repeat: no-repeat;
-        background-position: -10px -80px;
+        background-position: 0 -80px;
         background-size: cover;
     }
 

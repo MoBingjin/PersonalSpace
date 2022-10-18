@@ -46,6 +46,44 @@
     --mo-side-bar-menu-text-color-active: #ffd04b;
     --mo-side-bar-menu-background-color: #fff0;
 
+    /* 主页 */
+    --mo-main-avatar-animation: fadeInDown 1.5s 1;
+    --mo-main-avatar-img-padding: 5px;
+    --mo-main-avatar-img-transition: all 1s ease;
+    --mo-main-avatar-img-transform: rotate(0);
+    --mo-main-avatar-img-transform-hover: rotate(360deg);
+    --mo-main-avatar-img-border-radius: 50%;
+    --mo-main-avatar-img-box-shadow: inset 0 0 10px #000;
+    --mo-main-move-down-font-size: 28px;
+    --mo-main-move-down-width: 50px;
+    --mo-main-move-down-height: 30px;
+    --mo-main-move-down-transform: scale(1.5, 1);
+    --mo-main-move-down-color: #fff;
+    --mo-main-down-icon-animation: slideInDown 2s infinite linear alternate;
+    --mo-main-body-background-color: #f5f5f5;
+    --mo-main-content-width: 90%;
+    --mo-main-content-min-width: 350px;
+    --mo-main-content-max-width: 780px;
+    --mo-main-article-pager-padding: 0 0 20px 0;
+    --mo-main-backtop-width: 50px;
+    --mo-main-backtop-height: 50px;
+    --mo-main-backtop-icon-font-size: 20px;
+
+    /* 文章卡片 */
+    --mo-article-card-background-color: #fff;
+    --mo-article-card-box-shadow: 0 1px 20px -6px rgb(0 0 0 / 50%);
+    --mo-article-card-box-shadow-hover: 0 5px 10px 5px rgb(110 110 110 / 40%);
+    --mo-article-card-detail-font-family: "HYWenHei-85W", "Merriweather Sans", Helvetica, Tahoma, Arial, "PingFang SC",
+        "Hiragino Sans GB", "Microsoft Yahei", "WenQuanYi Micro Hei", "sans-serif";
+    --mo-article-card-title-font-weight: 550;
+    --mo-article-card-title-color: #504e4e;
+    --mo-article-card-title-color-hover: #fe9600;
+    --mo-article-card-description-color: #000000a8;
+    --mo-article-card-footer-color: #888;
+    --mo-article-card-info-split-margin: 0 5px;
+    --mo-article-card-info-icon-font-size: 16px;
+    --mo-article-card-info-icon-margin: 0 5px 0 0;
+
     /***************************** 后台 *****************************/
 
     /* 后台管理登录 */
@@ -135,4 +173,72 @@
 
     /* 工具条 */
     --mo-toolbar-input-width: 300px;
+}
+
+/* 移动端 */
+@media screen and (max-width: 960px) {
+    * {
+        /* 文章卡片 */
+        --mo-article-card-height: 270px;
+        --mo-article-card-border-radius: 10px;
+        --mo-article-card-cover-border-radius: 10px 10px 0 0;
+        --mo-article-card-title-width: calc(100% - 20px);
+        --mo-article-card-title-padding: 10px 10px 0 10px;
+        --mo-article-card-title-font-size: 18px;
+        --mo-article-card-description-font-size: 15px;
+        --mo-article-card-footer-font-size: 12px;
+        --mo-article-card-footer-padding: 0 0 10px 10px;
+
+        /* 主页 */
+        --mo-main-welcome-height: 300px;
+        --mo-main-welcome-padding: 80px 0 0 0;
+        --mo-main-background-height: var(--mo-main-welcome-height);
+        --mo-main-background-position: center;
+        --mo-main-avatar-img-width: 80px;
+        --mo-main-avatar-img-height: 80px;
+        --mo-main-wave-width: 150%;
+        --mo-main-wave-height: 38px;
+        --mo-main-wave-margin: 0 0 -18px 0;
+        --mo-main-wave-border-radius: 50% 50% 0 0;
+        --mo-main-wave-background: #f5f5f5;
+        --mo-main-wave-animation: none;
+        --mo-main-content-padding: 0;
+        --mo-main-article-item-padding: 10px 0 10px 0;
+        --mo-main-backtop-right: 10px;
+        --mo-main-backtop-bottom: 10px;
+    }
+}
+
+/* PC端 */
+@media screen and (min-width: 961px) {
+    * {
+        /* 文章卡片 */
+        --mo-article-card-height: 210px;
+        --mo-article-card-border-radius: 20px;
+        --mo-article-card-cover-border-radius: 20px 0 0 20px;
+        --mo-article-card-title-width: calc(100% - 40px);
+        --mo-article-card-title-padding: 20px 20px 0 20px;
+        --mo-article-card-title-font-size: 24px;
+        --mo-article-card-description-font-size: 18px;
+        --mo-article-card-footer-font-size: 16px;
+        --mo-article-card-footer-padding: 0 0 20px 20px;
+
+        /* 主页 */
+        --mo-main-welcome-height: 100vh;
+        --mo-main-welcome-padding: 35vh 0 0 0;
+        --mo-main-background-height: 100%;
+        --mo-main-background-position: 0 -80px;
+        --mo-main-avatar-img-width: 130px;
+        --mo-main-avatar-img-height: 130px;
+        --mo-main-wave-width: 100%;
+        --mo-main-wave-height: 85px;
+        --mo-main-wave-margin: 0;
+        --mo-main-wave-border-radius: 0;
+        --mo-main-wave-background: var(--mo-main-wave-image) repeat-x;
+        --mo-main-wave-animation: waveMove 30s infinite linear;
+        --mo-main-content-padding: 80px 0 0 0;
+        --mo-main-article-item-padding: 20px 0 20px 0;
+        --mo-main-backtop-right: 100px;
+        --mo-main-backtop-bottom: 100px;
+    }
 }

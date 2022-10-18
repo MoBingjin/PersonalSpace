@@ -1,73 +1,45 @@
 <template>
-    <div>
-        <figure class="mo-home-background">
-            <div class="mo-top">
-                <div><img class="mo-avatar" :src="avatarPath" alt="头像" referrerpolicy="no-referrer" /></div>
-                <div>
-                    <div class="mo-down" @click="toBody">
-                        <e-icon icon-name="fa fa-chevron-down" />
-                    </div>
-                    <div class="mo-wave"></div>
-                </div>
+    <div class="mo-main">
+        <div class="mo-main__background" />
+        <div class="mo-main__welcome">
+            <div class="mo-main__avatar">
+                <img class="mo-main__avatar-img" :src="avatarURL" alt="头像" referrerpolicy="no-referrer" />
             </div>
-        </figure>
-        <div class="mo-body">
-            <div class="mo-content">
-                <div class="mo-article-list">
-                    <div v-for="item in articleInfoList">
-                        <div class="mo-article">
-                            <el-row>
-                                <el-col :span="10">
-                                    <div class="mo-article-cover" @click="view(item.articleId)">
-                                        <img :src="item.cover || defaultCoverPath" alt="cover" />
-                                    </div>
-                                </el-col>
-                                <el-col :span="14">
-                                    <div class="mo-article-info">
-                                        <div>
-                                            <div class="mo-article-title" @click="view(item.articleId)">
-                                                {{ item.title }}
-                                            </div>
-                                            <div class="mo-article-description">{{ item.description }}</div>
-                                        </div>
-                                        <div class="mo-article-footer">
-                                            <span class="mo-article-date">
-                                                <e-icon icon-name="el-icon-time" />
-                                                <span>{{ formatDate(item.createTime, 'yyyy-MM-dd HH:mm:ss') }}</span>
-                                            </span>
-                                            <span class="mo-article-type">
-                                                <e-icon icon-name="el-icon-price-tag" />
-                                                <span>{{ item.type }}</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </el-col>
-                            </el-row>
-                        </div>
+            <div v-if="store.screenWidth > 960" class="mo-main__move-down" @click="toBody">
+                <e-icon class="mo-main__down-icon" icon-name="fa fa-chevron-down" />
+            </div>
+            <div class="mo-main__wave" />
+        </div>
+        <div class="mo-main__body">
+            <div class="mo-main__content">
+                <div class="mo-main__article-list">
+                    <div class="mo-main__article-item" v-for="item in articleInfoList" :key="item.id">
+                        <mo-article-card :model="item" @view="view" />
                     </div>
                 </div>
-                <div class="mo-home-pager">
-                    <el-pagination
-                        background
-                        layout="prev, pager, next"
-                        :page-size="currentPageSize"
-                        :current-page="currentPage"
-                        :total="total"
-                        :hide-on-single-page="true"
-                        @current-change="listArticleInfoList"
-                    />
-                </div>
+                <el-pagination
+                    class="mo-main__article-pager"
+                    background
+                    layout="prev, pager, next"
+                    :page-size="currentPageSize"
+                    :current-page="currentPage"
+                    :total="total"
+                    :hide-on-single-page="true"
+                    @current-change="listArticleInfoList"
+                />
             </div>
-            <el-backtop />
+            <el-backtop class="mo-main__backtop" />
         </div>
     </div>
 </template>
 
 <script setup>
+import MoArticleCard from './components/MoArticleCard.vue';
 import { getCurrentInstance, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import storage from '@/utils/storage.mod.js';
 import { formatDate } from '@/utils/date-utils.mod.js';
+import storage from '@/utils/storage.mod.js';
+import store from '@/store/store.mod.js';
 import _ from 'lodash.js';
 
 const api = storage.getObject('api');
@@ -77,14 +49,10 @@ const getActualPath = getCurrentInstance().proxy.$getActualPath;
 // 路由实例对象
 const router = useRouter();
 
+// 头像路径
+const avatarURL = storage.get('avatarImageURL') || getActualPath('static/img/avatar.png');
 // 文章信息列表
 const articleInfoList = reactive([]);
-// 头像路径
-const avatarPath = storage.get('avatarImageURL') || getActualPath('static/img/avatar.png');
-// 背景图片路径
-const backgroundImagePath = storage.get('backgroundImageURL') || getActualPath('static/img/background.png');
-// 默认封面路径
-const defaultCoverPath = storage.get('defaultCoverImageURL') || getActualPath('static/img/default_cover.png');
 // 分页每页数目
 const currentPageSize = ref(storage.getObject('pageSize')['home']);
 // 当前页
@@ -95,6 +63,14 @@ const total = ref(0);
 const key = ref('');
 // 搜索条件
 const searchParams = ref({});
+
+// CSS变量
+const cssVariable = reactive({
+    // 背景图片路径
+    backgroundURL: `url('${storage.get('backgroundImageURL') || getActualPath('static/img/background.png')}')`,
+    // 波浪图片路径
+    waveURL: `url('${getActualPath('static/img/wave.png')}')`
+});
 
 /**
  * 获取文章信息列表
@@ -117,7 +93,22 @@ const listArticleInfoList = async (page = 1, isToBody = true) => {
             .then((data) => {
                 if (data.code === 0) {
                     articleInfoList.splice(0, articleInfoList.length);
-                    data.data.list.map((item) => articleInfoList.push(item));
+                    data.data.list.map((item) =>
+                        articleInfoList.push({
+                            id: item.articleId,
+                            title: item.title,
+                            description: item.description,
+                            cover: '',
+                            contentId: '',
+                            categoryId: '',
+                            categoryName: item.type,
+                            tags: [],
+                            views: 0,
+                            topping: false,
+                            status: 1,
+                            createTime: formatDate(item.createTime, 'yyyy-MM-dd HH:mm:ss')
+                        })
+                    );
                     total.value = data.data.total;
                 }
                 console.log(data.message);
@@ -160,7 +151,7 @@ const search = async () => {
  */
 const toBody = _.debounce(
     () => {
-        const targetTop = window['document'].getElementsByClassName('mo-body')[0].offsetTop;
+        const targetTop = window['document'].getElementsByClassName('mo-main__body')[0].offsetTop;
         moveScroll(targetTop);
     },
     1000,
@@ -189,418 +180,210 @@ const moveScroll = (targetTop) => {
 
 //初始化操作
 (async () => {
-    // 动态样式设置
-    setTimeout(() => {
-        // 主背景设置
-        const backgroundElement = window['document'].getElementsByClassName('mo-home-background')[0];
-        backgroundElement.style.setProperty('--mo-home-bg', `url(${backgroundImagePath})`);
-
-        // 波浪背景设置
-        const waveElement = window['document'].getElementsByClassName('mo-wave')[0];
-        waveElement.style.setProperty('--mo-wave-bg', `url('${getActualPath('static/img/wave.png')}')`);
-        let backgroundPositionX = 0;
-        setInterval(() => {
-            waveElement.style.setProperty('--mo-wave-position-x', `${--backgroundPositionX}px`);
-        }, 30);
-    }, 0);
-
     // 获取文章信息列表
     await search();
 })();
 </script>
 
-<style>
-@media screen and (max-width: 960px) {
-    .mo-article .el-row .el-col-10,
-    .mo-article .el-row .el-col-14 {
-        max-width: 100%;
-        max-height: 50%;
-        flex: 0 0 100%;
-    }
-}
-
-.mo-home-pager .el-pagination.is-background .btn-prev,
-.mo-home-pager .el-pagination.is-background .btn-next,
-.mo-home-pager .el-pagination.is-background .el-pager li {
-    background-color: #ffffff;
-}
-
-.el-backtop .el-icon {
-    font-size: 20px;
-}
-</style>
 <style scoped>
-@media screen and (max-width: 960px) {
-    .mo-home-background {
-        height: 300px;
-        background-attachment: scroll;
+@layer MoMain {
+    .mo-main {
+        --mo-main-background-image: v-bind(cssVariable.backgroundURL);
+        --mo-main-wave-image: v-bind(cssVariable.waveURL);
     }
 
-    .mo-top > div:first-child {
-        margin-top: 80px;
-        animation: avatarDown 1.5s 1;
+    * {
+        --mo-main-avatar-animation: fadeInDown 1.5s 1;
+        --mo-main-avatar-img-padding: 5px;
+        --mo-main-avatar-img-transition: all 1s ease;
+        --mo-main-avatar-img-transform: rotate(0);
+        --mo-main-avatar-img-transform-hover: rotate(360deg);
+        --mo-main-avatar-img-border-radius: 50%;
+        --mo-main-avatar-img-box-shadow: inset 0 0 10px #000;
+        --mo-main-move-down-font-size: 28px;
+        --mo-main-move-down-width: 50px;
+        --mo-main-move-down-height: 30px;
+        --mo-main-move-down-transform: scale(1.5, 1);
+        --mo-main-move-down-color: #fff;
+        --mo-main-down-icon-animation: slideInDown 2s infinite linear alternate;
+        --mo-main-body-background-color: #f5f5f5;
+        --mo-main-content-width: 90%;
+        --mo-main-content-min-width: 350px;
+        --mo-main-content-max-width: 780px;
+        --mo-main-article-pager-padding: 0 0 20px 0;
+        --mo-main-backtop-width: 50px;
+        --mo-main-backtop-height: 50px;
+        --mo-main-backtop-icon-font-size: 20px;
     }
 
-    @keyframes avatarDown {
-        from {
-            margin-top: 50px;
-        }
-
-        to {
-            margin-top: 80px;
-        }
-    }
-
-    .mo-avatar {
-        width: 80px;
-        height: 80px;
-    }
-
-    .mo-down {
-        display: none;
-    }
-
-    .mo-wave {
-        width: 150%;
-        height: 38px;
-        margin-bottom: -18px;
-        background: #f5f5f5;
-        border-top-left-radius: 100%;
-        border-top-right-radius: 100%;
-    }
-
-    .mo-content {
-        padding-top: 0;
-    }
-
-    .mo-head::after {
-        content: '';
-        width: 150%;
-        height: 38px;
-        position: absolute;
-        top: 262px;
-        left: -25%;
-        background: #f5f5f5;
-        border-top-left-radius: 100%;
-        border-top-right-radius: 100%;
-        z-index: 4;
-    }
-
-    .el-row {
-        flex-direction: column;
-    }
-
-    .mo-article-list > div {
-        padding: 10px 0 10px 0;
-    }
-
-    .mo-article {
-        height: 270px;
-        border-radius: 10px;
-    }
-
-    .mo-article-cover {
-        border-radius: 10px 10px 0 0;
-    }
-
-    .mo-article-title,
-    .mo-article-description {
-        width: calc(100% - 20px);
-        padding: 10px 10px 0 10px;
-    }
-
-    .mo-article-title {
-        font-size: 18px;
-    }
-
-    .mo-article-description {
-        font-size: 15px;
-    }
-
-    .mo-article-footer {
-        font-size: 12px;
-        padding: 0 0 10px 10px;
-    }
-
-    .mo-article-footer > span {
-        padding-right: 10px;
-    }
-
-    .mo-article-footer > span > span {
-        padding-left: 3px;
-    }
-
-    .el-backtop {
-        right: 10px !important;
-        bottom: 10px !important;
-    }
-}
-
-@media screen and (min-width: 961px) {
-    .mo-home-background {
-        height: 100vh;
-        background-attachment: fixed;
-    }
-
-    .mo-top > div:first-child {
-        margin-top: 35vh;
-        animation: avatarDown 1.5s 1;
-    }
-
-    @keyframes avatarDown {
-        from {
-            margin-top: calc(35vh - 30px);
-        }
-
-        to {
-            margin-top: 35vh;
+    @media screen and (max-width: 960px) {
+        * {
+            --mo-main-welcome-height: 300px;
+            --mo-main-welcome-padding: 80px 0 0 0;
+            --mo-main-background-height: var(--mo-main-welcome-height);
+            --mo-main-background-position: center;
+            --mo-main-avatar-img-width: 80px;
+            --mo-main-avatar-img-height: 80px;
+            --mo-main-wave-width: 150%;
+            --mo-main-wave-height: 38px;
+            --mo-main-wave-margin: 0 0 -18px 0;
+            --mo-main-wave-border-radius: 50% 50% 0 0;
+            --mo-main-wave-background: #f5f5f5;
+            --mo-main-wave-animation: none;
+            --mo-main-content-padding: 0;
+            --mo-main-article-item-padding: 10px 0 10px 0;
+            --mo-main-backtop-right: 10px;
+            --mo-main-backtop-bottom: 10px;
         }
     }
 
-    .mo-avatar {
-        width: 130px;
-        height: 130px;
+    @media screen and (min-width: 961px) {
+        * {
+            --mo-main-welcome-height: 100vh;
+            --mo-main-welcome-padding: 35vh 0 0 0;
+            --mo-main-background-height: 100%;
+            --mo-main-background-position: 0 -80px;
+            --mo-main-avatar-img-width: 130px;
+            --mo-main-avatar-img-height: 130px;
+            --mo-main-wave-width: 100%;
+            --mo-main-wave-height: 85px;
+            --mo-main-wave-margin: 0;
+            --mo-main-wave-border-radius: 0;
+            --mo-main-wave-background: var(--mo-main-wave-image) repeat-x;
+            --mo-main-wave-animation: waveMove 30s infinite linear;
+            --mo-main-content-padding: 80px 0 0 0;
+            --mo-main-article-item-padding: 20px 0 20px 0;
+            --mo-main-backtop-right: 100px;
+            --mo-main-backtop-bottom: 100px;
+        }
     }
 
-    .mo-top > div:last-child {
-        width: 100%;
+    .mo-main__background {
+        position: fixed;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: var(--mo-main-background-height);
+        background-image: var(--mo-main-background-image);
+        background-repeat: no-repeat;
+        background-position: var(--mo-main-background-position);
+        background-size: cover;
+    }
+
+    .mo-main__welcome {
         display: flex;
-        flex-direction: column;
+        overflow: hidden;
         align-items: center;
+        flex-direction: column;
+        justify-content: space-between;
+        box-sizing: border-box;
+        height: var(--mo-main-welcome-height);
+        padding: var(--mo-main-welcome-padding);
     }
 
-    .mo-down {
-        width: 50px;
-        height: 30px;
+    .mo-main__avatar {
+        animation: var(--mo-main-avatar-animation);
+    }
+
+    .mo-main__avatar-img {
+        width: var(--mo-main-avatar-img-height);
+        height: var(--mo-main-avatar-img-height);
+        padding: var(--mo-main-avatar-img-padding);
+        transition: var(--mo-main-avatar-img-transition);
+        transform: var(--mo-main-avatar-img-transform);
+        border-radius: var(--mo-main-avatar-img-border-radius);
+        box-shadow: var(--mo-main-avatar-img-box-shadow);
+    }
+
+    .mo-main__avatar-img:hover {
+        transform: var(--mo-main-avatar-img-transform-hover);
+    }
+
+    .mo-main__move-down {
+        font-size: var(--mo-main-move-down-font-size);
         display: flex;
-        align-items: center;
+        align-items: flex-end;
+        flex: 1;
         justify-content: center;
-        margin-bottom: 0px;
-        font-size: 28px;
-        color: #ffffff;
-        transform: scale(1.5, 1);
-        animation: downMove 2s infinite;
+        width: var(--mo-main-move-down-width);
+        height: var(--mo-main-move-down-height);
+        transform: var(--mo-main-move-down-transform);
+        color: var(--mo-main-move-down-color);
     }
 
-    @keyframes downMove {
-        10% {
-            margin-bottom: 0px;
-        }
-
-        50% {
-            margin-bottom: 8px;
-        }
-
-        100% {
-            margin-bottom: 0px;
-        }
-    }
-
-    .mo-down:hover {
+    .mo-main__move-down:hover {
         cursor: pointer;
     }
 
-    .mo-wave {
+    .mo-main__down-icon {
+        animation: var(--mo-main-down-icon-animation);
+    }
+
+    .mo-main__wave {
+        width: var(--mo-main-wave-width);
+        height: var(--mo-main-wave-height);
+        margin: var(--mo-main-wave-margin);
+        animation: var(--mo-main-wave-animation);
+        border-radius: var(--mo-main-wave-border-radius);
+        background: var(--mo-main-wave-background);
+    }
+
+    .mo-main__body {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
         width: 100%;
-        height: 85px;
-        background-image: var(--mo-wave-bg);
-        background-repeat: repeat-x;
-        background-position-x: var(--mo-wave-position-x);
+        background-color: var(--mo-main-body-background-color);
     }
 
-    .mo-content {
-        padding-top: 80px;
+    .mo-main__content {
+        width: var(--mo-main-content-width);
+        min-width: var(--mo-main-content-min-width);
+        max-width: var(--mo-main-content-max-width);
+        padding: var(--mo-main-content-padding);
     }
 
-    .mo-article-list > div {
-        padding: 20px 0 20px 0;
+    .mo-main__article-list {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
-    .mo-article {
-        height: 210px;
-        border-radius: 20px;
-    }
-
-    .mo-article-cover {
-        border-radius: 20px 0 0 20px;
-    }
-
-    .mo-article-title,
-    .mo-article-description {
-        width: calc(100% - 40px);
-        padding: 20px 20px 0 20px;
-    }
-
-    .mo-article-title {
-        font-size: 24px;
-    }
-
-    .mo-article-description {
-        font-size: 18px;
-    }
-
-    .mo-article-footer {
-        font-size: 16px;
-        padding: 0 0 20px 20px;
-    }
-
-    .mo-article-footer > span {
-        padding-right: 20px;
-    }
-
-    .mo-article-footer > span > span {
-        padding-left: 5px;
-    }
-
-    .el-backtop {
-        right: 100px !important;
-        bottom: 100px !important;
+    .mo-main__article-item {
+        padding: var(--mo-main-article-item-padding);
     }
 }
 
-.mo-home-background {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    background-image: var(--mo-home-bg);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    z-index: -1;
+.mo-main__article-pager.el-pagination {
+    padding: var(--mo-main-article-pager-padding);
 }
 
-.mo-top {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    overflow: hidden;
+.mo-main__article-pager.el-pagination.is-background >>> .btn-prev,
+.mo-main__article-pager.el-pagination.is-background >>> .btn-next,
+.mo-main__article-pager.el-pagination.is-background >>> .el-pager li {
+    background-color: #fff;
 }
 
-.mo-avatar {
-    padding: 5px;
-    border-radius: 50%;
-    box-shadow: inset 0 0 10px #000;
-    transform: rotate(0);
-    transition: all ease 1s;
+.mo-main__backtop.el-backtop {
+    width: var(--mo-main-backtop-width);
+    height: var(--mo-main-backtop-height);
+    right: var(--mo-main-backtop-right) !important;
+    bottom: var(--mo-main-backtop-bottom) !important;
 }
 
-.mo-avatar:hover {
-    transform: rotate(360deg);
+.mo-main__backtop.el-backtop >>> .el-icon {
+    font-size: var(--mo-main-backtop-icon-font-size);
 }
-
-.mo-body {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f5f5f5;
-}
-
-.mo-content {
-    width: 90%;
-    max-width: 780px;
-}
-
-.mo-article-list {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.mo-article {
-    width: 100%;
-    box-shadow: 0 1px 20px -6px rgb(0 0 0 / 50%);
-    background-color: #ffffff;
-}
-
-.mo-article:hover {
-    box-shadow: 0 5px 10px 5px rgb(110 110 110 / 40%);
-}
-
-.mo-article:hover .mo-article-cover > img {
-    transform: scale(1.1);
-}
-
-.el-row {
-    height: 100%;
-    width: 100%;
-}
-
-.mo-article-cover {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.mo-article-cover > img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    pointer-events: none;
-    user-select: none;
-}
-
-.mo-article-info {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
-    font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB',
-        'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
-}
-
-.mo-article-info > div:first-child {
-    width: 100%;
-}
-
-.mo-article-title,
-.mo-article-description {
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-    word-wrap: break-word;
-}
-
-.mo-article-title {
-    font-weight: 550;
-    color: #504e4e;
-}
-
-.mo-article-title:hover {
-    cursor: pointer;
-    color: #fe9600;
-}
-
-.mo-article-description {
-    color: #000000a8;
-}
-
-.mo-article-footer {
-    color: #888888;
-}
-
-.mo-home-pager {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-items: start;
-}
-
-.el-pagination {
-    padding-bottom: 20px;
-}
-
-.el-backtop {
-    width: 50px;
-    height: 50px;
+</style>
+<style>
+@keyframes waveMove {
+    from {
+        background-position-x: 0;
+    }
+    to {
+        background-position-x: -997px;
+    }
 }
 </style>

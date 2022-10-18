@@ -48,6 +48,11 @@ const tagComponents = {
     // Normalize 样式重置
     normalize: {
         css: ['https://cdn.staticfile.org/normalize/8.0.1/normalize.css']
+    },
+
+    // 动画库
+    animate: {
+        css: ['https://cdn.staticfile.org/animate.css/4.1.1/animate.css']
     }
 };
 

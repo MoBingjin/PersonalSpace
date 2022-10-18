@@ -27,9 +27,8 @@ import MoHeaderBar from './MoHeaderBar.vue';
 import MoSideBar from './MoSideBar.vue';
 import { computed, getCurrentInstance, ref, watch } from 'vue';
 import router from '@/router/router.mod.js';
+import store from '@/store/store.mod.js';
 
-// 屏幕宽度
-const screenWidth = ref(window.screen.width);
 // 是否启用工具栏
 const enableBar = ref(true);
 // 侧边栏是否打开
@@ -38,9 +37,9 @@ const isOpenSideBar = ref(false);
 const headerBarClass = ref('');
 
 // 是否存在侧边栏
-const existSideBar = computed(() => enableBar.value && screenWidth.value <= 960);
+const existSideBar = computed(() => enableBar.value && store.screenWidth <= 960);
 // 是否存在导航栏
-const existHeaderBar = computed(() => enableBar.value && screenWidth.value > 960);
+const existHeaderBar = computed(() => enableBar.value && store.screenWidth > 960);
 
 /**
  * 滚动条监听事件
@@ -61,11 +60,6 @@ const handleScroll = (event) => {
         document.body.style.transition = 'opacity 1.5s';
         document.body.style.opacity = '1';
     }, 0);
-
-    // 监听屏幕宽度变化
-    window.onresize = () => {
-        screenWidth.value = window.screen.width;
-    };
 
     // 设置路由
     getCurrentInstance().appContext.app.use(router);
