@@ -14,7 +14,7 @@
                 <el-form-item class="mo-login__item" prop="userName">
                     <el-input class="mo-login__input" v-model="form.userName" placeholder="用户名">
                         <template #prepend>
-                            <e-icon icon-name="fa fa-user" />
+                            <el-icon><mo-icon icon-name="person-fill" /></el-icon>
                         </template>
                     </el-input>
                 </el-form-item>
@@ -27,7 +27,7 @@
                         @keyup.enter.native="handleLogin"
                     >
                         <template #prepend>
-                            <e-icon icon-name="fa fa-lock" />
+                            <el-icon><mo-icon icon-name="lock-fill" /></el-icon>
                         </template>
                     </el-input>
                 </el-form-item>
@@ -40,6 +40,7 @@
 </template>
 
 <script setup>
+import MoIcon from '@/components/icons/MoIcon.vue';
 import { reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import userService from '@/api/user-service.mod.js';

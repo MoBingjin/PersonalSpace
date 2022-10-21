@@ -4,7 +4,7 @@
         <span>
             <el-menu class="mo-side-bar__menu" :ellipsis="false" :router="true">
                 <el-menu-item v-for="item in menus" :index="item.index" @click="emits('close-side-bar')">
-                    <e-icon :icon-name="item.icon" />
+                    <el-icon><component :is="item.icon" /></el-icon>
                     <span>{{ item.name }}</span>
                 </el-menu-item>
             </el-menu>
@@ -13,7 +13,8 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { HomeFilled, Briefcase, InfoFilled } from '@element-plus/icons-vue';
+import { markRaw, reactive } from 'vue';
 import storage from '@/utils/storage.mod.js';
 
 // 回调对象
@@ -25,17 +26,17 @@ const logo = storage.getObject('title')['home'];
 const menus = reactive([
     {
         index: '/main',
-        icon: 'el-icon-s-home',
+        icon: markRaw(HomeFilled),
         name: '首页'
     },
     {
         index: '/archives',
-        icon: 'el-icon-s-cooperation',
+        icon: markRaw(Briefcase),
         name: '归档'
     },
     {
         index: '/about',
-        icon: 'el-icon-info',
+        icon: markRaw(InfoFilled),
         name: '关于'
     }
 ]);

@@ -2,12 +2,14 @@
     <div class="mo-head">
         <span class="mo-head__logo">个人空间</span>
         <span class="mo-head__logout" title="退出" @click="emits('loginout', {})">
-            <e-icon icon-name="fa fa-sign-in" />
+            <el-icon><mo-icon icon-name="box-arrow-in-right" /></el-icon>
         </span>
     </div>
 </template>
 
 <script setup>
+import MoIcon from '@/components/icons/MoIcon.vue';
+
 // 回调对象
 const emits = defineEmits(['loginout']);
 </script>

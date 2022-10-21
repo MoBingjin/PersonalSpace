@@ -15,10 +15,14 @@
                         <div class="mo-article-card__description">{{ model.description }}</div>
                     </div>
                     <div class="mo-article-card__footer">
-                        <e-icon class="mo-article-card__info-icon" icon-name="el-icon-time" />
+                        <el-icon class="mo-article-card__info-icon">
+                            <mo-icon icon-name="clock-fill" />
+                        </el-icon>
                         <span>{{ model.createTime }}</span>
                         <span class="mo-article-card__info-split">·</span>
-                        <e-icon class="mo-article-card__info-icon" icon-name="el-icon-price-tag" />
+                        <el-icon class="mo-article-card__info-icon">
+                            <mo-icon icon-name="folder-fill" />
+                        </el-icon>
                         <span>{{ model.categoryName }}</span>
                     </div>
                 </div>
@@ -28,6 +32,7 @@
 </template>
 
 <script setup>
+import MoIcon from '@/components/icons/MoIcon.vue';
 import { getCurrentInstance } from 'vue';
 import storage from '@/utils/storage.mod.js';
 
@@ -180,8 +185,10 @@ const defaultCoverURL = storage.get('defaultCoverImageURL') || getActualPath('st
 
     .mo-article-card__footer {
         font-size: var(--mo-article-card-footer-font-size);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
         padding: var(--mo-article-card-footer-padding);
-
         color: var(--mo-article-card-footer-color);
     }
 

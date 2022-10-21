@@ -8,10 +8,9 @@
         </span>
         <span :class="`mo-home-main__container ${isOpenSideBar ? 'mo-home-main__container--move' : ''}`">
             <div v-if="existSideBar" class="mo-home-main__side-switch" @click="isOpenSideBar = !isOpenSideBar">
-                <e-icon
-                    class="mo-home-main__switch-icon"
-                    :icon-name="`fa fa-${isOpenSideBar ? 'remove' : 'navicon'}`"
-                />
+                <el-icon class="mo-home-main__switch-icon">
+                    <mo-icon :icon-name="isOpenSideBar ? 'x' : 'list'" />
+                </el-icon>
             </div>
             <div v-if="isOpenSideBar" class="mo-home-main__mask" @click="isOpenSideBar = false"></div>
             <div v-if="existHeaderBar" class="mo-home-main__header-bar" :class="headerBarClass">
@@ -23,6 +22,7 @@
 </template>
 
 <script setup>
+import MoIcon from '@/components/icons/MoIcon.vue';
 import MoHeaderBar from './MoHeaderBar.vue';
 import MoSideBar from './MoSideBar.vue';
 import { computed, getCurrentInstance, ref, watch } from 'vue';

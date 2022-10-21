@@ -9,21 +9,29 @@
                     {{ model.description }}
                 </div>
                 <div class="mo-article-column__info">
-                    <e-icon class="mo-article-column__info-icon" icon-name="fa fa-folder" />
+                    <el-icon class="mo-article-column__info-icon">
+                        <mo-icon icon-name="folder-fill" />
+                    </el-icon>
                     <span>{{ model.categoryName || '未分类' }}</span>
                     <span class="mo-article-column__info-split">·</span>
-                    <e-icon v-if="model.tags.length > 0" class="mo-article-column__info-icon" icon-name="fa fa-tags" />
+                    <el-icon v-if="model.tags.length > 0" class="mo-article-column__info-icon">
+                        <mo-icon icon-name="tags-fill" />
+                    </el-icon>
                     <span v-if="model.tags.length > 0" v-for="tag in model.tags" :key="tag.id">
                         <span>{{ tag.name }}</span>
                         <span class="mo-article-column__info-split">·</span>
                     </span>
-                    <e-icon class="mo-article-column__info-icon" icon-name="fa fa-eye" />
+                    <el-icon class="mo-article-column__info-icon">
+                        <mo-icon icon-name="eye-fill" />
+                    </el-icon>
                     <span>{{ model.views }}</span>
                 </div>
             </el-col>
             <el-col class="mo-article-column__right" :span="4">
                 <div class="mo-article-column__time">
-                    <e-icon class="mo-article-column__info-icon" icon-name="el-icon-time" />
+                    <el-icon class="mo-article-column__info-icon">
+                        <mo-icon icon-name="clock-fill" />
+                    </el-icon>
                     <span>{{ model.createTime }}</span>
                 </div>
                 <div class="mo-article-column__action">
@@ -37,6 +45,8 @@
 </template>
 
 <script setup>
+import MoIcon from '@/components/icons/MoIcon.vue';
+
 // 参数
 defineProps({
     model: {

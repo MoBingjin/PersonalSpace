@@ -1,8 +1,8 @@
 const Vue = window['Vue'];
 const VueRouter = window['VueRouter'];
 const ElementPlus = window['ElementPlus'];
+const ElementPlusIconsVue = window['ElementPlusIconsVue'];
 const ElementPlusLocaleZhCn = window['ElementPlusLocaleZhCn'];
-const EIconPicker = window['eIconPicker'];
 const { loadModule } = window['vue3-sfc-loader'];
 const { getActualPath } = window['BasePath'];
 
@@ -15,7 +15,8 @@ const vm = Vue.createApp({
                 moduleCache: {
                     vue: Vue,
                     'vue-router': VueRouter,
-                    'element-plus': ElementPlus
+                    'element-plus': ElementPlus,
+                    '@element-plus/icons-vue': ElementPlusIconsVue
                 },
                 // 远程获取文件
                 async getFile(url) {
@@ -29,7 +30,7 @@ const vm = Vue.createApp({
                 // 添加样式
                 addStyle(textContent) {
                     const style = Object.assign(document.createElement('style'), { textContent });
-                    const ref = document.head.getElementsByTagName('style')[0] || null;
+                    const ref = document.head.getElementsByTagName('style')[0] ?? null;
                     document.head.insertBefore(style, ref);
                 },
                 // 远程获取事件
@@ -39,6 +40,9 @@ const vm = Vue.createApp({
                         case '.css':
                             options.addStyle(await getContentData(false));
                             return null;
+                        // json文件处理
+                        case '.json':
+                            return JSON.parse(await getContentData(false));
                         // 获取图片文件处理
                         case '.png':
                         case '.jpg':
@@ -55,15 +59,6 @@ const vm = Vue.createApp({
 
 vm.use(ElementPlus, {
     locale: ElementPlusLocaleZhCn
-});
-vm.use(EIconPicker, {
-    FontAwesome: true,
-    ElementUI: true,
-    eIcon: false,
-    eIconSymbol: true,
-    addIconList: [],
-    removeIconList: [],
-    zIndex: 3100
 });
 
 vm.mount('#app');

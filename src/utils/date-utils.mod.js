@@ -21,11 +21,11 @@ const dateUtils = {
         const preArr = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09'];
         return format
             .replace(/yyyy/g, year)
-            .replace(/MM/g, preArr[month] || month)
-            .replace(/dd/g, preArr[day] || day)
-            .replace(/HH/g, preArr[hour] || hour)
-            .replace(/mm/g, preArr[min] || min)
-            .replace(/ss/g, preArr[sec] || sec);
+            .replace(/MM/g, preArr[month] ?? month)
+            .replace(/dd/g, preArr[day] ?? day)
+            .replace(/HH/g, preArr[hour] ?? hour)
+            .replace(/mm/g, preArr[min] ?? min)
+            .replace(/ss/g, preArr[sec] ?? sec);
     },
 
     /**

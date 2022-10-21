@@ -24,7 +24,7 @@
                 </el-form-item>
                 <el-form-item class="mo-toolbar__sub-item--last">
                     <el-button type="primary" round @click="emits('search', model)">
-                        <e-icon icon-name="el-icon-search"></e-icon>
+                        <el-icon><search /></el-icon>
                     </el-button>
                 </el-form-item>
             </el-form-item>
@@ -33,6 +33,7 @@
 </template>
 
 <script setup>
+import { Search } from '@element-plus/icons-vue';
 import { reactive } from 'vue';
 
 // 参数

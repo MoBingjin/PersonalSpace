@@ -6,7 +6,9 @@
                 <img class="mo-main__avatar-img" :src="avatarURL" alt="头像" referrerpolicy="no-referrer" />
             </div>
             <div v-if="store.screenWidth > 960" class="mo-main__move-down" @click="toBody">
-                <e-icon class="mo-main__down-icon" icon-name="fa fa-chevron-down" />
+                <el-icon class="mo-main__down-icon">
+                    <arrow-down-bold />
+                </el-icon>
             </div>
             <div class="mo-main__wave" />
         </div>
@@ -34,6 +36,7 @@
 </template>
 
 <script setup>
+import { ArrowDownBold } from '@element-plus/icons-vue';
 import MoArticleCard from './components/MoArticleCard.vue';
 import { getCurrentInstance, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';

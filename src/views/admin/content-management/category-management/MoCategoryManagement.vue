@@ -30,7 +30,7 @@
                                 :preview-teleported="true"
                             >
                                 <template #error>
-                                    <e-icon icon-name="el-icon-picture-outline" />
+                                    <el-icon><picture /></el-icon>
                                 </template>
                             </el-image>
                         </template>
@@ -62,6 +62,7 @@
 </template>
 
 <script setup>
+import { Picture } from '@element-plus/icons-vue';
 import MoManagement from '@/components/management/MoManagement.vue';
 import MoCategoryAddOrUpdate from './components/MoCategoryAddOrUpdate.vue';
 import { ref, watch } from 'vue';

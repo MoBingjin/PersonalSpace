@@ -55,7 +55,7 @@
                     </el-form-item>
                     <el-form-item class="mo-article-management__form-item">
                         <el-button type="primary" round @click="handleSearch(form)">
-                            <e-icon icon-name="el-icon-search"></e-icon>
+                            <el-icon><search /></el-icon>
                         </el-button>
                     </el-form-item>
                 </el-form>
@@ -95,6 +95,7 @@
 </template>
 
 <script setup>
+import { Search } from '@element-plus/icons-vue';
 import MoArticleColumn from './components/MoArticleColumn.vue';
 import { computed, reactive } from 'vue';
 import articleService from '@/api/article-service.mod.js';

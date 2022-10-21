@@ -2,65 +2,57 @@
     <div class="mo-left-menu">
         <el-menu class="mo-left-menu__menu" :collapse="isCollapse" :collapse-transition="false" default-active="1">
             <el-menu-item index="1" @click="openTab('首页', 'main/MoMain', {})">
-                <el-icon>
-                    <e-icon icon-name="el-icon-s-home" />
-                </el-icon>
+                <el-icon><home-filled /></el-icon>
                 <span>首页</span>
             </el-menu-item>
             <el-menu-item index="2" @click="openTab('发布文章', 'article-publish/MoPublishArticle', {}, Date.now())">
-                <el-icon>
-                    <e-icon icon-name="el-icon-s-opportunity" />
-                </el-icon>
+                <el-icon><opportunity /></el-icon>
                 <span>发布文章</span>
             </el-menu-item>
             <el-sub-menu index="3">
                 <template #title>
-                    <el-icon>
-                        <e-icon icon-name="el-icon-s-marketing" />
-                    </el-icon>
+                    <el-icon><trend-charts /></el-icon>
                     <span>内容管理</span>
                 </template>
                 <el-menu-item
                     index="3-1"
                     @click="openTab('文章管理', 'content-management/article-management/MoArticleManagement', {})"
                 >
-                    <e-icon icon-name="el-icon-document" />
+                    <el-icon><document /></el-icon>
                     <span>文章管理</span>
                 </el-menu-item>
                 <el-menu-item
                     index="3-2"
                     @click="openTab('分类管理', 'content-management/category-management/MoCategoryManagement', {})"
                 >
-                    <e-icon icon-name="el-icon-menu" />
+                    <el-icon><menu-icon /></el-icon>
                     <span>分类管理</span>
                 </el-menu-item>
                 <el-menu-item
                     index="3-3"
                     @click="openTab('标签管理', 'content-management/tag-management/MoTagManagement', {})"
                 >
-                    <e-icon icon-name="el-icon-price-tag" />
+                    <el-icon><price-tag /></el-icon>
                     <span>标签管理</span>
                 </el-menu-item>
             </el-sub-menu>
             <el-sub-menu index="4">
                 <template #title>
-                    <el-icon>
-                        <e-icon icon-name="el-icon-s-tools" />
-                    </el-icon>
+                    <el-icon><tools /></el-icon>
                     <span>系统设置</span>
                 </template>
                 <el-menu-item
                     index="4-1"
                     @click="openTab('常规设置', 'system-setting/general-setting/MoGeneralSetting', {})"
                 >
-                    <e-icon icon-name="el-icon-s-operation" />
+                    <el-icon><operation /></el-icon>
                     <span>常规设置</span>
                 </el-menu-item>
                 <el-menu-item
                     index="4-2"
                     @click="openTab('上传设置', 'system-setting/uploud-setting/MoUploadSetting', {})"
                 >
-                    <e-icon icon-name="el-icon-upload2" />
+                    <el-icon><upload /></el-icon>
                     <span>上传设置</span>
                 </el-menu-item>
             </el-sub-menu>
@@ -69,6 +61,18 @@
 </template>
 
 <script setup>
+import {
+    HomeFilled,
+    Opportunity,
+    TrendCharts,
+    Document,
+    Menu as MenuIcon,
+    PriceTag,
+    Tools,
+    Operation,
+    Upload
+} from '@element-plus/icons-vue';
+
 // 参数
 defineProps({
     isCollapse: Boolean

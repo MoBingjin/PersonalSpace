@@ -19,7 +19,7 @@ window['BasePath'] = {
      * @returns 实际路径
      */
     getActualPath: (path) => {
-        path = esmComponents[path] || path;
+        path = esmComponents[path] ?? path;
         if (path.startsWith('static/')) {
             path = window['BasePath'].staticPath + path.substring(6);
         } else if (path.startsWith('@/')) {

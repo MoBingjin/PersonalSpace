@@ -45,7 +45,7 @@ service.interceptors.response.use(
                 confirmButtonText: '确定',
                 type: 'error'
             });
-            return Promise.reject(new Error(`${res.message}: ${res.data.errorMessage}` || 'Error'));
+            return Promise.reject(new Error(`${res.message}: ${res.data.errorMessage}`));
         }
         return res;
     },

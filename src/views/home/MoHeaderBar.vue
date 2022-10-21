@@ -10,7 +10,7 @@
                 :router="true"
             >
                 <el-menu-item class="mo-header-bar__menu-item" v-for="item in menus" :index="item.index">
-                    <e-icon :icon-name="item.icon" />
+                    <el-icon><component :is="item.icon" /></el-icon>
                     <span>{{ item.name }}</span>
                 </el-menu-item>
             </el-menu>
@@ -19,7 +19,8 @@
 </template>
 
 <script setup>
-import { computed, reactive } from 'vue';
+import { HomeFilled, Briefcase, InfoFilled } from '@element-plus/icons-vue';
+import { computed, markRaw, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import storage from '@/utils/storage.mod.js';
 
@@ -32,17 +33,17 @@ const logo = storage.getObject('title')['home'];
 const menus = reactive([
     {
         index: '/main',
-        icon: 'el-icon-s-home',
+        icon: markRaw(HomeFilled),
         name: '首页'
     },
     {
         index: '/archives',
-        icon: 'el-icon-s-cooperation',
+        icon: markRaw(Briefcase),
         name: '归档'
     },
     {
         index: '/about',
-        icon: 'el-icon-info',
+        icon: markRaw(InfoFilled),
         name: '关于'
     }
 ]);

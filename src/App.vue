@@ -46,7 +46,7 @@ const currentComponent = ref(null);
         archivesArticleURL: 'https://mine.mobingc.ml/article/archives'
     });
 
-    const mainDir = new URL(window.location.href).searchParams.has(storage.get('adminEntrance') || 'admin')
+    const mainDir = new URL(window.location.href).searchParams.has(storage.get('adminEntrance') ?? 'admin')
         ? 'admin'
         : 'home';
     try {

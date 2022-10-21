@@ -14,7 +14,7 @@
             :on-remove="handleRemove"
             :style="!multiple ? singleStyleVariable : ''"
         >
-            <e-icon icon-name="el-icon-plus" />
+            <el-icon><plus /></el-icon>
         </el-upload>
         <teleport to="body">
             <el-image-viewer v-if="dialogImageUrl !== ''" :url-list="[dialogImageUrl]" @close="dialogImageUrl = ''" />
@@ -23,6 +23,7 @@
 </template>
 
 <script setup>
+import { Plus } from '@element-plus/icons-vue';
 import { computed, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import { imageApi } from '@/api/image-service.mod.js';

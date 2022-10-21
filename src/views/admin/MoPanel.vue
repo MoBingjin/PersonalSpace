@@ -43,7 +43,7 @@
                                     v-model:not-saved="item.notSaved"
                                     :params="item.params"
                                     @open-tab="handleOpenTab"
-                                ></component>
+                                />
                             </el-scrollbar>
                         </el-tab-pane>
                     </el-tabs>
@@ -92,7 +92,7 @@ const handleOpenTab = (data) => {
                 title,
                 componentId,
                 component: markRaw(component),
-                params: params || {},
+                params: params ?? {},
                 notSaved: false
             });
         }
@@ -126,7 +126,7 @@ const handleRemoveTab = async (targetId) => {
     if (activeId === targetId) {
         tabs.forEach((tab, index) => {
             if (tab.componentId === targetId) {
-                const nextTab = tabs[index + 1] || tabs[index - 1];
+                const nextTab = tabs[index + 1] ?? tabs[index - 1];
                 if (nextTab) {
                     activeId = nextTab.componentId;
                 }
