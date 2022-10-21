@@ -96,7 +96,8 @@ const handleScroll = (event) => {
         --mo-home-main-side-bar-transition: left 0.3s ease;
         --mo-home-main-side-switch-width: 50px;
         --mo-home-main-side-switch-height: 50px;
-        --mo-home-main-side-switch-text-shadow: 2px 2px 10px #000;
+        --mo-home-main-side-switch-background-color: #cccc;
+        --mo-home-main-side-switch-box-shadow: 2px 2px 10px #000;
         --mo-home-main-side-switch-icon-font-size: 40px;
         --mo-home-main-side-switch-icon-color: #fff;
         --mo-home-main-mask-background-color: #99999957;
@@ -165,7 +166,8 @@ const handleScroll = (event) => {
             z-index: 2;
             width: var(--mo-home-main-side-switch-width);
             height: var(--mo-home-main-side-switch-height);
-            text-shadow: var(--mo-home-main-side-switch-text-shadow);
+            background-color: var(--mo-home-main-side-switch-background-color);
+            box-shadow: var(--mo-home-main-side-switch-box-shadow);
         }
 
         .mo-home-main__mask {
