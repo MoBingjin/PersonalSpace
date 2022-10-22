@@ -51,8 +51,8 @@ const esmComponents = {
     'lodash.js': 'https://cdn.staticfile.org/lodash.js/4.17.21/lodash.js',
 
     // MdEditor富文本插件
-    'md-editor-v3.js': 'https://npm.elemecdn.com/md-editor-v3@2.1.2/lib/md-editor-v3.umd.js',
-    'md-editor-v3.css': 'https://npm.elemecdn.com/md-editor-v3@2.1.2/lib/style.css'
+    'md-editor-v3.js': 'https://npm.elemecdn.com/md-editor-v3@2.3.0/lib/md-editor-v3.umd.js',
+    'md-editor-v3.css': 'https://npm.elemecdn.com/md-editor-v3@2.3.0/lib/style.css'
 };
 
 export { tagComponents, esmComponents };

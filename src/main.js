@@ -20,9 +20,15 @@ const vm = Vue.createApp({
                 },
                 // 远程获取文件
                 async getFile(url) {
-                    const res = await fetch(getActualPath(url));
+                    let res = await fetch(getActualPath(url));
                     if (!res.ok) {
                         throw Object.assign(new Error(res.statusText + ' ' + url), { res });
+                    }
+                    // 修改md-editor-v3内部cdn地址
+                    if (url === 'md-editor-v3.js') {
+                        res = new Response(
+                            (await res.text()).replace('cdnjs.cloudflare.com/ajax/libs', 'cdn.staticfile.org')
+                        );
                     }
                     const getContentData = (asBinary) => (asBinary ? res.arrayBuffer() : res.text());
                     return url.endsWith('.mod.js') ? { getContentData, type: '.mjs' } : { getContentData };
