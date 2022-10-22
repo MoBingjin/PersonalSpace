@@ -81,7 +81,7 @@ import categoryService from '@/api/category-service.mod.js';
 import tagService from '@/api/tag-service.mod.js';
 import imageService from '@/api/image-service.mod.js';
 import MdEditorV3 from 'md-editor-v3.js';
-import 'md-editor-v3.css';
+import 'md-editor-v3/lib/style.css';
 
 // 参数
 const props = defineProps({

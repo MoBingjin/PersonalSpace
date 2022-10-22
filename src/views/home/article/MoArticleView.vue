@@ -27,7 +27,7 @@ import { useRoute } from 'vue-router';
 import storage from '@/utils/storage.mod.js';
 import { formatDate } from '@/utils/date-utils.mod.js';
 import MdEditorV3 from 'md-editor-v3.js';
-import 'md-editor-v3.css';
+import 'md-editor-v3/lib/style.css';
 
 const api = storage.getObject('api');
 

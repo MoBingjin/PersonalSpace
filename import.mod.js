@@ -52,7 +52,7 @@ const esmComponents = {
 
     // MdEditor富文本插件
     'md-editor-v3.js': 'https://npm.elemecdn.com/md-editor-v3@2.3.0/lib/md-editor-v3.umd.js',
-    'md-editor-v3.css': 'https://npm.elemecdn.com/md-editor-v3@2.3.0/lib/style.css'
+    'md-editor-v3/lib/style.css': 'https://npm.elemecdn.com/md-editor-v3@2.3.0/lib/style.css'
 };
 
 export { tagComponents, esmComponents };

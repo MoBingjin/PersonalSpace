@@ -21,7 +21,7 @@
 <script setup>
 import articleService from '@/api/article-service.mod.js';
 import MdEditorV3 from 'md-editor-v3.js';
-import 'md-editor-v3.css';
+import 'md-editor-v3/lib/style.css';
 import { reactive } from 'vue';
 
 // 参数

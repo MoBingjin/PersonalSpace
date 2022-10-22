@@ -7,7 +7,7 @@
 <script setup>
 import { ref } from 'vue';
 import MdEditorV3 from 'md-editor-v3.js';
-import 'md-editor-v3.css';
+import 'md-editor-v3/lib/style.css';
 
 // 文章数据
 const articleData = ref('');
