@@ -85,6 +85,21 @@
     --mo-article-card-info-icon-font-size: 16px;
     --mo-article-card-info-icon-margin: 0 5px 0 0;
 
+    /* 文章浏览 */
+    --mo-article-view-head-background-image: var(--mo-article-view-cover-image);
+    --mo-article-view-detail-font-family: "HYWenHei-85W", "Merriweather Sans", Helvetica, Tahoma, Arial, "PingFang SC",
+        "Hiragino Sans GB", "Microsoft Yahei", "WenQuanYi Micro Hei", "sans-serif";
+    --mo-article-view-detail-color: #fff;
+    --mo-article-view-detail-text-shadow: 2px 2px 10px #000;
+    --mo-article-view-info-font-size: 14px;
+    --mo-article-view-info-padding: 0 0 25px 0;
+    --mo-article-view-info-item-padding: 0 10px 0 0;
+    --mo-article-view-avatar-img-width: 35px;
+    --mo-article-view-avatar-img-height: 35px;
+    --mo-article-view-backtop-width: 50px;
+    --mo-article-view-backtop-height: 50px;
+    --mo-article-view-backtop-icon-font-size: 20px;
+
     /***************************** 后台 *****************************/
 
     /* 后台管理登录 */
@@ -179,17 +194,6 @@
 /* 移动端 */
 @media screen and (max-width: 960px) {
     * {
-        /* 文章卡片 */
-        --mo-article-card-height: 270px;
-        --mo-article-card-border-radius: 10px;
-        --mo-article-card-cover-border-radius: 10px 10px 0 0;
-        --mo-article-card-title-width: calc(100% - 20px);
-        --mo-article-card-title-padding: 10px 10px 0 10px;
-        --mo-article-card-title-font-size: 18px;
-        --mo-article-card-description-font-size: 15px;
-        --mo-article-card-footer-font-size: 12px;
-        --mo-article-card-footer-padding: 0 0 10px 10px;
-
         /* 主页 */
         --mo-main-welcome-height: 300px;
         --mo-main-welcome-padding: 80px 0 0 0;
@@ -207,23 +211,35 @@
         --mo-main-article-item-padding: 10px 0 10px 0;
         --mo-main-backtop-right: 10px;
         --mo-main-backtop-bottom: 10px;
+
+        /* 文章卡片 */
+        --mo-article-card-height: 270px;
+        --mo-article-card-border-radius: 10px;
+        --mo-article-card-cover-border-radius: 10px 10px 0 0;
+        --mo-article-card-title-width: calc(100% - 20px);
+        --mo-article-card-title-padding: 10px 10px 0 10px;
+        --mo-article-card-title-font-size: 18px;
+        --mo-article-card-description-font-size: 15px;
+        --mo-article-card-footer-font-size: 12px;
+        --mo-article-card-footer-padding: 0 0 10px 10px;
+
+        /* 文章浏览 */
+        --mo-article-view-head-height: 280px;
+        --mo-article-view-detail-width: 95%;
+        --mo-article-view-detail-min-width: var(--mo-article-view-detail-width);
+        --mo-article-view-detail-height: 100%;
+        --mo-article-view-title-font-size: 26px;
+        --mo-article-view-title-padding: 0 0 30px 0;
+        --mo-article-view-content-width: 95%;
+        --mo-article-view-content-min-width: var(--mo-article-view-content-width);
+        --mo-article-view-backtop-right: 10px;
+        --mo-article-view-backtop-bottom: 10px;
     }
 }
 
 /* PC端 */
 @media screen and (min-width: 961px) {
     * {
-        /* 文章卡片 */
-        --mo-article-card-height: 210px;
-        --mo-article-card-border-radius: 20px;
-        --mo-article-card-cover-border-radius: 20px 0 0 20px;
-        --mo-article-card-title-width: calc(100% - 40px);
-        --mo-article-card-title-padding: 20px 20px 0 20px;
-        --mo-article-card-title-font-size: 24px;
-        --mo-article-card-description-font-size: 18px;
-        --mo-article-card-footer-font-size: 16px;
-        --mo-article-card-footer-padding: 0 0 20px 20px;
-
         /* 主页 */
         --mo-main-welcome-height: 100vh;
         --mo-main-welcome-padding: 35vh 0 0 0;
@@ -241,5 +257,28 @@
         --mo-main-article-item-padding: 20px 0 20px 0;
         --mo-main-backtop-right: 100px;
         --mo-main-backtop-bottom: 100px;
+
+        /* 文章卡片 */
+        --mo-article-card-height: 210px;
+        --mo-article-card-border-radius: 20px;
+        --mo-article-card-cover-border-radius: 20px 0 0 20px;
+        --mo-article-card-title-width: calc(100% - 40px);
+        --mo-article-card-title-padding: 20px 20px 0 20px;
+        --mo-article-card-title-font-size: 24px;
+        --mo-article-card-description-font-size: 18px;
+        --mo-article-card-footer-font-size: 16px;
+        --mo-article-card-footer-padding: 0 0 20px 20px;
+
+        /* 文章浏览 */
+        --mo-article-view-head-height: 50vh;
+        --mo-article-view-detail-width: 60%;
+        --mo-article-view-detail-min-width: 800px;
+        --mo-article-view-detail-height: 100%;
+        --mo-article-view-title-font-size: 32px;
+        --mo-article-view-title-padding: 0 0 50px 0;
+        --mo-article-view-content-width: 60%;
+        --mo-article-view-content-min-width: 800px;
+        --mo-article-view-backtop-right: 100px;
+        --mo-article-view-backtop-bottom: 100px;
     }
 }

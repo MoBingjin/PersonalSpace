@@ -12,7 +12,7 @@
                     <mo-icon :icon-name="isOpenSideBar ? 'x' : 'list'" />
                 </el-icon>
             </div>
-            <div v-if="isOpenSideBar" class="mo-home-main__mask" @click="isOpenSideBar = false"></div>
+            <div v-if="isOpenSideBar" class="mo-home-main__mask" @click="isOpenSideBar = false" />
             <div v-if="existHeaderBar" class="mo-home-main__header-bar" :class="headerBarClass">
                 <mo-header-bar />
             </div>

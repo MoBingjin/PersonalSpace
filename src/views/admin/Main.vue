@@ -1,5 +1,5 @@
 <template>
-    <component :is="currentComponent" @change-page="changePage"></component>
+    <component :is="currentComponent" @change-page="changePage" />
 </template>
 
 <script setup>
@@ -20,7 +20,7 @@ const changePage = (data) =>
 
 // 初始化操作
 (() => {
-    window['document'].getElementsByTagName('title')[0].innerHTML = storage.getObject('title')['admin'];
+    document.getElementsByTagName('title')[0].innerHTML = storage.getObject('title')['admin'];
     const token = storage.get('token');
     if (token) {
         fetch(service.defaults.baseURL, {

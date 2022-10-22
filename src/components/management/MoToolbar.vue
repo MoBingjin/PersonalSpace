@@ -11,7 +11,7 @@
             </el-form-item>
             <el-form-item class="mo-toolbar__item">
                 <el-form-item class="mo-toolbar__sub-item">
-                    <slot name="select" :model="model"></slot>
+                    <slot name="select" :model="model" />
                     <el-input
                         class="mo-toolbar__input"
                         v-model="model.key"

@@ -1,35 +1,34 @@
 <template>
-    <div>
-        <div class="mo-cover">
-            <div v-if="articleData.title">
-                <div class="mo-article-title">{{ articleData.title }}</div>
-                <div class="mo-info">
-                    <span><a href="/"><img class="mo-avatar" :src="avatarPath" alt="头像" /></a></span>
-                    <span>{{ user }}</span>
-                    <span>·</span>
-                    <span>{{ formatDate(articleData.createTime) }}</span>
+    <div class="mo-article-view">
+        <div class="mo-article-view__head">
+            <div class="mo-article-view__detail" v-if="article.title">
+                <div class="mo-article-view__title">{{ article.title }}</div>
+                <div class="mo-article-view__info">
+                    <span class="mo-article-view__info-item">
+                        <a class="mo-article-view__avatar" href="/">
+                            <img class="mo-article-view__avatar-img" :src="avatarURL" />
+                        </a>
+                    </span>
+                    <span class="mo-article-view__info-item">{{ user }}</span>
+                    <span class="mo-article-view__info-item">·</span>
+                    <span class="mo-article-view__info-item">{{ article.createTime }}</span>
                 </div>
             </div>
         </div>
-        <div class="mo-content">
-            <div>
-                <md-editor-v3 v-model="articleData.content" :previewOnly="true" style="height: 100%" />
-            </div>
+        <div class="mo-article-view__body">
+            <md-editor-v3 class="mo-article-view__content" v-model="article.content" :previewOnly="true" />
         </div>
-        <el-backtop />
+        <el-backtop class="mo-article-view__backtop" />
     </div>
 </template>
 
 <script setup>
-
-import { getCurrentInstance, ref  } from 'vue';
+import { getCurrentInstance, reactive } from 'vue';
 import { useRoute } from 'vue-router';
+import articleService from '@/api/article-service.mod.js';
 import storage from '@/utils/storage.mod.js';
-import { formatDate } from '@/utils/date-utils.mod.js';
 import MdEditorV3 from 'md-editor-v3.js';
 import 'md-editor-v3/lib/style.css';
-
-const api = storage.getObject('api');
 
 // 获取真实路径函数
 const getActualPath = getCurrentInstance().proxy.$getActualPath;
@@ -38,166 +37,181 @@ const route = useRoute();
 
 // 用户
 const user = storage.get('user');
+// 默认封面路径
+const defaultCoverURL = storage.get('defaultCoverImageURL') || getActualPath('static/img/default_cover.png');
 // 头像路径
-const avatarPath = storage.get('avatarImageURL') || getActualPath('static/img/avatar.png');
+const avatarURL = storage.get('avatarImageURL') || getActualPath('static/img/avatar.png');
+
 // 文章数据
-const articleData = ref({});
+const article = reactive({
+    id: '',
+    title: '',
+    description: '',
+    cover: '',
+    content: '',
+    categoryId: '',
+    categoryName: '',
+    tags: [],
+    views: 0,
+    topping: false,
+    status: 1,
+    createTime: ''
+});
 
+// CSS变量
+const cssVariable = reactive({
+    // 封面路径
+    coverURL: `url('${defaultCoverURL}')`
+});
 
 /**
- * 获取文章数据
- * 
- * @param {string} articleId 文章ID
+ * 获取文章信息
+ *
+ * @param {String} id 文章ID
  */
-const dataArticle = articleId => {
-    fetch(api.dataArticleURL, {
-        method: 'post',
-        body: JSON.stringify({ articleId })
-    })
-        .then(res => res.json())
-        .then(data => {
-            if (data.code === 0) {
-                articleData.value = data.data;
-                setCover(data.data['cover'] || storage.getObject('defaultCoverImageURL') || getActualPath('static/img/default_cover.png'));
+const getArticleInfo = (id) => {
+    articleService
+        .info(id)
+        .then((res) => {
+            for (const key in res.data) {
+                article[key] = res.data[key];
             }
-            console.log(data.message);
+            // 设置文章封面
+            cssVariable.coverURL = `url('${article.cover || defaultCoverURL}')`;
         })
-        .catch(error => {
-            console.log(error);
-        });
+        .catch((error) => {});
 };
-
-/**
- * 设置封面路径
- * 
- * @param {string} coverPath 封面路径
- */
-const setCover = coverPath => {
-    const coverElement = window['document'].getElementsByClassName('mo-cover')[0];
-    coverElement.style.background = `url('${coverPath}') center center / cover no-repeat`;
-}
-
 
 // 初始化操作
 (() => {
-    // 获取文章数据
-    dataArticle(route.params.articleId);
+    // 获取文章信息
+    getArticleInfo(route.params.articleId);
 })();
-
 </script>
 
-<style>
-.el-backtop .el-icon {
-    font-size: 20px;
-}
-</style>
 <style scoped>
-@media screen and (max-width: 960px) {
-
-    .mo-cover {
-        height: 280px;
+@layer MoArticleView {
+    .mo-article-view {
+        min-height: 100vh;
+        --mo-article-view-cover-image: v-bind(cssVariable.coverURL);
     }
 
-    .mo-cover>div {
-        width: 95%;
-        height: 100%;
+    * {
+        --mo-article-view-head-background-image: var(--mo-article-view-cover-image);
+        --mo-article-view-detail-font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial,
+            'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
+        --mo-article-view-detail-color: #fff;
+        --mo-article-view-detail-text-shadow: 2px 2px 10px #000;
+        --mo-article-view-info-font-size: 14px;
+        --mo-article-view-info-padding: 0 0 25px 0;
+        --mo-article-view-info-item-padding: 0 10px 0 0;
+        --mo-article-view-avatar-img-width: 35px;
+        --mo-article-view-avatar-img-height: 35px;
+        --mo-article-view-backtop-width: 50px;
+        --mo-article-view-backtop-height: 50px;
+        --mo-article-view-backtop-icon-font-size: 20px;
     }
 
-    .mo-article-title {
-        font-size: 26px;
-        padding-bottom: 30px;
+    @media screen and (max-width: 960px) {
+        * {
+            --mo-article-view-head-height: 280px;
+            --mo-article-view-detail-width: 95%;
+            --mo-article-view-detail-min-width: var(--mo-article-view-detail-width);
+            --mo-article-view-detail-height: 100%;
+            --mo-article-view-title-font-size: 26px;
+            --mo-article-view-title-padding: 0 0 30px 0;
+            --mo-article-view-content-width: 95%;
+            --mo-article-view-content-min-width: var(--mo-article-view-content-width);
+            --mo-article-view-backtop-right: 10px;
+            --mo-article-view-backtop-bottom: 10px;
+        }
     }
 
-    .mo-content>div {
-        width: 95%;
+    @media screen and (min-width: 961px) {
+        * {
+            --mo-article-view-head-height: 50vh;
+            --mo-article-view-detail-width: 60%;
+            --mo-article-view-detail-min-width: 800px;
+            --mo-article-view-detail-height: 100%;
+            --mo-article-view-title-font-size: 32px;
+            --mo-article-view-title-padding: 0 0 50px 0;
+            --mo-article-view-content-width: 60%;
+            --mo-article-view-content-min-width: 800px;
+            --mo-article-view-backtop-right: 100px;
+            --mo-article-view-backtop-bottom: 100px;
+        }
     }
 
-    .el-backtop {
-        right: 10px !important;
-        bottom: 10px !important;
+    .mo-article-view__head {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        height: var(--mo-article-view-head-height);
+        background-image: var(--mo-article-view-head-background-image);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
     }
 
+    .mo-article-view__title {
+        font-size: var(--mo-article-view-title-font-size);
+        padding: var(--mo-article-view-title-padding);
+    }
+
+    .mo-article-view__detail {
+        font-family: var(--mo-article-view-detail-font-family);
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: flex-end;
+        width: var(--mo-article-view-detail-width);
+        height: var(--mo-article-view-detail-height);
+        color: var(--mo-article-view-detail-color);
+        text-shadow: var(--mo-article-view-detail-text-shadow);
+    }
+
+    .mo-article-view__info {
+        font-size: var(--mo-article-view-info-font-size);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: var(--mo-article-view-info-padding);
+    }
+
+    .mo-article-view__info-item {
+        padding: var(--mo-article-view-info-item-padding);
+    }
+
+    .mo-article-view__avatar {
+        cursor: auto;
+    }
+
+    .mo-article-view__avatar-img {
+        width: var(--mo-article-view-avatar-img-width);
+        height: var(--mo-article-view-avatar-img-height);
+        cursor: auto;
+        border-radius: 50%;
+    }
+
+    .mo-article-view__body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
-@media screen and (min-width: 961px) {
-
-    .mo-cover {
-        height: 50vh;
-    }
-
-    .mo-cover>div {
-        width: 60%;
-        height: 100%;
-        min-width: 800px;
-    }
-
-    .mo-article-title {
-        font-size: 32px;
-        padding-bottom: 50px;
-    }
-
-    .mo-content>div {
-        width: 60%;
-        min-width: 800px;
-    }
-
-    .el-backtop {
-        right: 100px !important;
-        bottom: 100px !important;
-    }
-
+.mo-article-view__content.md.md-previewOnly {
+    width: var(--mo-article-view-content-width);
 }
 
-.mo-cover {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.mo-article-view__backtop.el-backtop {
+    right: var(--mo-article-view-backtop-right) !important;
+    bottom: var(--mo-article-view-backtop-bottom) !important;
+    width: var(--mo-article-view-backtop-width);
+    height: var(--mo-article-view-backtop-height);
 }
 
-.mo-cover>div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-end;
-    font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
-    color: #ffffff;
-    text-shadow: 2px 2px 10px #000;
-}
-
-.mo-info {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding-bottom: 25px;
-    font-size: 14px;
-}
-
-.mo-info>span {
-    padding-right: 10px;
-}
-
-.mo-info>span:first-child>a {
-    cursor: auto;
-}
-
-.mo-avatar {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background-color: #cccccc88;
-    cursor: auto;
-}
-
-.mo-content {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.el-backtop {
-    width: 50px;
-    height: 50px;
+.mo-article-view__backtop.el-backtop >>> .el-icon {
+    font-size: var(--mo-article-view-backtop-icon-font-size);
 }
 </style>

@@ -3,7 +3,7 @@
         <el-row class="mo-article-card__row">
             <el-col :span="10">
                 <div class="mo-article-card__cover" @click="emits('view', model.id)">
-                    <img class="mo-article-card__cover-img" :src="model.cover || defaultCoverURL" alt="封面" />
+                    <img class="mo-article-card__cover-img" :src="model.cover || defaultCoverURL" />
                 </div>
             </el-col>
             <el-col :span="14">
@@ -23,7 +23,7 @@
                         <el-icon class="mo-article-card__info-icon">
                             <mo-icon icon-name="folder-fill" />
                         </el-icon>
-                        <span>{{ model.categoryName }}</span>
+                        <span>{{ model.categoryName || '未分类' }}</span>
                     </div>
                 </div>
             </el-col>

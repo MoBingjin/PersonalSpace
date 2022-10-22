@@ -18,7 +18,7 @@
                                 :title="dividerTitle"
                                 v-html="dividerIcon"
                                 @click="isCollapse = !isCollapse"
-                            ></span>
+                            />
                         </span>
                     </div>
                 </el-aside>

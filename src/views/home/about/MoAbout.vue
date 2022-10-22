@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="mo-head"></div>
+        <div class="mo-head" />
     </div>
 </template>
 

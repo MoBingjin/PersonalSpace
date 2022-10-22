@@ -10,7 +10,7 @@
                 />
             </el-header>
             <el-main class="mo-management__main">
-                <slot name="list"></slot>
+                <slot name="list" />
             </el-main>
             <el-footer class="mo-management__footer">
                 <el-pagination
@@ -22,7 +22,7 @@
                 />
             </el-footer>
         </el-container>
-        <slot name="dialog"></slot>
+        <slot name="dialog" />
     </div>
 </template>
 

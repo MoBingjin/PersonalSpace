@@ -1,6 +1,6 @@
 <template>
     <div class="mo-login">
-        <div class="mo-login__background"></div>
+        <div class="mo-login__background" />
         <div class="mo-login__panel">
             <div class="mo-login__title">后台管理</div>
             <el-form

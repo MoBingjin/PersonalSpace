@@ -1,5 +1,5 @@
 <template>
-    <component :is="currentComponent"></component>
+    <component :is="currentComponent" />
 </template>
 
 <script setup>

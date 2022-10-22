@@ -5,7 +5,7 @@
             <div class="mo-main__avatar">
                 <img class="mo-main__avatar-img" :src="avatarURL" alt="头像" referrerpolicy="no-referrer" />
             </div>
-            <div v-if="store.screenWidth > 960" class="mo-main__move-down" @click="toBody">
+            <div v-if="store.screenWidth > 960" class="mo-main__move-down" @click="handleMoveToBody">
                 <el-icon class="mo-main__down-icon">
                     <arrow-down-bold />
                 </el-icon>
@@ -15,19 +15,18 @@
         <div class="mo-main__body">
             <div class="mo-main__content">
                 <div class="mo-main__article-list">
-                    <div class="mo-main__article-item" v-for="item in articleInfoList" :key="item.id">
-                        <mo-article-card :model="item" @view="view" />
+                    <div class="mo-main__article-item" v-for="item in listData" :key="item.id">
+                        <mo-article-card :model="item" @view="handleView" />
                     </div>
                 </div>
                 <el-pagination
                     class="mo-main__article-pager"
-                    background
                     layout="prev, pager, next"
-                    :page-size="currentPageSize"
-                    :current-page="currentPage"
-                    :total="total"
-                    :hide-on-single-page="true"
-                    @current-change="listArticleInfoList"
+                    :page-size="model.pageSize"
+                    :current-page="model.page"
+                    :total="model.total"
+                    :background="true"
+                    @current-change="refresh"
                 />
             </div>
             <el-backtop class="mo-main__backtop" />
@@ -38,34 +37,27 @@
 <script setup>
 import { ArrowDownBold } from '@element-plus/icons-vue';
 import MoArticleCard from './components/MoArticleCard.vue';
-import { getCurrentInstance, reactive, ref } from 'vue';
+import { getCurrentInstance, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { formatDate } from '@/utils/date-utils.mod.js';
+import articleService from '@/api/article-service.mod.js';
+import managementViewUtils from '@/utils/management-view-utils.mod.js';
 import storage from '@/utils/storage.mod.js';
 import store from '@/store/store.mod.js';
-import _ from 'lodash.js';
-
-const api = storage.getObject('api');
 
 // 获取真实路径函数
 const getActualPath = getCurrentInstance().proxy.$getActualPath;
 // 路由实例对象
 const router = useRouter();
 
+/**
+ * model: 页面数据
+ * listData: 文章信息列表
+ * refresh: 文章信息列表刷新函数
+ */
+const { model, listData, refresh } = managementViewUtils.create({ service: articleService });
+model.page = storage.getObject('pageSize')['home'];
 // 头像路径
 const avatarURL = storage.get('avatarImageURL') || getActualPath('static/img/avatar.png');
-// 文章信息列表
-const articleInfoList = reactive([]);
-// 分页每页数目
-const currentPageSize = ref(storage.getObject('pageSize')['home']);
-// 当前页
-const currentPage = ref(1);
-// 分页总数
-const total = ref(0);
-// 关键词
-const key = ref('');
-// 搜索条件
-const searchParams = ref({});
 
 // CSS变量
 const cssVariable = reactive({
@@ -76,115 +68,21 @@ const cssVariable = reactive({
 });
 
 /**
- * 获取文章信息列表
- *
- * @param {number} page 当前页
- */
-const listArticleInfoList = async (page = 1, isToBody = true) => {
-    if (isToBody) {
-        toBody();
-    }
-    currentPage.value = page;
-    searchParams.value['page'] = page;
-    return new Promise((rev, rej) => {
-        // 获取文章信息列表数据
-        fetch(api.listArticleURL, {
-            method: 'post',
-            body: JSON.stringify(searchParams.value)
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.code === 0) {
-                    articleInfoList.splice(0, articleInfoList.length);
-                    data.data.list.map((item) =>
-                        articleInfoList.push({
-                            id: item.articleId,
-                            title: item.title,
-                            description: item.description,
-                            cover: '',
-                            contentId: '',
-                            categoryId: '',
-                            categoryName: item.type,
-                            tags: [],
-                            views: 0,
-                            topping: false,
-                            status: 1,
-                            createTime: formatDate(item.createTime, 'yyyy-MM-dd HH:mm:ss')
-                        })
-                    );
-                    total.value = data.data.total;
-                }
-                console.log(data.message);
-                rev(data.message);
-            })
-            .catch((error) => {
-                console.log(error);
-                rej(error);
-            });
-    });
-};
-
-/**
- * 浏览文章
+ * 文章浏览事件
  *
  * @param {string} articleId 文章ID
  */
-const view = (articleId) => router.push(`/article/${articleId}`);
+const handleView = (articleId) => router.push(`/article/${articleId}`);
 
 /**
- * 搜索事件
+ * 移动至主体事件
  */
-const search = async () => {
-    // 搜索参数
-    searchParams.value = { limit: currentPageSize.value };
-
-    // 关键词
-    const keyValue = key.value.trim();
-    if (keyValue !== '') {
-        searchParams.value['title'] = keyValue;
-        searchParams.value['description'] = keyValue;
-    }
-
-    // 获取文章信息列表
-    await listArticleInfoList(1, false);
-};
-
-/**
- * 移动至主体头部
- */
-const toBody = _.debounce(
-    () => {
-        const targetTop = window['document'].getElementsByClassName('mo-main__body')[0].offsetTop;
-        moveScroll(targetTop);
-    },
-    1000,
-    { leading: true, trailing: false }
-);
-
-/**
- * 将滚动条移动至目标高度
- *
- * @param {number} targetTop 目标高度
- */
-const moveScroll = (targetTop) => {
-    let scrollTop = window['document'].documentElement.scrollTop;
-    const direction = targetTop > scrollTop ? 1 : -1;
-    const distance = Math.ceil(Math.abs(targetTop - scrollTop) / 100);
-    const timer = setInterval(() => {
-        if (Math.abs(targetTop - scrollTop) > distance) {
-            scrollTop += direction * distance;
-        } else {
-            scrollTop = targetTop;
-            clearInterval(timer);
-        }
-        window['document'].documentElement.scrollTop = scrollTop;
-    }, 5);
-};
+const handleMoveToBody = () => document.querySelector('.mo-main__body').scrollIntoView({ behavior: 'smooth' });
 
 //初始化操作
-(async () => {
+(() => {
     // 获取文章信息列表
-    await search();
+    refresh(1);
 })();
 </script>
 
@@ -337,10 +235,14 @@ const moveScroll = (targetTop) => {
         align-items: center;
         flex-direction: column;
         width: 100%;
+        min-height: 100vh;
         background-color: var(--mo-main-body-background-color);
     }
 
     .mo-main__content {
+        display: flex;
+        flex: 1;
+        flex-flow: column;
         width: var(--mo-main-content-width);
         min-width: var(--mo-main-content-min-width);
         max-width: var(--mo-main-content-max-width);
@@ -350,6 +252,7 @@ const moveScroll = (targetTop) => {
     .mo-main__article-list {
         display: flex;
         align-items: center;
+        flex: 1;
         flex-direction: column;
         justify-content: space-between;
     }
@@ -370,10 +273,10 @@ const moveScroll = (targetTop) => {
 }
 
 .mo-main__backtop.el-backtop {
-    width: var(--mo-main-backtop-width);
-    height: var(--mo-main-backtop-height);
     right: var(--mo-main-backtop-right) !important;
     bottom: var(--mo-main-backtop-bottom) !important;
+    width: var(--mo-main-backtop-width);
+    height: var(--mo-main-backtop-height);
 }
 
 .mo-main__backtop.el-backtop >>> .el-icon {

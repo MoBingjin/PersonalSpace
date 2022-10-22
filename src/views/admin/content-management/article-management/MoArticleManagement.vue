@@ -84,7 +84,7 @@
                     class="mo-article-management__pagination"
                     layout="prev, pager, next"
                     :page-size="model.pageSize"
-                    :current-page="model.Page"
+                    :current-page="model.page"
                     :total="model.total"
                     :hide-on-single-page="true"
                     @current-change="refresh"

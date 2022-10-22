@@ -67,7 +67,7 @@
                     placeholder="请输入文章内容"
                     @onUploadImg="handleUploadImage"
                     @onSave="handleAddOrUpdate"
-                ></md-editor-v3>
+                />
             </el-main>
         </el-container>
     </div>
