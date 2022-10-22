@@ -41,8 +41,6 @@ const prop = defineProps({
 // Blob图标地址
 const blobIconURL = ref(store.blobIconURL?.[prop.iconPathName] ?? '');
 
-// 图标地址
-const iconURL = computed(() => iconConfig[prop.iconPathName]);
 // 图标链接
 const iconLink = computed(() => {
     return `${blobIconURL.value}#${prop.iconName}`;
@@ -50,17 +48,19 @@ const iconLink = computed(() => {
 
 // 初始化操作
 (() => {
+    // 获取Blob图标地址
     if (blobIconURL.value === '') {
-        // 获取图标Blob地址
-        fetch(iconURL.value)
+        const iconURL = iconConfig[prop.iconPathName];
+        store.requestMap ??= {};
+        store.requestMap[iconURL] ??= fetch(iconURL)
             .then((res) => res.blob())
             .then((blob) => {
-                blobIconURL.value = URL.createObjectURL(blob);
-                if (!store.blobIconURL) {
-                    store.blobIconURL = {};
-                }
-                store.blobIconURL[prop.iconPathName] = blobIconURL.value;
+                const blobURL = URL.createObjectURL(blob);
+                store.blobIconURL ??= {};
+                store.blobIconURL[prop.iconPathName] = blobURL;
+                return blobURL;
             });
+        store.requestMap[iconURL].then((blobURL) => (blobIconURL.value = blobURL));
     }
 })();
 </script>

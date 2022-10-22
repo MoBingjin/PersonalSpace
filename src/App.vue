@@ -14,7 +14,7 @@ const currentComponent = ref(null);
 // 初始化操作
 (async () => {
     // 加载设置项
-    settingService
+    await settingService
         .public([
             // 网站用户名
             'user',
@@ -46,9 +46,8 @@ const currentComponent = ref(null);
         archivesArticleURL: 'https://mine.mobingc.ml/article/archives'
     });
 
-    const mainDir = new URL(window.location.href).searchParams.has(storage.get('adminEntrance') ?? 'admin')
-        ? 'admin'
-        : 'home';
+    const adminEntrance = storage.get('adminEntrance') || 'admin';
+    const mainDir = new URL(window.location.href).searchParams.has(adminEntrance) ? 'admin' : 'home';
     try {
         currentComponent.value = markRaw(await import(`./views/${mainDir}/Main.vue`));
     } catch (error) {
