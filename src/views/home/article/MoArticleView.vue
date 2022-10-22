@@ -16,7 +16,19 @@
             </div>
         </div>
         <div class="mo-article-view__body">
-            <md-editor-v3 class="mo-article-view__content" v-model="article.content" :previewOnly="true" />
+            <md-editor-v3
+                class="mo-article-view__content"
+                :editor-id="mdState.id"
+                v-model="article.content"
+                :previewOnly="true"
+            />
+            <md-catalog
+                v-if="store.screenWidth > 960"
+                class="mo-article-view__catalog"
+                :editorId="mdState.id"
+                :scroll-element="mdState.scrollElement"
+                :offset-top="mdState.offsetTop"
+            />
         </div>
         <el-backtop class="mo-article-view__backtop" />
     </div>
@@ -27,7 +39,8 @@ import { getCurrentInstance, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import articleService from '@/api/article-service.mod.js';
 import storage from '@/utils/storage.mod.js';
-import MdEditorV3 from 'md-editor-v3.js';
+import store from '@/store/store.mod.js';
+import MdEditorV3, { MdCatalog } from 'md-editor-v3.js';
 import 'md-editor-v3/lib/style.css';
 
 // 获取真实路径函数
@@ -41,6 +54,13 @@ const user = storage.get('user');
 const defaultCoverURL = storage.get('defaultCoverImageURL') || getActualPath('static/img/default_cover.png');
 // 头像路径
 const avatarURL = storage.get('avatarImageURL') || getActualPath('static/img/avatar.png');
+
+// MdEditorV3 状态参数
+const mdState = reactive({
+    id: `md-editor-v3-${Date.now()}`,
+    scrollElement: document.documentElement,
+    offsetTop: 60
+});
 
 // 文章数据
 const article = reactive({
@@ -107,6 +127,13 @@ const getArticleInfo = (id) => {
         --mo-article-view-info-item-padding: 0 10px 0 0;
         --mo-article-view-avatar-img-width: 35px;
         --mo-article-view-avatar-img-height: 35px;
+        --mo-article-view-body-padding: 10px;
+        --mo-article-view-body-background-color: #f5f6f7;
+        --mo-article-view-catalog-top: calc(var(--mo-home-main-header-bar-height) + 10px);
+        --mo-article-view-catalog-margin: 0 0 0 10px;
+        --mo-article-view-catalog-padding: 10px;
+        --mo-article-view-catalog-border-radius: 5px;
+        --mo-article-view-catalog-background-color: #fff;
         --mo-article-view-backtop-width: 50px;
         --mo-article-view-backtop-height: 50px;
         --mo-article-view-backtop-icon-font-size: 20px;
@@ -122,6 +149,8 @@ const getArticleInfo = (id) => {
             --mo-article-view-title-padding: 0 0 30px 0;
             --mo-article-view-content-width: 95%;
             --mo-article-view-content-min-width: var(--mo-article-view-content-width);
+            --mo-article-view-content-padding: 5px;
+            --mo-article-view-content-border-radius: 5px;
             --mo-article-view-backtop-right: 10px;
             --mo-article-view-backtop-bottom: 10px;
         }
@@ -137,6 +166,8 @@ const getArticleInfo = (id) => {
             --mo-article-view-title-padding: 0 0 50px 0;
             --mo-article-view-content-width: 60%;
             --mo-article-view-content-min-width: 800px;
+            --mo-article-view-content-padding: 10px;
+            --mo-article-view-content-border-radius: 5px;
             --mo-article-view-backtop-right: 100px;
             --mo-article-view-backtop-bottom: 100px;
         }
@@ -195,13 +226,26 @@ const getArticleInfo = (id) => {
 
     .mo-article-view__body {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
+        padding: var(--mo-article-view-body-padding);
+        background-color: var(--mo-article-view-body-background-color);
     }
 }
 
 .mo-article-view__content.md.md-previewOnly {
     width: var(--mo-article-view-content-width);
+    padding: var(--mo-article-view-content-padding);
+    border-radius: var(--mo-article-view-content-border-radius);
+}
+
+.mo-article-view__catalog.md-catalog {
+    position: sticky;
+    top: var(--mo-article-view-catalog-top);
+    margin: var(--mo-article-view-catalog-margin);
+    padding: var(--mo-article-view-catalog-padding);
+    border-radius: var(--mo-article-view-content-border-radius);
+    background-color: var(--mo-article-view-catalog-background-color);
 }
 
 .mo-article-view__backtop.el-backtop {

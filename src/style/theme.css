@@ -96,6 +96,13 @@
     --mo-article-view-info-item-padding: 0 10px 0 0;
     --mo-article-view-avatar-img-width: 35px;
     --mo-article-view-avatar-img-height: 35px;
+    --mo-article-view-body-padding: 10px;
+    --mo-article-view-body-background-color: #f5f6f7;
+    --mo-article-view-catalog-top: calc(var(--mo-home-main-header-bar-height) + 10px);
+    --mo-article-view-catalog-margin: 0 0 0 10px;
+    --mo-article-view-catalog-padding: 10px;
+    --mo-article-view-catalog-border-radius: 5px;
+    --mo-article-view-catalog-background-color: #fff;
     --mo-article-view-backtop-width: 50px;
     --mo-article-view-backtop-height: 50px;
     --mo-article-view-backtop-icon-font-size: 20px;
@@ -232,6 +239,8 @@
         --mo-article-view-title-padding: 0 0 30px 0;
         --mo-article-view-content-width: 95%;
         --mo-article-view-content-min-width: var(--mo-article-view-content-width);
+        --mo-article-view-content-padding: 5px;
+        --mo-article-view-content-border-radius: 5px;
         --mo-article-view-backtop-right: 10px;
         --mo-article-view-backtop-bottom: 10px;
     }
@@ -278,6 +287,8 @@
         --mo-article-view-title-padding: 0 0 50px 0;
         --mo-article-view-content-width: 60%;
         --mo-article-view-content-min-width: 800px;
+        --mo-article-view-content-padding: 10px;
+        --mo-article-view-content-border-radius: 5px;
         --mo-article-view-backtop-right: 100px;
         --mo-article-view-backtop-bottom: 100px;
     }
