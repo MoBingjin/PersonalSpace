@@ -254,7 +254,7 @@ const handleMoveToBody = () => document.querySelector('.mo-main__body').scrollIn
         align-items: center;
         flex: 1;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: flex-start;
     }
 
     .mo-main__article-item {

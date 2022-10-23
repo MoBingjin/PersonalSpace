@@ -24,6 +24,8 @@ const currentComponent = ref(null);
             'avatarImageURL',
             // 前台背景图片
             'backgroundImageURL',
+            // 关于封面
+            'aboutCoverImageURL',
             // 文章默认封面
             'defaultCoverImageURL',
             // 404页面图片
@@ -38,13 +40,6 @@ const currentComponent = ref(null);
                 storage.set(key, res.data[key]);
             }
         });
-
-    // api
-    storage.set('api', {
-        listArticleURL: 'https://mine.mobingc.ml/article/list',
-        dataArticleURL: 'https://mine.mobingc.ml/article/data',
-        archivesArticleURL: 'https://mine.mobingc.ml/article/archives'
-    });
 
     const adminEntrance = storage.get('adminEntrance') || 'admin';
     const mainDir = new URL(window.location.href).searchParams.has(adminEntrance) ? 'admin' : 'home';

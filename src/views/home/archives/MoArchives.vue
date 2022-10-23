@@ -1,167 +1,179 @@
 <template>
     <div class="mo-archives">
-        <el-timeline>
+        <el-timeline
+            class="mo-archives__timeline"
+            v-infinite-scroll="handleLoad"
+            :infinite-scroll-disabled="isCompleted"
+            :infinite-scroll-immediate="false"
+        >
             <el-timeline-item
-                v-for="item in archives"
-                v-infinite-scroll="load"
-                :class="item.isTime && 'mo-time'"
+                v-for="(item, index) in archivesState.listData"
+                :key="index"
+                :class="!item.id ? 'mo-archives__year-month' : ''"
                 placement="top"
                 type="primary"
-                :size="item.isTime ? 'large' : 'normal'"
-                :hollow="!item.isTime"
-                :timestamp="item.timestamp"
+                :size="item.id ? 'normal' : 'large'"
+                :hollow="item.id ? true : false"
+                :timestamp="item.createTime"
+                :hide-timestamp="item.id ? false : true"
             >
-                <span v-if="item.isTime">{{ item.content }}</span>
-                <router-link v-else :to="`/article/${item.articleId}`">{{ item.content }}</router-link>
+                <router-link v-if="item.id" class="mo-archives__link" :to="`/article/${item.id}`">
+                    {{ item.title }}
+                </router-link>
+                <span>{{ item.yearMonth }}</span>
             </el-timeline-item>
         </el-timeline>
-        <span v-if="loading" class="mo-loading">加载中</span>
-        <span v-if="noMore">没有更多数据了~</span>
+        <span v-if="isLoading" class="mo-archives__tips mo-archives__tips--loading" />
+        <span v-if="isCompleted" class="mo-archives__tips"> 没有更多数据了~ </span>
     </div>
 </template>
 
 <script setup>
 import { computed, reactive, ref } from 'vue';
+import articleService from '@/api/article-service.mod.js';
 import storage from '@/utils/storage.mod.js';
 
-const { archivesArticleURL } = storage.getObject('api');
+// 归档状态数据
+const archivesState = reactive({
+    // 当前页数
+    page: 0,
+    // 分页每页数据条数
+    pageSize: storage.getObject('pageSize')['home'],
+    // 数据总条数
+    total: 0,
+    // 当前数据条数
+    length: 0,
+    // 年月列表
+    yearMonthList: [],
+    // 归档信息列表
+    listData: []
+});
 
-// 当前页数
-const page = ref(0);
-// 分页每页数目
-const currentPageSize = ref(storage.getObject('pageSize')['home']);
-// 分页总数
-const total = ref(0);
-// 归档信息列表
-const archives = reactive([]);
-// 是否加载中
-const loading = ref(false);
-
-// 是否没有更多数据
-const noMore = computed(() => page.value * currentPageSize.value >= total.value && page.value > 0);
+// 是否正在加载
+const isLoading = ref(false);
+// 是否完全加载
+const isCompleted = computed(() => archivesState.length === archivesState.total && archivesState.page > 0);
 
 /**
- * 文章归档信息数据加载
+ * 文章归档信息数据加载事件
  */
-const load = () => {
-    if (!noMore.value && !loading.value) {
-        loading.value = true;
-        fetch(archivesArticleURL, {
-            method: 'post',
-            body: JSON.stringify({
-                limit: currentPageSize.value,
-                page: page.value + 1
-            })
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                loading.value = false;
-                if (data.code === 0) {
-                    if (archives.length === 0 && data.data.archives.length > 0) {
-                        const item = data.data.archives[0];
-                        archives.push({
-                            content: item['yearAndMonth'],
-                            yearAndMonth: item['yearAndMonth'],
-                            isTime: true
-                        });
-                    }
-                    data.data.archives.map((item) => {
-                        const lastItem = archives[archives.length - 1];
-                        if (item['yearAndMonth'] !== lastItem['yearAndMonth']) {
-                            archives.push({
-                                content: item['yearAndMonth'],
-                                yearAndMonth: item['yearAndMonth'],
-                                isTime: true
-                            });
-                        }
-                        archives.push(item);
-                    });
-                    ++page.value;
-                    total.value = data.data.total;
-                }
-                console.log(data.message);
-            })
-            .catch((error) => {
-                loading.value = false;
-                console.log(error);
-            });
+const handleLoad = () => {
+    if (isCompleted.value || isLoading.value) {
+        return;
     }
+    isLoading.value = true;
+    archivesState.page += 1;
+    articleService
+        .list({}, archivesState.page, archivesState.pageSize)
+        .then((res) => {
+            isLoading.value = false;
+            archivesState.total = res.data.total;
+            archivesState.length += res.data.list.length;
+            res.data.list.map((item) => {
+                const yearMonth = item.createTime.substring(0, 7);
+                if (!archivesState.yearMonthList.includes(yearMonth)) {
+                    archivesState.yearMonthList.push(yearMonth);
+                    archivesState.listData.push({ yearMonth: yearMonth.replace('-', '年') + '月' });
+                }
+                archivesState.listData.push(item);
+            });
+        })
+        .catch((error) => {
+            isLoading.value = false;
+        });
 };
 
+// 初始化操作
 (() => {
-    // 文章归档信息数据加载
-    load();
+    // 加载文章归档信息
+    handleLoad();
 })();
 </script>
 
-<style>
-.mo-archives .el-timeline-item__wrapper {
-    width: calc(100% - 28px);
-}
-
-.mo-time .el-timeline-item__wrapper {
-    font-size: 16px;
-    top: -17px;
-    right: 130px;
-}
-</style>
 <style scoped>
-.mo-archives {
-    width: 100%;
-    padding-top: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.el-timeline {
-    width: 50%;
-    min-width: 220px;
-    padding: 0 50px 0 115px;
-}
-
-.el-timeline-item a {
-    color: #303133;
-    text-decoration: none;
-}
-
-.el-timeline-item a:hover {
-    color: #ffd04b;
-}
-
-.mo-archives > span {
-    width: calc(50% + 20px);
-    min-width: 240px;
-    font-size: 15px;
-    padding: 0 0 20px 135px;
-    color: #303133;
-}
-
-.mo-loading::after {
-    content: ' . . .';
-    animation: loading 1.5s infinite;
-}
-
-@keyframes loading {
-    0% {
-        content: ' ';
+@layer MoArchives {
+    * {
+        --mo-archives-padding: 100px 0 0 0;
+        --mo-archives-timeline-width: 50%;
+        --mo-archives-timeline-min-width: 220px;
+        --mo-archives-timeline-padding: 0 50px 0 115px;
+        --mo-archives-link-font-size: 14px;
+        --mo-archives-link-color: #303133;
+        --mo-archives-link-color-hover: #ffd04b;
+        --mo-archives-timeline-item-wrapper-width: calc(100% - 28px);
+        --mo-archives-year-month-wrapper-font-size: 16px;
+        --mo-archives-year-month-wrapper-top: -4px;
+        --mo-archives-year-month-wrapper-right: 130px;
+        --mo-archives-tips-font-size: 15px;
+        --mo-archives-tips-width: calc(50% + 20px);
+        --mo-archives-tips-min-width: 240px;
+        --mo-archives-tips-padding: 0 0 20px 135px;
+        --mo-archives-tips-color: #303133;
     }
 
-    25% {
-        content: ' .';
+    .mo-archives {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        padding: var(--mo-archives-padding);
     }
 
-    50% {
-        content: ' . .';
+    .mo-archives__link {
+        font-size: var(--mo-archives-link-font-size);
+        text-decoration: none;
+        color: var(--mo-archives-link-color);
     }
 
-    75% {
-        content: ' . . .';
+    .mo-archives__link:hover {
+        color: var(--mo-archives-link-color-hover);
     }
 
-    100% {
-        content: ' ';
+    .mo-archives__tips {
+        font-size: var(--mo-archives-tips-font-size);
+        width: var(--mo-archives-tips-width);
+        min-width: var(--mo-archives-tips-min-width);
+        padding: var(--mo-archives-tips-padding);
+        color: var(--mo-archives-tips-color);
     }
+
+    .mo-archives__tips--loading::after {
+        content: '';
+        animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+        0% {
+            content: '加载中 ';
+        }
+        25% {
+            content: '加载中 .';
+        }
+        50% {
+            content: '加载中 . .';
+        }
+        75% {
+            content: '加载中 . . .';
+        }
+        100% {
+            content: '加载中 ';
+        }
+    }
+}
+
+.mo-archives__timeline.el-timeline {
+    width: var(--mo-archives-timeline-width);
+    min-width: var(--mo-archives-timeline-min-width);
+    padding: var(--mo-archives-timeline-padding);
+}
+
+.mo-archives__timeline.el-timeline >>> .el-timeline-item__wrapper {
+    width: var(--mo-archives-timeline-item-wrapper-width);
+}
+
+.mo-archives__year-month.el-timeline-item >>> .el-timeline-item__wrapper {
+    font-size: var(--mo-archives-year-month-wrapper-font-size);
+    top: var(--mo-archives-year-month-wrapper-top);
+    right: var(--mo-archives-year-month-wrapper-right);
 }
 </style>

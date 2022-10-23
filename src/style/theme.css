@@ -107,6 +107,37 @@
     --mo-article-view-backtop-height: 50px;
     --mo-article-view-backtop-icon-font-size: 20px;
 
+    /* 文章归档 */
+    --mo-archives-padding: 100px 0 0 0;
+    --mo-archives-timeline-width: 50%;
+    --mo-archives-timeline-min-width: 220px;
+    --mo-archives-timeline-padding: 0 50px 0 115px;
+    --mo-archives-link-font-size: 14px;
+    --mo-archives-link-color: #303133;
+    --mo-archives-link-color-hover: #ffd04b;
+    --mo-archives-timeline-item-wrapper-width: calc(100% - 28px);
+    --mo-archives-year-month-wrapper-font-size: 16px;
+    --mo-archives-year-month-wrapper-top: -4px;
+    --mo-archives-year-month-wrapper-right: 130px;
+    --mo-archives-tips-font-size: 15px;
+    --mo-archives-tips-width: calc(50% + 20px);
+    --mo-archives-tips-min-width: 240px;
+    --mo-archives-tips-padding: 0 0 20px 135px;
+    --mo-archives-tips-color: #303133;
+
+    /* 关于 */
+    --mo-about-head-background-image: var(--mo-about-cover-image);
+    --mo-about-title-font-size: 40px;
+    --mo-about-title-font-weight: 500;
+    --mo-about-title-color: #fff;
+    --mo-about-title-text-shadow: 2px 2px 10px #000;
+    --mo-about-wave-width: 150%;
+    --mo-about-wave-height: 38px;
+    --mo-about-wave-margin: 0 0 -18px 0;
+    --mo-about-wave-border-radius: 50% 50% 0 0;
+    --mo-about-wave-background: #fff;
+    --mo-about-body-padding: 10px;
+
     /***************************** 后台 *****************************/
 
     /* 后台管理登录 */
@@ -243,6 +274,11 @@
         --mo-article-view-content-border-radius: 5px;
         --mo-article-view-backtop-right: 10px;
         --mo-article-view-backtop-bottom: 10px;
+
+        /* 关于 */
+        --mo-about-head-height: 35vh;
+        --mo-about-content-width: 95%;
+        --mo-about-content-min-width: var(--mo-about-content-width);
     }
 }
 
@@ -291,5 +327,10 @@
         --mo-article-view-content-border-radius: 5px;
         --mo-article-view-backtop-right: 100px;
         --mo-article-view-backtop-bottom: 100px;
+
+        /* 关于 */
+        --mo-about-head-height: 55vh;
+        --mo-about-content-width: 60%;
+        --mo-about-content-min-width: 800px;
     }
 }

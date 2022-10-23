@@ -112,6 +112,8 @@ const getArticleInfo = (id) => {
 <style scoped>
 @layer MoArticleView {
     .mo-article-view {
+        display: flex;
+        flex-flow: column;
         min-height: 100vh;
         --mo-article-view-cover-image: v-bind(cssVariable.coverURL);
     }
@@ -227,6 +229,7 @@ const getArticleInfo = (id) => {
     .mo-article-view__body {
         display: flex;
         align-items: flex-start;
+        flex: 1;
         justify-content: center;
         padding: var(--mo-article-view-body-padding);
         background-color: var(--mo-article-view-body-background-color);
@@ -235,6 +238,7 @@ const getArticleInfo = (id) => {
 
 .mo-article-view__content.md.md-previewOnly {
     width: var(--mo-article-view-content-width);
+    min-width: var(--mo-article-view-content-min-width);
     padding: var(--mo-article-view-content-padding);
     border-radius: var(--mo-article-view-content-border-radius);
 }
