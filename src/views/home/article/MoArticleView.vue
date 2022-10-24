@@ -132,6 +132,7 @@ const getArticleInfo = (id) => {
         --mo-article-view-body-padding: 10px;
         --mo-article-view-body-background-color: #f5f6f7;
         --mo-article-view-catalog-top: calc(var(--mo-home-main-header-bar-height) + 10px);
+        --mo-article-view-catalog-max-height: calc(100vh - var(--mo-article-view-catalog-top) - 10px);
         --mo-article-view-catalog-margin: 0 0 0 10px;
         --mo-article-view-catalog-padding: 10px;
         --mo-article-view-catalog-border-radius: 5px;
@@ -246,6 +247,9 @@ const getArticleInfo = (id) => {
 .mo-article-view__catalog.md-catalog {
     position: sticky;
     top: var(--mo-article-view-catalog-top);
+    overflow: auto;
+    box-sizing: border-box;
+    max-height: var(--mo-article-view-catalog-max-height);
     margin: var(--mo-article-view-catalog-margin);
     padding: var(--mo-article-view-catalog-padding);
     border-radius: var(--mo-article-view-content-border-radius);
