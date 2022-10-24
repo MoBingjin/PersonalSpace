@@ -55,7 +55,7 @@ const router = useRouter();
  * refresh: 文章信息列表刷新函数
  */
 const { model, listData, refresh } = managementViewUtils.create({ service: articleService });
-model.page = storage.getObject('pageSize')['home'];
+model.pageSize = storage.getObject('pageSize')['home'];
 // 头像路径
 const avatarURL = storage.get('avatarImageURL') || getActualPath('static/img/avatar.png');
 

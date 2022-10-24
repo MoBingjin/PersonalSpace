@@ -1,11 +1,6 @@
 <template>
     <div class="mo-archives">
-        <el-timeline
-            class="mo-archives__timeline"
-            v-infinite-scroll="handleLoad"
-            :infinite-scroll-disabled="isCompleted"
-            :infinite-scroll-immediate="false"
-        >
+        <el-timeline class="mo-archives__timeline">
             <el-timeline-item
                 v-for="(item, index) in archivesState.listData"
                 :key="index"
@@ -29,7 +24,7 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import articleService from '@/api/article-service.mod.js';
 import storage from '@/utils/storage.mod.js';
 
@@ -57,13 +52,13 @@ const isCompleted = computed(() => archivesState.length === archivesState.total 
 /**
  * 文章归档信息数据加载事件
  */
-const handleLoad = () => {
+const handleLoad = async () => {
     if (isCompleted.value || isLoading.value) {
         return;
     }
     isLoading.value = true;
     archivesState.page += 1;
-    articleService
+    await articleService
         .list({}, archivesState.page, archivesState.pageSize)
         .then((res) => {
             isLoading.value = false;
@@ -83,11 +78,33 @@ const handleLoad = () => {
         });
 };
 
-// 初始化操作
-(() => {
-    // 加载文章归档信息
-    handleLoad();
-})();
+/**
+ * 滚动条事件
+ */
+const handleScroll = () => {
+    const clientHeight = document.documentElement.clientHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight;
+    if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1) {
+        handleLoad();
+    }
+};
+
+// 挂载
+onMounted(async () => {
+    // 加载文章归档信息数据
+    while (document.documentElement.clientHeight === document.documentElement.scrollHeight) {
+        await handleLoad();
+    }
+    // 添加滚动条监听事件
+    document.addEventListener('scroll', handleScroll, false);
+});
+
+// 销毁
+onBeforeUnmount(() => {
+    // 删除滚动条监听事件
+    document.removeEventListener('scroll', handleScroll, false);
+});
 </script>
 
 <style scoped>
