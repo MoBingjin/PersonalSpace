@@ -26,7 +26,7 @@
                     :current-page="model.page"
                     :total="model.total"
                     :background="true"
-                    @current-change="refresh"
+                    @current-change="handleChangePage"
                 />
             </div>
             <el-backtop class="mo-main__backtop" />
@@ -73,6 +73,16 @@ const cssVariable = reactive({
  * @param {string} articleId 文章ID
  */
 const handleView = (articleId) => router.push(`/article/${articleId}`);
+
+/**
+ * 页码修改事件
+ *
+ * @param {number} page 页码
+ */
+const handleChangePage = (page) => {
+    refresh(page);
+    handleMoveToBody();
+};
 
 /**
  * 移动至主体事件

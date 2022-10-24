@@ -180,9 +180,19 @@ const managementViewUtils = {
         /**
          * 刷新数据
          *
-         * @param {{number, number}} param0 刷新参数(removeSize: 删除条数, page: 页码)
+         * @param {{number, number}|number} params 刷新参数(removeSize: 删除条数, page: 页码)
          */
-        const refresh = ({ removeSize = 0, page }) => {
+        const refresh = (params) => {
+            let removeSize = 0;
+            let page = 1;
+            if (params) {
+                if (typeof params === 'number') {
+                    page = params;
+                } else if (typeof params === 'object') {
+                    removeSize = params?.removeSize ?? removeSize;
+                    page = params?.page ?? page;
+                }
+            }
             if (page) {
                 model.page = page;
             } else if (removeSize > 0 && model.page > 1 && listData.length - removeSize < 1) {

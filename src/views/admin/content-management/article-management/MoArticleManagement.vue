@@ -87,7 +87,7 @@
                     :current-page="model.page"
                     :total="model.total"
                     :hide-on-single-page="true"
-                    @current-change="refresh"
+                    @current-change="handleChangePage"
                 />
             </el-footer>
         </el-container>
@@ -97,11 +97,14 @@
 <script setup>
 import { Search } from '@element-plus/icons-vue';
 import MoArticleColumn from './components/MoArticleColumn.vue';
-import { computed, reactive } from 'vue';
+import { computed, getCurrentInstance, reactive } from 'vue';
 import articleService from '@/api/article-service.mod.js';
 import categoryService from '@/api/category-service.mod.js';
 import tagService from '@/api/tag-service.mod.js';
 import managementViewUtils from '@/utils/management-view-utils.mod.js';
+
+// 局部ID
+const scopeId = getCurrentInstance().type.__scopeId;
 
 // 回调
 const emits = defineEmits(['open-tab']);
@@ -210,6 +213,16 @@ const loadTagList = () => {
             res.data.map((tag) => tagList.push(tag));
         })
         .catch((error) => {});
+};
+
+/**
+ * 修改页码事件
+ *
+ * @param {number} page 页码
+ */
+const handleChangePage = (page) => {
+    refresh(page);
+    document.querySelector(`.mo-article-management__main[${scopeId}]`).scrollTop = 0;
 };
 
 /**
