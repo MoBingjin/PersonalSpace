@@ -227,6 +227,10 @@
 
     /* 工具条 */
     --mo-toolbar-input-width: 300px;
+
+    /* 图片上传 */
+    --mo-image-uploader-width: 72px;
+    --mo-image-uploader-height: 72px;
 }
 
 /* 移动端 */

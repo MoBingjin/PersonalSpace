@@ -227,6 +227,7 @@ const loginout = () => {
 .mo-panel__container.el-container {
     height: 100vh;
     min-height: calc(var(--mo-panel-header-height) * 12);
+    min-width: calc(var(--mo-panel-header-height) * 21);
 }
 
 .mo-panel__header.el-header {

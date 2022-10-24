@@ -20,6 +20,12 @@
                         placeholder="前台背景图片, 默认为/public/img/background.png"
                     />
                 </el-form-item>
+                <el-form-item label="关于页面封面">
+                    <el-input
+                        v-model="form.aboutCoverImageURL"
+                        placeholder="关于页面封面, 默认为/public/img/about_cover.png"
+                    />
+                </el-form-item>
                 <el-form-item label="文章默认封面">
                     <el-input
                         v-model="form.defaultCoverImageURL"
@@ -79,6 +85,7 @@ const form = reactive({
     user: '',
     backgroundImageURL: '',
     avatarImageURL: '',
+    aboutCoverImageURL: '',
     defaultCoverImageURL: '',
     _404ImageURL: '',
     title: {
@@ -112,6 +119,8 @@ const init = () => {
             'avatarImageURL',
             // 前台背景图片
             'backgroundImageURL',
+            // 关于页面封面
+            'aboutCoverImageURL',
             // 文章默认封面
             'defaultCoverImageURL',
             // 404页面图片
@@ -125,6 +134,7 @@ const init = () => {
             form.user = res.data['user'];
             form.avatarImageURL = res.data['avatarImageURL'];
             form.backgroundImageURL = res.data['backgroundImageURL'];
+            form.aboutCoverImageURL = res.data['aboutCoverImageURL'];
             form.defaultCoverImageURL = res.data['defaultCoverImageURL'];
             form._404ImageURL = res.data['_404ImageURL'];
             form.title = Object.assign({}, form.title, JSON.parse(res.data['title']));

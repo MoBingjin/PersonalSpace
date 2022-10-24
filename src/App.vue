@@ -24,7 +24,7 @@ const currentComponent = ref(null);
             'avatarImageURL',
             // 前台背景图片
             'backgroundImageURL',
-            // 关于封面
+            // 关于页面封面
             'aboutCoverImageURL',
             // 文章默认封面
             'defaultCoverImageURL',

@@ -2,17 +2,14 @@
     <div class="mo-image-uploader">
         <el-upload
             list-type="picture-card"
-            :file-list="fileList"
+            v-model:file-list="fileList"
             :action="imageApi.upload"
             :headers="headers"
             :multiple="multiple"
             :before-upload="handleBeforeUpload"
-            :on-progress="handleProgress"
             :on-success="handleSuccess"
             :on-error="handleError"
             :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove"
-            :style="!multiple ? singleStyleVariable : ''"
         >
             <el-icon><plus /></el-icon>
         </el-upload>
@@ -24,7 +21,7 @@
 
 <script setup>
 import { Plus } from '@element-plus/icons-vue';
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import { imageApi } from '@/api/image-service.mod.js';
 import storage from '@/utils/storage.mod.js';
@@ -53,16 +50,16 @@ const headers = {
     Authorization: 'Bearer ' + storage.get('token')
 };
 
+// CSS变量
+const cssVariable = reactive({
+    uploadDisplay: computed(() => (!props.multiple && props.imageFileList.length > 0 ? 'none' : 'inline-flex'))
+});
+
 // 文件列表
 const fileList = computed({
     get: () => props.imageFileList,
     set: (value) => emits('update:imageFileList', value)
 });
-
-// 单文件组件样式变量
-const singleStyleVariable = computed(
-    () => `--mo-image-uploader-upload-display: ${props.imageFileList.length > 0 ? 'none' : 'inline-flex'}`
-);
 
 /**
  * 上传文件前事件
@@ -78,39 +75,23 @@ const handleBeforeUpload = (rawFile) => {
 };
 
 /**
- * 请求过程事件
- *
- * @param {Event} event 上传过程事件
- * @param {any} uploadFile 上传文件信息
- * @param {any} uploadFiles 上传文件信息列表
- */
-const handleProgress = (event, uploadFile, uploadFiles) => {
-    fileList.value = uploadFiles;
-};
-
-/**
  * 请求成功事件
  *
  * @param {Response} response 请求响应对象
  * @param {any} uploadFile 上传文件信息
- * @param {any} uploadFiles 上传文件信息列表
  */
-const handleSuccess = (response, uploadFile, uploadFiles) => {
+const handleSuccess = (response, uploadFile) => {
     uploadFile.url2 = response.data.fileURL;
-    fileList.value = uploadFiles;
 };
 
 /**
  * 请求失败事件
  *
  * @param {Error} error 错误
- * @param {any} uploadFile 上传文件信息
- * @param {any} uploadFiles 上传文件信息列表
  */
-const handleError = (error, uploadFile, uploadFiles) => {
+const handleError = (error) => {
     console.log(error.message);
     ElMessage({ message: error.message, type: 'error' });
-    fileList.value = uploadFiles;
 };
 
 /**
@@ -121,28 +102,23 @@ const handleError = (error, uploadFile, uploadFiles) => {
 const handlePictureCardPreview = (uploadFile) => {
     dialogImageUrl.value = uploadFile.url;
 };
-
-/**
- * 删除事件
- *
- * @param {any} uploadFile 上传文件信息
- * @param {any} uploadFiles 上传文件信息列表
- */
-const handleRemove = (uploadFile, uploadFiles) => {
-    fileList.value = uploadFiles;
-};
 </script>
 
 <style scoped>
+.mo-image-uploader {
+    --mo-image-uploader-upload-display: v-bind(cssVariable.uploadDisplay);
+}
+
 @layer MoImageUploader {
     * {
-        --mo-image-uploader-upload-display: inline-flex;
+        --mo-image-uploader-width: 72px;
+        --mo-image-uploader-height: 72px;
     }
 }
 
 .mo-image-uploader >>> .el-upload-list.el-upload-list--picture-card .el-upload-list__item {
-    width: 72px;
-    height: 72px;
+    width: var(--mo-image-uploader-width);
+    height: var(--mo-image-uploader-height);
     margin: 0 4px 4px 0;
     transition: unset;
     vertical-align: bottom;
@@ -150,8 +126,8 @@ const handleRemove = (uploadFile, uploadFiles) => {
 
 .mo-image-uploader >>> .el-upload.el-upload--picture-card {
     display: var(--mo-image-uploader-upload-display);
-    width: 72px;
-    height: 72px;
+    width: var(--mo-image-uploader-width);
+    height: var(--mo-image-uploader-height);
     margin: 0 4px 4px 0;
 }
 </style>
