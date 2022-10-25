@@ -94,10 +94,10 @@ const handleScroll = () => {
 
 // 挂载
 onMounted(async () => {
-    // 加载文章归档信息数据
-    while (document.documentElement.clientHeight === document.documentElement.scrollHeight) {
+    do {
+        // 加载文章归档信息数据
         await handleLoad();
-    }
+    } while (document.querySelector('.mo-archives').clientHeight < document.documentElement.clientHeight);
     // 添加滚动条监听事件
     document.addEventListener('scroll', handleScroll, false);
 });

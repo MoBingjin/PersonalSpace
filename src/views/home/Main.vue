@@ -93,7 +93,7 @@ const handleScroll = (event) => {
         --mo-home-main-side-switch-box-shadow: 2px 2px 10px #000;
         --mo-home-main-side-switch-icon-font-size: 40px;
         --mo-home-main-side-switch-icon-color: #fff;
-        --mo-home-main-mask-background-color: #99999957;
+        --mo-home-main-mask-background-color: #99957;
     }
 
     .mo-home-main--behind {
@@ -130,21 +130,15 @@ const handleScroll = (event) => {
     }
 
     .mo-home-main__side-switch {
-        position: absolute;
+        position: fixed;
         z-index: 2;
+        top: 10px;
+        left: 10px;
         width: var(--mo-home-main-side-switch-width);
         height: var(--mo-home-main-side-switch-height);
+        border-radius: 15%;
         background-color: var(--mo-home-main-side-switch-background-color);
         box-shadow: var(--mo-home-main-side-switch-box-shadow);
-    }
-
-    .mo-home-main__mask {
-        position: absolute;
-        z-index: 1;
-        display: block;
-        width: 100%;
-        height: 100vh;
-        background-color: var(--mo-home-main-mask-background-color);
     }
 
     .mo-home-main__switch-icon.el-icon {
@@ -154,6 +148,15 @@ const handleScroll = (event) => {
         height: 100%;
         text-align: center;
         color: var(--mo-home-main-side-switch-icon-color);
+    }
+
+    .mo-home-main__mask {
+        position: absolute;
+        z-index: 1;
+        display: block;
+        width: 100%;
+        height: 100vh;
+        background-color: var(--mo-home-main-mask-background-color);
     }
 }
 
@@ -167,7 +170,7 @@ const handleScroll = (event) => {
         --mo-home-main-header-bar-transition: all 0.8s;
         --mo-home-main-header-bar-transition-bg-show: all 0.5s;
     }
-    
+
     .mo-home-main__header-bar {
         position: fixed;
         z-index: 998;
