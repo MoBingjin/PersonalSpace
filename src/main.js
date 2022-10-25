@@ -1,8 +1,8 @@
-const Vue = window['Vue'];
-const VueRouter = window['VueRouter'];
-const ElementPlus = window['ElementPlus'];
-const ElementPlusIconsVue = window['ElementPlusIconsVue'];
-const ElementPlusLocaleZhCn = window['ElementPlusLocaleZhCn'];
+// const Vue = window['Vue'];
+// const VueRouter = window['VueRouter'];
+// const ElementPlus = window['ElementPlus'];
+// const ElementPlusIconsVue = window['ElementPlusIconsVue'];
+// const ElementPlusLocaleZhCn = window['ElementPlusLocaleZhCn'];
 const { loadModule } = window['vue3-sfc-loader'];
 const { getActualPath } = window['BasePath'];
 
@@ -36,7 +36,7 @@ const vm = Vue.createApp({
                 // 添加样式
                 addStyle(textContent) {
                     const style = Object.assign(document.createElement('style'), { textContent });
-                    const ref = document.head.getElementsByTagName('style')[0] ?? null;
+                    const ref = document.head.getElementsByTagName('style')[0] || null;
                     document.head.insertBefore(style, ref);
                 },
                 // 远程获取事件
