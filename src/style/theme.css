@@ -98,12 +98,6 @@
     --mo-article-view-avatar-img-height: 35px;
     --mo-article-view-body-padding: 10px;
     --mo-article-view-body-background-color: #f5f6f7;
-    --mo-article-view-catalog-top: calc(var(--mo-home-main-header-bar-height) + 10px);
-    --mo-article-view-catalog-max-height: calc(100vh - var(--mo-article-view-catalog-top) - 10px);
-    --mo-article-view-catalog-margin: 0 0 0 10px;
-    --mo-article-view-catalog-padding: 10px;
-    --mo-article-view-catalog-border-radius: 5px;
-    --mo-article-view-catalog-background-color: #fff;
     --mo-article-view-backtop-width: 50px;
     --mo-article-view-backtop-height: 50px;
     --mo-article-view-backtop-icon-font-size: 20px;
@@ -142,7 +136,7 @@
     /***************************** 后台 *****************************/
 
     /* 后台管理登录 */
-    --mo-login-background-image: url("https://tva1.sinaimg.cn/large/007q9ZDily1h3mv7fyyjlj32yo1o0hdu.jpg");
+    --mo-login-background-image: var(--mo-login-background-url);
     --mo-login-background-after-background: #f6f6f6b4;
     --mo-login-panel-background: #ffffff80;
     --mo-login-panel-box-shadow: 0 0 10px #000;
@@ -330,6 +324,12 @@
         --mo-article-view-content-min-width: 800px;
         --mo-article-view-content-padding: 10px;
         --mo-article-view-content-border-radius: 5px;
+        --mo-article-view-catalog-top: calc(var(--mo-home-main-header-bar-height) + 10px);
+        --mo-article-view-catalog-max-height: calc(100vh - var(--mo-article-view-catalog-top) - 10px);
+        --mo-article-view-catalog-margin: 0 0 0 10px;
+        --mo-article-view-catalog-padding: 10px;
+        --mo-article-view-catalog-border-radius: 5px;
+        --mo-article-view-catalog-background-color: #fff;
         --mo-article-view-backtop-right: 100px;
         --mo-article-view-backtop-bottom: 100px;
 

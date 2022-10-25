@@ -65,45 +65,40 @@ const goHome = () => (window.location.href = '/');
 </script>
 
 <style scoped>
-@layer MoHeaderBar {
-    * {
-        --mo-header-bar-logo-font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC',
-            'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
-        --mo-header-bar-logo-font-size: 28px;
-        --mo-header-bar-logo-font-weight: 800;
-        --mo-header-bar-logo-margin: 0 0 0 10px;
-        --mo-header-bar-logo-padding: 5px;
-        --mo-header-bar-logo-color: #464646;
-        --mo-header-bar-logo-color-hover: #ffd04b;
-        --mo-header-bar-menu-margin: 0 30px 0 0;
-        --mo-header-bar-menu-text-color: #666;
-        --mo-header-bar-menu-text-color-hover: #409eff;
-        --mo-header-bar-menu-text-color-active: #ffd04b;
-        --mo-header-bar-menu-background-color: #fff0;
-        --mo-header-bar-menu-background-color-hover: #ddd8;
-    }
+.mo-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    --mo-header-bar-logo-font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC',
+        'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
+    --mo-header-bar-logo-font-size: 28px;
+    --mo-header-bar-logo-font-weight: 800;
+    --mo-header-bar-logo-margin: 0 0 0 10px;
+    --mo-header-bar-logo-padding: 5px;
+    --mo-header-bar-logo-color: #464646;
+    --mo-header-bar-logo-color-hover: #ffd04b;
+    --mo-header-bar-menu-margin: 0 30px 0 0;
+    --mo-header-bar-menu-text-color: #666;
+    --mo-header-bar-menu-text-color-hover: #409eff;
+    --mo-header-bar-menu-text-color-active: #ffd04b;
+    --mo-header-bar-menu-background-color: #fff0;
+    --mo-header-bar-menu-background-color-hover: #ddd8;
+}
 
-    .mo-header-bar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 100%;
-    }
+.mo-header-bar__logo {
+    font-family: var(--mo-header-bar-logo-font-family);
+    font-size: var(--mo-header-bar-logo-font-size);
+    font-weight: var(--mo-header-bar-logo-font-weight);
+    margin: var(--mo-header-bar-logo-margin);
+    padding: var(--mo-header-bar-logo-padding);
+    color: var(--mo-header-bar-logo-color);
+}
 
-    .mo-header-bar__logo {
-        font-family: var(--mo-header-bar-logo-font-family);
-        font-size: var(--mo-header-bar-logo-font-size);
-        font-weight: var(--mo-header-bar-logo-font-weight);
-        margin: var(--mo-header-bar-logo-margin);
-        padding: var(--mo-header-bar-logo-padding);
-        color: var(--mo-header-bar-logo-color);
-    }
-
-    .mo-header-bar__logo:hover {
-        cursor: pointer;
-        user-select: none;
-        color: var(--mo-header-bar-logo-color-hover);
-    }
+.mo-header-bar__logo:hover {
+    cursor: pointer;
+    user-select: none;
+    color: var(--mo-header-bar-logo-color-hover);
 }
 
 .mo-header-bar__menu.el-menu {

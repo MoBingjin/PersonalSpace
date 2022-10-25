@@ -127,15 +127,9 @@ defineExpose({ init });
 </script>
 
 <style scoped>
-@layer {
-    * {
-        --mo-category-dialog-status-on-color: #13ce66;
-        --mo-category-dialog-status-off-color: #ff4949;
-    }
-
-    .mo-category-dialog__uploader.mo-image-uploader {
-        margin-top: 6px;
-    }
+.mo-category-dialog {
+    --mo-category-dialog-status-on-color: #13ce66;
+    --mo-category-dialog-status-off-color: #ff4949;
 }
 
 .mo-category-dialog >>> .el-dialog__body {
@@ -148,6 +142,10 @@ defineExpose({ init });
 
 .mo-category-dialog__image.el-form-item >>> .el-form-item__content {
     line-height: unset;
+}
+
+.mo-category-dialog__uploader.mo-image-uploader {
+    margin-top: 6px;
 }
 
 .mo-category-dialog__status.el-switch {

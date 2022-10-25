@@ -287,20 +287,15 @@ const form2String = (form) => {
 </script>
 
 <style scoped>
-@layer MoPublishArticle {
-    * {
-        --mo-publish-article-header-height: 166px;
-    }
+.mo-publish-article {
+    height: 100%;
+    --mo-publish-article-header-height: 166px;
+}
 
-    .mo-publish-article {
-        height: 100%;
-    }
-
-    .mo-publish-article__form-left,
-    .mo-publish-article__form-right {
-        display: inline-block;
-        width: 50%;
-    }
+.mo-publish-article__form-left,
+.mo-publish-article__form-right {
+    display: inline-block;
+    width: 50%;
 }
 
 .mo-publish-article__container.el-container {

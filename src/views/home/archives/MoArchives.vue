@@ -1,25 +1,27 @@
 <template>
     <div class="mo-archives">
-        <el-timeline class="mo-archives__timeline">
-            <el-timeline-item
-                v-for="(item, index) in archivesState.listData"
-                :key="index"
-                :class="!item.id ? 'mo-archives__year-month' : ''"
-                placement="top"
-                type="primary"
-                :size="item.id ? 'normal' : 'large'"
-                :hollow="item.id ? true : false"
-                :timestamp="item.createTime"
-                :hide-timestamp="item.id ? false : true"
-            >
-                <router-link v-if="item.id" class="mo-archives__link" :to="`/article/${item.id}`">
-                    {{ item.title }}
-                </router-link>
-                <span>{{ item.yearMonth }}</span>
-            </el-timeline-item>
-        </el-timeline>
-        <span v-if="isLoading" class="mo-archives__tips mo-archives__tips--loading" />
-        <span v-if="isCompleted" class="mo-archives__tips"> 没有更多数据了~ </span>
+        <div class="mo-archives__container">
+            <el-timeline class="mo-archives__timeline">
+                <el-timeline-item
+                    v-for="(item, index) in archivesState.listData"
+                    :key="index"
+                    :class="!item.id ? 'mo-archives__year-month' : ''"
+                    placement="top"
+                    type="primary"
+                    :size="item.id ? 'normal' : 'large'"
+                    :hollow="item.id ? true : false"
+                    :timestamp="item.createTime"
+                    :hide-timestamp="item.id ? false : true"
+                >
+                    <router-link v-if="item.id" class="mo-archives__link" :to="`/article/${item.id}`">
+                        {{ item.title }}
+                    </router-link>
+                    <span>{{ item.yearMonth }}</span>
+                </el-timeline-item>
+            </el-timeline>
+            <span v-if="isLoading" class="mo-archives__tips mo-archives__tips--loading" />
+            <span v-if="isCompleted" class="mo-archives__tips"> 没有更多数据了~ </span>
+        </div>
     </div>
 </template>
 
@@ -85,7 +87,7 @@ const handleScroll = () => {
     const clientHeight = document.documentElement.clientHeight;
     const scrollTop = document.documentElement.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight;
-    if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1) {
+    if (Math.abs(scrollHeight - clientHeight - scrollTop) < 20) {
         handleLoad();
     }
 };
@@ -108,73 +110,71 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-@layer MoArchives {
-    * {
-        --mo-archives-padding: 100px 0 0 0;
-        --mo-archives-timeline-width: 50%;
-        --mo-archives-timeline-min-width: 220px;
-        --mo-archives-timeline-padding: 0 50px 0 115px;
-        --mo-archives-link-font-size: 14px;
-        --mo-archives-link-color: #303133;
-        --mo-archives-link-color-hover: #ffd04b;
-        --mo-archives-timeline-item-wrapper-width: calc(100% - 28px);
-        --mo-archives-year-month-wrapper-font-size: 16px;
-        --mo-archives-year-month-wrapper-top: -4px;
-        --mo-archives-year-month-wrapper-right: 130px;
-        --mo-archives-tips-font-size: 15px;
-        --mo-archives-tips-width: calc(50% + 20px);
-        --mo-archives-tips-min-width: 240px;
-        --mo-archives-tips-padding: 0 0 20px 135px;
-        --mo-archives-tips-color: #303133;
-    }
+.mo-archives {
+    --mo-archives-padding: 100px 0 0 0;
+    --mo-archives-timeline-width: 50%;
+    --mo-archives-timeline-min-width: 220px;
+    --mo-archives-timeline-padding: 0 50px 0 115px;
+    --mo-archives-link-font-size: 14px;
+    --mo-archives-link-color: #303133;
+    --mo-archives-link-color-hover: #ffd04b;
+    --mo-archives-timeline-item-wrapper-width: calc(100% - 28px);
+    --mo-archives-year-month-wrapper-font-size: 16px;
+    --mo-archives-year-month-wrapper-top: -4px;
+    --mo-archives-year-month-wrapper-right: 130px;
+    --mo-archives-tips-font-size: 15px;
+    --mo-archives-tips-width: calc(50% + 20px);
+    --mo-archives-tips-min-width: 240px;
+    --mo-archives-tips-padding: 0 0 20px 135px;
+    --mo-archives-tips-color: #303133;
+}
 
-    .mo-archives {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        justify-content: center;
-        padding: var(--mo-archives-padding);
-    }
+.mo-archives__container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--mo-archives-padding);
+}
 
-    .mo-archives__link {
-        font-size: var(--mo-archives-link-font-size);
-        text-decoration: none;
-        color: var(--mo-archives-link-color);
-    }
+.mo-archives__link {
+    font-size: var(--mo-archives-link-font-size);
+    text-decoration: none;
+    color: var(--mo-archives-link-color);
+}
 
-    .mo-archives__link:hover {
-        color: var(--mo-archives-link-color-hover);
-    }
+.mo-archives__link:hover {
+    color: var(--mo-archives-link-color-hover);
+}
 
-    .mo-archives__tips {
-        font-size: var(--mo-archives-tips-font-size);
-        width: var(--mo-archives-tips-width);
-        min-width: var(--mo-archives-tips-min-width);
-        padding: var(--mo-archives-tips-padding);
-        color: var(--mo-archives-tips-color);
-    }
+.mo-archives__tips {
+    font-size: var(--mo-archives-tips-font-size);
+    width: var(--mo-archives-tips-width);
+    min-width: var(--mo-archives-tips-min-width);
+    padding: var(--mo-archives-tips-padding);
+    color: var(--mo-archives-tips-color);
+}
 
-    .mo-archives__tips--loading::after {
-        content: '';
-        animation: loading 1.5s infinite;
-    }
+.mo-archives__tips--loading::after {
+    content: '';
+    animation: loading 1.5s infinite;
+}
 
-    @keyframes loading {
-        0% {
-            content: '加载中 ';
-        }
-        25% {
-            content: '加载中 .';
-        }
-        50% {
-            content: '加载中 . .';
-        }
-        75% {
-            content: '加载中 . . .';
-        }
-        100% {
-            content: '加载中 ';
-        }
+@keyframes loading {
+    0% {
+        content: '加载中 ';
+    }
+    25% {
+        content: '加载中 .';
+    }
+    50% {
+        content: '加载中 . .';
+    }
+    75% {
+        content: '加载中 . . .';
+    }
+    100% {
+        content: '加载中 ';
     }
 }
 

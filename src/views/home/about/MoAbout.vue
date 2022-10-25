@@ -41,85 +41,80 @@ const cssVariable = reactive({
 </script>
 
 <style scoped>
-@layer MoAbout {
+.mo-about {
+    display: flex;
+    flex-flow: column;
+    min-height: 100vh;
+    --mo-about-cover-image: v-bind(cssVariable.coverURL);
+    --mo-about-head-background-image: var(--mo-about-cover-image);
+    --mo-about-title-font-size: 40px;
+    --mo-about-title-font-weight: 500;
+    --mo-about-title-color: #fff;
+    --mo-about-title-text-shadow: 2px 2px 10px #000;
+    --mo-about-wave-width: 150%;
+    --mo-about-wave-height: 38px;
+    --mo-about-wave-margin: 0 0 -18px 0;
+    --mo-about-wave-border-radius: 50% 50% 0 0;
+    --mo-about-wave-background: #fff;
+    --mo-about-body-padding: 10px;
+}
+
+@media screen and (max-width: 960px) {
     .mo-about {
-        display: flex;
-        flex-flow: column;
-        min-height: 100vh;
-        --mo-about-cover-image: v-bind(cssVariable.coverURL);
+        --mo-about-head-height: 35vh;
+        --mo-about-content-width: 95%;
+        --mo-about-content-min-width: var(--mo-about-content-width);
     }
+}
 
-    * {
-        --mo-about-head-background-image: var(--mo-about-cover-image);
-        --mo-about-title-font-size: 40px;
-        --mo-about-title-font-weight: 500;
-        --mo-about-title-color: #fff;
-        --mo-about-title-text-shadow: 2px 2px 10px #000;
-        --mo-about-wave-width: 150%;
-        --mo-about-wave-height: 38px;
-        --mo-about-wave-margin: 0 0 -18px 0;
-        --mo-about-wave-border-radius: 50% 50% 0 0;
-        --mo-about-wave-background: #fff;
-        --mo-about-body-padding: 10px;
+@media screen and (min-width: 961px) {
+    .mo-about {
+        --mo-about-head-height: 55vh;
+        --mo-about-content-width: 60%;
+        --mo-about-content-min-width: 800px;
     }
+}
 
-    @media screen and (max-width: 960px) {
-        * {
-            --mo-about-head-height: 35vh;
-            --mo-about-content-width: 95%;
-            --mo-about-content-min-width: var(--mo-about-content-width);
-        }
-    }
+.mo-about__head {
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: var(--mo-about-head-height);
+    background-image: var(--mo-about-head-background-image);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
 
-    @media screen and (min-width: 961px) {
-        * {
-            --mo-about-head-height: 55vh;
-            --mo-about-content-width: 60%;
-            --mo-about-content-min-width: 800px;
-        }
-    }
+.mo-about__title {
+    font-size: var(--mo-about-title-font-size);
+    font-weight: var(--mo-about-title-font-weight);
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+    color: var(--mo-about-title-color);
+    text-shadow: var(--mo-about-title-text-shadow);
+}
 
-    .mo-about__head {
-        display: flex;
-        overflow: hidden;
-        align-items: center;
-        flex-direction: column;
-        justify-content: center;
-        height: var(--mo-about-head-height);
-        background-image: var(--mo-about-head-background-image);
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-    }
+.mo-about__wave {
+    width: var(--mo-about-wave-width);
+    height: var(--mo-about-wave-height);
+    margin: var(--mo-about-wave-margin);
+    animation: var(--mo-about-wave-animation);
+    border-radius: var(--mo-about-wave-border-radius);
+    background: var(--mo-about-wave-background);
+}
 
-    .mo-about__title {
-        font-size: var(--mo-about-title-font-size);
-        font-weight: var(--mo-about-title-font-weight);
-        display: flex;
-        align-items: center;
-        flex: 1;
-        justify-content: center;
-        color: var(--mo-about-title-color);
-        text-shadow: var(--mo-about-title-text-shadow);
-    }
-
-    .mo-about__wave {
-        width: var(--mo-about-wave-width);
-        height: var(--mo-about-wave-height);
-        margin: var(--mo-about-wave-margin);
-        animation: var(--mo-about-wave-animation);
-        border-radius: var(--mo-about-wave-border-radius);
-        background: var(--mo-about-wave-background);
-    }
-
-    .mo-about__body {
-        display: flex;
-        align-items: center;
-        flex: 1;
-        flex-direction: column;
-        justify-content: flex-start;
-        padding: var(--mo-about-body-padding);
-    }
+.mo-about__body {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: var(--mo-about-body-padding);
 }
 
 .mo-about__content.md.md-previewOnly {

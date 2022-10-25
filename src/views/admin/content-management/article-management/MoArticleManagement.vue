@@ -248,14 +248,9 @@ const openTab = (title, componentName, params, multipleId) =>
 </script>
 
 <style scoped>
-@layer MoArticleManagement {
-    * {
-        --mo-article-management-header-height: 56px;
-    }
-
-    .mo-article-management {
-        height: 100%;
-    }
+.mo-article-management {
+    height: 100%;
+    --mo-article-management-header-height: 56px;
 }
 
 .mo-article-management__container.el-container {

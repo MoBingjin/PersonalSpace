@@ -128,15 +128,10 @@ const statusChange = (row) => {
 </script>
 
 <style scoped>
-@layer {
-    * {
-        --mo-category-management-status-on-color: #13ce66;
-        --mo-category-management-status-off-color: #ff4949;
-    }
-
-    .mo-category-management {
-        height: 100%;
-    }
+.mo-category-management {
+    height: 100%;
+    --mo-category-management-status-on-color: #13ce66;
+    --mo-category-management-status-off-color: #ff4949;
 }
 
 .mo-category-management__status.el-switch {

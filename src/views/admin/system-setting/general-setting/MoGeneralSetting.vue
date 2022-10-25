@@ -181,25 +181,23 @@ const handleSave = () => {
 </script>
 
 <style scoped>
-@layer MoGeneralSetting {
-    .mo-general-setting {
-        height: 100%;
-    }
+.mo-general-setting {
+    height: 100%;
+}
 
-    .mo-general-setting__card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+.mo-general-setting__card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
-    .mo-general-setting__selector {
-        margin-right: 12px;
-        width: 130px;
-    }
+.mo-general-setting__selector {
+    margin-right: 12px;
+    width: 130px;
+}
 
-    .mo-general-setting__selector--last {
-        margin-right: 0;
-    }
+.mo-general-setting__selector--last {
+    margin-right: 0;
 }
 
 .mo-general-setting__box-card.el-card {

@@ -97,179 +97,174 @@ const handleMoveToBody = () => document.querySelector('.mo-main__body').scrollIn
 </script>
 
 <style scoped>
-@layer MoMain {
+.mo-main {
+    --mo-main-background-image: v-bind(cssVariable.backgroundURL);
+    --mo-main-wave-image: v-bind(cssVariable.waveURL);
+    --mo-main-avatar-animation: fadeInDown 1.5s 1;
+    --mo-main-avatar-img-padding: 5px;
+    --mo-main-avatar-img-transition: all 1s ease;
+    --mo-main-avatar-img-transform: rotate(0);
+    --mo-main-avatar-img-transform-hover: rotate(360deg);
+    --mo-main-avatar-img-border-radius: 50%;
+    --mo-main-avatar-img-box-shadow: inset 0 0 10px #000;
+    --mo-main-move-down-font-size: 28px;
+    --mo-main-move-down-width: 50px;
+    --mo-main-move-down-height: 30px;
+    --mo-main-move-down-transform: scale(1.5, 1);
+    --mo-main-move-down-color: #fff;
+    --mo-main-down-icon-animation: slideInDown 2s infinite linear alternate;
+    --mo-main-body-background-color: #f5f5f5;
+    --mo-main-content-width: 90%;
+    --mo-main-content-min-width: 350px;
+    --mo-main-content-max-width: 780px;
+    --mo-main-article-pager-padding: 0 0 20px 0;
+    --mo-main-backtop-width: 50px;
+    --mo-main-backtop-height: 50px;
+    --mo-main-backtop-icon-font-size: 20px;
+}
+
+@media screen and (max-width: 960px) {
     .mo-main {
-        --mo-main-background-image: v-bind(cssVariable.backgroundURL);
-        --mo-main-wave-image: v-bind(cssVariable.waveURL);
+        --mo-main-welcome-height: 300px;
+        --mo-main-welcome-padding: 80px 0 0 0;
+        --mo-main-background-height: var(--mo-main-welcome-height);
+        --mo-main-background-position: center;
+        --mo-main-avatar-img-width: 80px;
+        --mo-main-avatar-img-height: 80px;
+        --mo-main-wave-width: 150%;
+        --mo-main-wave-height: 38px;
+        --mo-main-wave-margin: 0 0 -18px 0;
+        --mo-main-wave-border-radius: 50% 50% 0 0;
+        --mo-main-wave-background: #f5f5f5;
+        --mo-main-wave-animation: none;
+        --mo-main-content-padding: 0;
+        --mo-main-article-item-padding: 10px 0 10px 0;
+        --mo-main-backtop-right: 10px;
+        --mo-main-backtop-bottom: 10px;
     }
+}
 
-    * {
-        --mo-main-avatar-animation: fadeInDown 1.5s 1;
-        --mo-main-avatar-img-padding: 5px;
-        --mo-main-avatar-img-transition: all 1s ease;
-        --mo-main-avatar-img-transform: rotate(0);
-        --mo-main-avatar-img-transform-hover: rotate(360deg);
-        --mo-main-avatar-img-border-radius: 50%;
-        --mo-main-avatar-img-box-shadow: inset 0 0 10px #000;
-        --mo-main-move-down-font-size: 28px;
-        --mo-main-move-down-width: 50px;
-        --mo-main-move-down-height: 30px;
-        --mo-main-move-down-transform: scale(1.5, 1);
-        --mo-main-move-down-color: #fff;
-        --mo-main-down-icon-animation: slideInDown 2s infinite linear alternate;
-        --mo-main-body-background-color: #f5f5f5;
-        --mo-main-content-width: 90%;
-        --mo-main-content-min-width: 350px;
-        --mo-main-content-max-width: 780px;
-        --mo-main-article-pager-padding: 0 0 20px 0;
-        --mo-main-backtop-width: 50px;
-        --mo-main-backtop-height: 50px;
-        --mo-main-backtop-icon-font-size: 20px;
+@media screen and (min-width: 961px) {
+    .mo-main {
+        --mo-main-welcome-height: 100vh;
+        --mo-main-welcome-padding: 35vh 0 0 0;
+        --mo-main-background-height: 100%;
+        --mo-main-background-position: 0 -80px;
+        --mo-main-avatar-img-width: 130px;
+        --mo-main-avatar-img-height: 130px;
+        --mo-main-wave-width: 100%;
+        --mo-main-wave-height: 85px;
+        --mo-main-wave-margin: 0;
+        --mo-main-wave-border-radius: 0;
+        --mo-main-wave-background: var(--mo-main-wave-image) repeat-x;
+        --mo-main-wave-animation: waveMove 30s infinite linear;
+        --mo-main-content-padding: 80px 0 0 0;
+        --mo-main-article-item-padding: 20px 0 20px 0;
+        --mo-main-backtop-right: 100px;
+        --mo-main-backtop-bottom: 100px;
     }
+}
 
-    @media screen and (max-width: 960px) {
-        * {
-            --mo-main-welcome-height: 300px;
-            --mo-main-welcome-padding: 80px 0 0 0;
-            --mo-main-background-height: var(--mo-main-welcome-height);
-            --mo-main-background-position: center;
-            --mo-main-avatar-img-width: 80px;
-            --mo-main-avatar-img-height: 80px;
-            --mo-main-wave-width: 150%;
-            --mo-main-wave-height: 38px;
-            --mo-main-wave-margin: 0 0 -18px 0;
-            --mo-main-wave-border-radius: 50% 50% 0 0;
-            --mo-main-wave-background: #f5f5f5;
-            --mo-main-wave-animation: none;
-            --mo-main-content-padding: 0;
-            --mo-main-article-item-padding: 10px 0 10px 0;
-            --mo-main-backtop-right: 10px;
-            --mo-main-backtop-bottom: 10px;
-        }
-    }
+.mo-main__background {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: var(--mo-main-background-height);
+    background-image: var(--mo-main-background-image);
+    background-repeat: no-repeat;
+    background-position: var(--mo-main-background-position);
+    background-size: cover;
+}
 
-    @media screen and (min-width: 961px) {
-        * {
-            --mo-main-welcome-height: 100vh;
-            --mo-main-welcome-padding: 35vh 0 0 0;
-            --mo-main-background-height: 100%;
-            --mo-main-background-position: 0 -80px;
-            --mo-main-avatar-img-width: 130px;
-            --mo-main-avatar-img-height: 130px;
-            --mo-main-wave-width: 100%;
-            --mo-main-wave-height: 85px;
-            --mo-main-wave-margin: 0;
-            --mo-main-wave-border-radius: 0;
-            --mo-main-wave-background: var(--mo-main-wave-image) repeat-x;
-            --mo-main-wave-animation: waveMove 30s infinite linear;
-            --mo-main-content-padding: 80px 0 0 0;
-            --mo-main-article-item-padding: 20px 0 20px 0;
-            --mo-main-backtop-right: 100px;
-            --mo-main-backtop-bottom: 100px;
-        }
-    }
+.mo-main__welcome {
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    height: var(--mo-main-welcome-height);
+    padding: var(--mo-main-welcome-padding);
+}
 
-    .mo-main__background {
-        position: fixed;
-        z-index: -1;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: var(--mo-main-background-height);
-        background-image: var(--mo-main-background-image);
-        background-repeat: no-repeat;
-        background-position: var(--mo-main-background-position);
-        background-size: cover;
-    }
+.mo-main__avatar {
+    animation: var(--mo-main-avatar-animation);
+}
 
-    .mo-main__welcome {
-        display: flex;
-        overflow: hidden;
-        align-items: center;
-        flex-direction: column;
-        justify-content: space-between;
-        box-sizing: border-box;
-        height: var(--mo-main-welcome-height);
-        padding: var(--mo-main-welcome-padding);
-    }
+.mo-main__avatar-img {
+    width: var(--mo-main-avatar-img-height);
+    height: var(--mo-main-avatar-img-height);
+    padding: var(--mo-main-avatar-img-padding);
+    transition: var(--mo-main-avatar-img-transition);
+    transform: var(--mo-main-avatar-img-transform);
+    border-radius: var(--mo-main-avatar-img-border-radius);
+    box-shadow: var(--mo-main-avatar-img-box-shadow);
+}
 
-    .mo-main__avatar {
-        animation: var(--mo-main-avatar-animation);
-    }
+.mo-main__avatar-img:hover {
+    transform: var(--mo-main-avatar-img-transform-hover);
+}
 
-    .mo-main__avatar-img {
-        width: var(--mo-main-avatar-img-height);
-        height: var(--mo-main-avatar-img-height);
-        padding: var(--mo-main-avatar-img-padding);
-        transition: var(--mo-main-avatar-img-transition);
-        transform: var(--mo-main-avatar-img-transform);
-        border-radius: var(--mo-main-avatar-img-border-radius);
-        box-shadow: var(--mo-main-avatar-img-box-shadow);
-    }
+.mo-main__move-down {
+    font-size: var(--mo-main-move-down-font-size);
+    display: flex;
+    align-items: flex-end;
+    flex: 1;
+    justify-content: center;
+    width: var(--mo-main-move-down-width);
+    height: var(--mo-main-move-down-height);
+    transform: var(--mo-main-move-down-transform);
+    color: var(--mo-main-move-down-color);
+}
 
-    .mo-main__avatar-img:hover {
-        transform: var(--mo-main-avatar-img-transform-hover);
-    }
+.mo-main__move-down:hover {
+    cursor: pointer;
+}
 
-    .mo-main__move-down {
-        font-size: var(--mo-main-move-down-font-size);
-        display: flex;
-        align-items: flex-end;
-        flex: 1;
-        justify-content: center;
-        width: var(--mo-main-move-down-width);
-        height: var(--mo-main-move-down-height);
-        transform: var(--mo-main-move-down-transform);
-        color: var(--mo-main-move-down-color);
-    }
+.mo-main__down-icon {
+    animation: var(--mo-main-down-icon-animation);
+}
 
-    .mo-main__move-down:hover {
-        cursor: pointer;
-    }
+.mo-main__wave {
+    width: var(--mo-main-wave-width);
+    height: var(--mo-main-wave-height);
+    margin: var(--mo-main-wave-margin);
+    animation: var(--mo-main-wave-animation);
+    border-radius: var(--mo-main-wave-border-radius);
+    background: var(--mo-main-wave-background);
+}
 
-    .mo-main__down-icon {
-        animation: var(--mo-main-down-icon-animation);
-    }
+.mo-main__body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--mo-main-body-background-color);
+}
 
-    .mo-main__wave {
-        width: var(--mo-main-wave-width);
-        height: var(--mo-main-wave-height);
-        margin: var(--mo-main-wave-margin);
-        animation: var(--mo-main-wave-animation);
-        border-radius: var(--mo-main-wave-border-radius);
-        background: var(--mo-main-wave-background);
-    }
+.mo-main__content {
+    display: flex;
+    flex: 1;
+    flex-flow: column;
+    width: var(--mo-main-content-width);
+    min-width: var(--mo-main-content-min-width);
+    max-width: var(--mo-main-content-max-width);
+    padding: var(--mo-main-content-padding);
+}
 
-    .mo-main__body {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        width: 100%;
-        min-height: 100vh;
-        background-color: var(--mo-main-body-background-color);
-    }
+.mo-main__article-list {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+}
 
-    .mo-main__content {
-        display: flex;
-        flex: 1;
-        flex-flow: column;
-        width: var(--mo-main-content-width);
-        min-width: var(--mo-main-content-min-width);
-        max-width: var(--mo-main-content-max-width);
-        padding: var(--mo-main-content-padding);
-    }
-
-    .mo-main__article-list {
-        display: flex;
-        align-items: center;
-        flex: 1;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-
-    .mo-main__article-item {
-        padding: var(--mo-main-article-item-padding);
-    }
+.mo-main__article-item {
+    padding: var(--mo-main-article-item-padding);
 }
 
 .mo-main__article-pager.el-pagination {

@@ -112,15 +112,10 @@ const statusChange = (row) => {
 </script>
 
 <style scoped>
-@layer {
-    * {
-        --mo-tag-management-status-on-color: #13ce66;
-        --mo-tag-management-status-off-color: #ff4949;
-    }
-
-    .mo-tag-management {
-        height: 100%;
-    }
+.mo-tag-management {
+    height: 100%;
+    --mo-tag-management-status-on-color: #13ce66;
+    --mo-tag-management-status-off-color: #ff4949;
 }
 
 .mo-tag-management__status.el-switch {

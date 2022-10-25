@@ -82,15 +82,8 @@ const handleScroll = (event) => {
 </script>
 
 <style scoped>
-@layer MoMain {
-    * {
-        --mo-home-main-header-bar-height: 60px;
-        --mo-home-main-header-bar-background-color: rgba(255, 255, 255, 0.95);
-        --mo-home-main-header-bar-background-color-hover: rgba(255, 255, 255, 1);
-        --mo-home-main-header-bar-background-color-hidden: rgba(255, 255, 255, 0);
-        --mo-home-main-header-bar-box-shadow: 0 1px 40px -8px rgb(0 0 0 / 50%);
-        --mo-home-main-header-bar-transition: all 0.8s;
-        --mo-home-main-header-bar-transition-bg-show: all 0.5s;
+@media screen and (max-width: 960px) {
+    .mo-home-main {
         --mo-home-main-side-bar-width: 250px;
         --mo-home-main-side-bar-background-color: #fff;
         --mo-home-main-side-bar-transition: left 0.3s ease;
@@ -103,6 +96,78 @@ const handleScroll = (event) => {
         --mo-home-main-mask-background-color: #99999957;
     }
 
+    .mo-home-main--behind {
+        position: fixed;
+        overflow: hidden;
+        width: 100%;
+        height: 100vh;
+    }
+
+    .mo-home-main__side-bar {
+        position: absolute;
+        z-index: 999;
+        left: calc(-1 * var(--mo-home-main-side-bar-width));
+        display: block;
+        width: var(--mo-home-main-side-bar-width);
+        height: 100%;
+        transition: var(--mo-home-main-side-bar-transition);
+        background-color: var(--mo-home-main-side-bar-background-color);
+    }
+
+    .mo-home-main__side-bar--open {
+        left: 0;
+    }
+
+    .mo-home-main__container {
+        display: block;
+        width: 100%;
+        padding-left: 0;
+        transition-duration: 0.5s;
+    }
+
+    .mo-home-main__container--move {
+        padding-left: var(--mo-home-main-side-bar-width);
+    }
+
+    .mo-home-main__side-switch {
+        position: absolute;
+        z-index: 2;
+        width: var(--mo-home-main-side-switch-width);
+        height: var(--mo-home-main-side-switch-height);
+        background-color: var(--mo-home-main-side-switch-background-color);
+        box-shadow: var(--mo-home-main-side-switch-box-shadow);
+    }
+
+    .mo-home-main__mask {
+        position: absolute;
+        z-index: 1;
+        display: block;
+        width: 100%;
+        height: 100vh;
+        background-color: var(--mo-home-main-mask-background-color);
+    }
+
+    .mo-home-main__switch-icon.el-icon {
+        font-size: var(--mo-home-main-side-switch-icon-font-size);
+        line-height: var(--mo-home-main-side-switch-height);
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        color: var(--mo-home-main-side-switch-icon-color);
+    }
+}
+
+@media screen and (min-width: 961px) {
+    .mo-home-main {
+        --mo-home-main-header-bar-height: 60px;
+        --mo-home-main-header-bar-background-color: rgba(255, 255, 255, 0.95);
+        --mo-home-main-header-bar-background-color-hover: rgba(255, 255, 255, 1);
+        --mo-home-main-header-bar-background-color-hidden: rgba(255, 255, 255, 0);
+        --mo-home-main-header-bar-box-shadow: 0 1px 40px -8px rgb(0 0 0 / 50%);
+        --mo-home-main-header-bar-transition: all 0.8s;
+        --mo-home-main-header-bar-transition-bg-show: all 0.5s;
+    }
+    
     .mo-home-main__header-bar {
         position: fixed;
         z-index: 998;
@@ -126,67 +191,5 @@ const handleScroll = (event) => {
     .mo-home-main__header-bar--bg-hidden {
         background-color: var(--mo-home-main-header-bar-background-color-hidden);
     }
-
-    @media screen and (max-width: 960px) {
-        .mo-home-main--behind {
-            position: fixed;
-            overflow: hidden;
-            width: 100%;
-            height: 100vh;
-        }
-
-        .mo-home-main__side-bar {
-            position: absolute;
-            z-index: 999;
-            left: calc(-1 * var(--mo-home-main-side-bar-width));
-            display: block;
-            width: var(--mo-home-main-side-bar-width);
-            height: 100%;
-            transition: var(--mo-home-main-side-bar-transition);
-            background-color: var(--mo-home-main-side-bar-background-color);
-        }
-
-        .mo-home-main__side-bar--open {
-            left: 0;
-        }
-
-        .mo-home-main__container {
-            display: block;
-            width: 100%;
-            padding-left: 0;
-            transition-duration: 0.5s;
-        }
-
-        .mo-home-main__container--move {
-            padding-left: var(--mo-home-main-side-bar-width);
-        }
-
-        .mo-home-main__side-switch {
-            position: absolute;
-            z-index: 2;
-            width: var(--mo-home-main-side-switch-width);
-            height: var(--mo-home-main-side-switch-height);
-            background-color: var(--mo-home-main-side-switch-background-color);
-            box-shadow: var(--mo-home-main-side-switch-box-shadow);
-        }
-
-        .mo-home-main__mask {
-            position: absolute;
-            z-index: 1;
-            display: block;
-            width: 100%;
-            height: 100vh;
-            background-color: var(--mo-home-main-mask-background-color);
-        }
-    }
-}
-
-.mo-home-main__switch-icon {
-    font-size: var(--mo-home-main-side-switch-icon-font-size);
-    line-height: var(--mo-home-main-side-switch-height);
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    color: var(--mo-home-main-side-switch-icon-color);
 }
 </style>

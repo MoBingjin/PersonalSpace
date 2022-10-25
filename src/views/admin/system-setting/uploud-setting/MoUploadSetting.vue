@@ -105,16 +105,14 @@ const handleSave = () => {
 </script>
 
 <style scoped>
-@layer MoUploadSetting {
-    .mo-upload-setting {
-        height: 100%;
-    }
-    
-    .mo-upload-setting__card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+.mo-upload-setting {
+    height: 100%;
+}
+
+.mo-upload-setting__card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .mo-upload-setting__box-card.el-card {

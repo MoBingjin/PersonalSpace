@@ -6,11 +6,7 @@
                     <el-input v-model="formData.name" placeholder="请输入标签名称" maxlength="128" />
                 </el-form-item>
                 <el-form-item label="描述" prop="description">
-                    <el-input
-                        v-model="formData.description"
-                        placeholder="请输入标签描述"
-                        maxlength="255"
-                    />
+                    <el-input v-model="formData.description" placeholder="请输入标签描述" maxlength="255" />
                 </el-form-item>
                 <el-form-item label="状态" prop="status" :label-width="'50px'" v-if="formData.id">
                     <el-switch v-model="formData.status" class="mo-tag-dialog__status" />
@@ -93,7 +89,7 @@ const handleConfirm = () => {
  */
 const handleCancel = () => {
     dialogFormVisible.value = false;
-}
+};
 
 /**
  * 清空表单数据
@@ -110,11 +106,9 @@ defineExpose({ init });
 </script>
 
 <style scoped>
-@layer {
-    * {
-        --mo-tag-dialog-status-on-color: #13ce66;
-        --mo-tag-dialog-status-off-color: #ff4949;
-    }
+.mo-tag-dialog {
+    --mo-tag-dialog-status-on-color: #13ce66;
+    --mo-tag-dialog-status-off-color: #ff4949;
 }
 
 .mo-tag-dialog >>> .el-dialog__body {

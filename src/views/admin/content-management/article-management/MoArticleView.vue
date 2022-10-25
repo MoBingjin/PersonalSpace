@@ -72,22 +72,17 @@ const getArticleInfo = (id) => {
 </script>
 
 <style scoped>
-@layer MoArticleView {
-    * {
-        --mo-article-view-title-font-size: 32px;
-        --mo-article-view-title-font-weight: bold;
-    }
+.mo-article-view {
+    position: absolute;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    --mo-article-view-title-font-size: 32px;
+    --mo-article-view-title-font-weight: bold;
+}
 
-    .mo-article-view {
-        position: absolute;
-        overflow: auto;
-        width: 100%;
-        height: 100%;
-    }
-
-    .mo-article-view__title {
-        font-size: var(--mo-article-view-title-font-size);
-        font-weight: var(--mo-article-view-title-font-weight);
-    }
+.mo-article-view__title {
+    font-size: var(--mo-article-view-title-font-size);
+    font-weight: var(--mo-article-view-title-font-weight);
 }
 </style>

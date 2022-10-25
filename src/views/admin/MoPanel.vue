@@ -189,39 +189,37 @@ const loginout = () => {
 </script>
 
 <style scoped>
-@layer MoPanel {
-    * {
-        --mo-panel-header-height: 60px;
-        --mo-panel-header-border-bottom: 1px solid #ffd04b;
-        --mo-panel-header-background-color: #505860;
-        --mo-panel-aside-background-color: #545c64;
-        --mo-panel-main-padding: 5px;
-        --mo-panel-main-background-color: #596172;
-        --mo-panel-tabs-border-radius: 5px;
-        --mo-panel-menu-divider-background-color: #bebebe;
-    }
+.mo-panel {
+    --mo-panel-header-height: 60px;
+    --mo-panel-header-border-bottom: 1px solid #ffd04b;
+    --mo-panel-header-background-color: #505860;
+    --mo-panel-aside-background-color: #545c64;
+    --mo-panel-main-padding: 5px;
+    --mo-panel-main-background-color: #596172;
+    --mo-panel-tabs-border-radius: 5px;
+    --mo-panel-menu-divider-background-color: #bebebe;
+}
 
-    .mo-panel__left-menu {
-        display: flex;
-        flex-flow: row;
-        height: 100%;
-    }
+.mo-panel__left-menu {
+    display: flex;
+    flex-flow: row;
+    height: 100%;
+}
 
-    .mo-panel__menu-body {
-        flex: 1;
-    }
+.mo-panel__menu-body {
+    flex: 1;
+}
 
-    .mo-panel__menu-divider {
-        display: flex;
-        align-items: center;
-        width: 9px;
-        background-color: var(--mo-panel-menu-divider-background-color);
-    }
+.mo-panel__menu-divider {
+    display: flex;
+    align-items: center;
+    width: 9px;
+    background-color: var(--mo-panel-menu-divider-background-color);
+}
 
-    .mo-panel__divider-icon {
-        cursor: pointer;
-        user-select: none;
-    }
+.mo-panel__divider-icon {
+    cursor: pointer;
+    user-select: none;
 }
 
 .mo-panel__container.el-container {

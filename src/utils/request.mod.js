@@ -5,7 +5,8 @@ import storage from '@/utils/storage.mod.js';
 // 创建一个axios实例
 const service = axios.create({
     // 基础路径
-    baseURL: 'http://localhost:8233',
+    baseURL: 'https://api.mobingc.cn',
+    // baseURL: 'http://localhost:8233',
     // 请求超时时间（毫秒）
     timeout: 30000,
     // header参数配置

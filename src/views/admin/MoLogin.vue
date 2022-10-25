@@ -41,26 +41,36 @@
 
 <script setup>
 import MoIcon from '@/components/icons/MoIcon.vue';
-import { reactive, ref } from 'vue';
+import { getCurrentInstance, reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import userService from '@/api/user-service.mod.js';
 import storage from '@/utils/storage.mod.js';
 
+// 获取真实路径函数
+const getActualPath = getCurrentInstance().proxy.$getActualPath;
+
 // 回调对象
 const emits = defineEmits(['change-page']);
 
+// 表单组件
+const formComponent = ref();
 // 表单对象
 const form = reactive({
     userName: '',
     password: ''
 });
+
 // 校验规则
-const rules = reactive({
+const rules = {
     userName: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
     password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
+};
+
+// CSS变量
+const cssVariable = reactive({
+    // 背景图片路径
+    backgroundURL: `url('${storage.get('backgroundImageURL') || getActualPath('static/img/background.png')}')`
 });
-// 表单组件
-const formComponent = ref();
 
 /**
  * 登录
@@ -82,98 +92,29 @@ const handleLogin = () => {
 </script>
 
 <style scoped>
-@layer MoLogin {
-    * {
-        --mo-login-background-image: url('../../../public/img/background.png');
-        --mo-login-background-after-background: #f6f6f6b4;
-        --mo-login-panel-background: #fff80;
-        --mo-login-panel-box-shadow: 0 0 10px #000;
-        --mo-login-title-font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
-            '微软雅黑', Arial, sans-serif;
-        --mo-login-title-font-size: 30px;
-        --mo-login-title-color: #000;
-    }
-
-    .mo-login {
-        height: 100vh;
-    }
-
-    .mo-login__background {
-        position: fixed;
-        z-index: -1;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-image: var(--mo-login-background-image);
-        background-repeat: no-repeat;
-        background-position: 0 -80px;
-        background-size: cover;
-    }
-
-    .mo-login__background:after {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        content: '';
-        background: var(--mo-login-background-after-background);
-    }
-
-    .mo-login__panel {
-        position: relative;
-        top: 15vh;
-        overflow: hidden;
-        margin: 0 auto;
-        border-radius: 5px;
-        background: var(--mo-login-panel-background);
-        box-shadow: var(--mo-login-panel-box-shadow);
-    }
-
-    .mo-login__title {
-        font-family: var(--mo-login-title-font-family);
-        font-size: var(--mo-login-title-font-size);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--mo-login-title-color);
-        border-bottom: 1px solid #ddd;
-    }
-
-    @media screen and (max-width: 1500px) {
-        .mo-login__panel {
-            width: 360px;
-            height: 270px;
-        }
-
-        .mo-login__title {
-            height: 56px;
-        }
-    }
-
-    @media screen and (min-width: 1501px) {
-        .mo-login__panel {
-            width: 24vw;
-            height: 18vw;
-        }
-
-        .mo-login__title {
-            height: 3.67vw;
-        }
-    }
-}
-
-.mo-login__item--last.el-form-item {
-    margin-bottom: 0;
-}
-
-.mo-login__button.el-button {
-    width: 100%;
-    text-align: center;
+.mo-login {
+    height: 100vh;
+    --mo-login-background-url: v-bind(cssVariable.backgroundURL);
+    --mo-login-background-image: var(--mo-login-background-url);
+    --mo-login-background-after-background: #f6f6f6b4;
+    --mo-login-panel-background: #fff80;
+    --mo-login-panel-box-shadow: 0 0 10px #000;
+    --mo-login-title-font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+        '微软雅黑', Arial, sans-serif;
+    --mo-login-title-font-size: 30px;
+    --mo-login-title-color: #000;
 }
 
 @media screen and (max-width: 1500px) {
+    .mo-login__panel {
+        width: 360px;
+        height: 270px;
+    }
+
+    .mo-login__title {
+        height: 56px;
+    }
+
     .mo-login__form.el-form {
         padding: 28.8px;
     }
@@ -192,6 +133,15 @@ const handleLogin = () => {
 }
 
 @media screen and (min-width: 1501px) {
+    .mo-login__panel {
+        width: 24vw;
+        height: 18vw;
+    }
+
+    .mo-login__title {
+        height: 3.67vw;
+    }
+
     .mo-login__form.el-form {
         padding: 1.92vw;
     }
@@ -207,5 +157,57 @@ const handleLogin = () => {
     .mo-login__button.el-button {
         height: 2.4vw;
     }
+}
+
+.mo-login__background {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: var(--mo-login-background-image);
+    background-repeat: no-repeat;
+    background-position: 0 -80px;
+    background-size: cover;
+}
+
+.mo-login__background:after {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    content: '';
+    background: var(--mo-login-background-after-background);
+}
+
+.mo-login__panel {
+    position: relative;
+    top: 15vh;
+    overflow: hidden;
+    margin: 0 auto;
+    border-radius: 5px;
+    background: var(--mo-login-panel-background);
+    box-shadow: var(--mo-login-panel-box-shadow);
+}
+
+.mo-login__title {
+    font-family: var(--mo-login-title-font-family);
+    font-size: var(--mo-login-title-font-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--mo-login-title-color);
+    border-bottom: 1px solid #ddd;
+}
+
+.mo-login__item--last.el-form-item {
+    margin-bottom: 0;
+}
+
+.mo-login__button.el-button {
+    width: 100%;
+    text-align: center;
 }
 </style>

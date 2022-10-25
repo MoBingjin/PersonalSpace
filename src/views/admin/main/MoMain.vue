@@ -28,12 +28,10 @@ const content = ref('');
 </script>
 
 <style scoped>
-@layer MoMain {
-    .mo-main {
-        height: 100%;
-        display: flex;
-        flex-flow: column;
-    }
+.mo-main {
+    height: 100%;
+    display: flex;
+    flex-flow: column;
 }
 
 .mo-main__content.md.md-previewOnly {
