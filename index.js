@@ -51,7 +51,6 @@ const esmComponents = {
     'md-editor-v3/lib/style.css': 'https://npm.elemecdn.com/md-editor-v3@2.3.0/lib/style.css'
 };
 
-
 // 基础路径信息
 const rootPath = new URL(window.location.href).pathname;
 window['BasePath'] = {
