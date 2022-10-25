@@ -277,6 +277,10 @@ const handleMoveToBody = () => document.querySelector('.mo-main__body').scrollIn
     background-color: #fff;
 }
 
+.mo-main__article-pager.el-pagination.is-background >>> .el-pager li.is-active {
+    background-color: var(--el-color-primary);
+}
+
 .mo-main__backtop.el-backtop {
     right: var(--mo-main-backtop-right) !important;
     bottom: var(--mo-main-backtop-bottom) !important;
