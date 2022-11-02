@@ -3,10 +3,15 @@
 </template>
 
 <script setup>
-import { markRaw, ref } from 'vue';
+import { getCurrentInstance, markRaw, ref } from 'vue';
 import settingService from '@/api/setting-service.mod.js';
 import storage from '@/utils/storage.mod.js';
 import '@/style/theme.css';
+
+// 获取真实路径函数
+const getActualPath = getCurrentInstance().proxy.$getActualPath;
+// 获取动态组件函数
+const getAsyncComponent = getCurrentInstance().proxy.$getAsyncComponent;
 
 // 当前子组件
 const currentComponent = ref(null);
@@ -33,7 +38,9 @@ const currentComponent = ref(null);
             // 网页标题
             'title',
             // 分页列表每页显示数据条数
-            'pageSize'
+            'pageSize',
+            // 备案
+            'beian',
         ])
         .then((res) => {
             for (const key in res.data) {
@@ -44,10 +51,10 @@ const currentComponent = ref(null);
     const adminEntrance = storage.get('adminEntrance') || 'admin';
     const mainDir = new URL(window.location.href).searchParams.has(adminEntrance) ? 'admin' : 'home';
     try {
-        currentComponent.value = markRaw(await import(`./views/${mainDir}/Main.vue`));
+        currentComponent.value = markRaw(await getAsyncComponent(getActualPath(`@/views/${mainDir}/Main.vue`)));
     } catch (error) {
         console.log(error);
-        currentComponent.value = markRaw(await import('./views/common/404.vue'));
+        currentComponent.value = markRaw(await getAsyncComponent(getActualPath('@/views/common/404.vue')));
     }
 })();
 </script>

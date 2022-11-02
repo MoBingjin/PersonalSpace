@@ -3,9 +3,14 @@
 </template>
 
 <script setup>
-import { markRaw, ref } from 'vue';
+import { getCurrentInstance, markRaw, ref } from 'vue';
 import service from '@/utils/request.mod.js';
 import storage from '@/utils/storage.mod.js';
+
+// 获取真实路径函数
+const getActualPath = getCurrentInstance().proxy.$getActualPath;
+// 获取动态组件函数
+const getAsyncComponent = getCurrentInstance().proxy.$getAsyncComponent;
 
 // 当前子组件
 const currentComponent = ref(null);
@@ -16,7 +21,9 @@ const currentComponent = ref(null);
  * @param {any} data
  */
 const changePage = (data) =>
-    import(`./${data['componentName']}.vue`).then((component) => (currentComponent.value = markRaw(component)));
+    getAsyncComponent(getActualPath(`@/views/admin/${data['componentName']}.vue`)).then(
+        (component) => (currentComponent.value = markRaw(component))
+    );
 
 // 初始化操作
 (() => {

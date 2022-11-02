@@ -56,9 +56,14 @@
 <script setup>
 import MoHeadMenu from './MoHeadMenu.vue';
 import MoLeftMenu from './MoLeftMenu.vue';
-import { computed, markRaw, ref } from 'vue';
+import { computed, getCurrentInstance, markRaw, ref } from 'vue';
 import { ElMessageBox } from 'element-plus';
 import storage from '@/utils/storage.mod.js';
+
+// 获取真实路径函数
+const getActualPath = getCurrentInstance().proxy.$getActualPath;
+// 获取动态组件函数
+const getAsyncComponent = getCurrentInstance().proxy.$getAsyncComponent;
 
 // 回调对象
 const emits = defineEmits(['change-page']);
@@ -86,7 +91,7 @@ const handleOpenTab = (data) => {
     const { title, componentName, params, multipleId } = data;
     const tabs = editableTabs.value;
     const componentId = !multipleId ? title : title + String(multipleId);
-    import(`./${componentName}.vue`).then((component) => {
+    getAsyncComponent(getActualPath(`@/views/admin/${componentName}.vue`)).then((component) => {
         if (!containsObject(tabs, { componentId })) {
             tabs.push({
                 title,

@@ -1,33 +1,4 @@
-import { tagComponents, esmComponents } from './import.mod.js';
-
-// 基础路径信息
-const rootPath = new URL(window.location.href).pathname;
-window['BasePath'] = {
-    // 根路径
-    rootPath,
-
-    // static路径
-    staticPath: rootPath === '/' ? '/public' : `${rootPath}/public`,
-
-    // src路径（@）
-    srcPath: rootPath === '/' ? '/src' : `${rootPath}/src`,
-
-    /**
-     * 获取实际路径
-     *
-     * @param {string} path 自定义路径
-     * @returns 实际路径
-     */
-    getActualPath: (path) => {
-        path = esmComponents[path] || path;
-        if (path.startsWith('static/')) {
-            path = window['BasePath'].staticPath + path.substring(6);
-        } else if (path.startsWith('@/')) {
-            path = window['BasePath'].srcPath + path.substring(1);
-        }
-        return path;
-    }
-};
+import { tagComponents } from './import.mod.js';
 
 // 导入组件
 const head = document.getElementsByTagName('head')[0];
@@ -60,6 +31,7 @@ for (const componentName in tagComponents) {
 const body = document.getElementsByTagName('body')[0];
 const script = document.createElement('script');
 script.async = false;
+script.type = 'module';
 script.src = './src/main.js';
 body.appendChild(script);
 

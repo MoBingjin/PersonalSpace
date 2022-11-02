@@ -67,6 +67,14 @@
                 <el-form-item label="后台管理入口">
                     <el-input v-model="form.adminEntrance" placeholder="后台管理入口, 默认为admin" />
                 </el-form-item>
+                <el-form-item label="备案配置">
+                    <el-input class="mo-general-setting__input" v-model="form.beian.icp" placeholder="ICP备案号">
+                        <template #prepend><span class="mo-general-setting__beian-label">ICP备案号</span></template>
+                    </el-input>
+                    <el-input class="mo-general-setting__input" v-model="form.beian.police" placeholder="公安备案号">
+                        <template #prepend><span class="mo-general-setting__beian-label">公安备案号</span></template>
+                    </el-input>
+                </el-form-item>
             </el-form>
         </el-card>
     </div>
@@ -97,7 +105,11 @@ const form = reactive({
         home: 10,
         admin: 20
     },
-    adminEntrance: ''
+    adminEntrance: '',
+    beian: {
+        icp: '',
+        police: ''
+    }
 });
 
 // 校验规则
@@ -128,7 +140,9 @@ const init = () => {
             // 网页标题
             'title',
             // 分页列表每页显示数据条数
-            'pageSize'
+            'pageSize',
+            // 备案配置
+            'beian'
         ])
         .then((res) => {
             form.user = res.data['user'];
@@ -140,6 +154,7 @@ const init = () => {
             form.title = Object.assign({}, form.title, JSON.parse(res.data['title']));
             form.pageSize = Object.assign({}, form.title, JSON.parse(res.data['pageSize']));
             form.adminEntrance = res.data['adminEntrance'];
+            form.beian = Object.assign({}, form.beian, JSON.parse(res.data['beian']));
         })
         .catch((error) => {});
 };
@@ -158,7 +173,8 @@ const handleSave = () => {
                 _404ImageURL: form._404ImageURL,
                 title: JSON.stringify(form.title),
                 pageSize: JSON.stringify(form.pageSize),
-                adminEntrance: form.adminEntrance
+                adminEntrance: form.adminEntrance,
+                beian: JSON.stringify(form.beian)
             };
             settingService
                 .update(params)
@@ -212,5 +228,10 @@ const handleSave = () => {
 
 .mo-general-setting__input--last.el-input {
     margin-bottom: 0;
+}
+
+.mo-general-setting__beian-label {
+    width: 70px;
+    text-align: center;
 }
 </style>

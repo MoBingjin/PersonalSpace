@@ -5,7 +5,7 @@
                 <div class="mo-article-view__title">{{ article.title }}</div>
                 <div class="mo-article-view__info">
                     <span class="mo-article-view__info-item">
-                        <a class="mo-article-view__avatar" href="/">
+                        <a class="mo-article-view__avatar" :href="getActualPath('root')">
                             <img class="mo-article-view__avatar-img" :src="avatarURL" />
                         </a>
                     </span>
@@ -40,8 +40,10 @@ import { useRoute } from 'vue-router';
 import articleService from '@/api/article-service.mod.js';
 import storage from '@/utils/storage.mod.js';
 import store from '@/store/store.mod.js';
-import MdEditorV3, { MdCatalog } from 'md-editor-v3.js';
+import MdEditorV3 from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
+
+const { MdCatalog } = MdEditorV3;
 
 // 获取真实路径函数
 const getActualPath = getCurrentInstance().proxy.$getActualPath;

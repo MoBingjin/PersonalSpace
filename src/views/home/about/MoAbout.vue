@@ -33,7 +33,7 @@ const cssVariable = reactive({
 // 初始化操作
 (() => {
     // 获取关于内容
-    fetch(getActualPath('@/assets/doc/about.md'))
+    fetch(getActualPath('static/doc/about.md'))
         .then((res) => res.text())
         .then((text) => (aboutContent.value = text))
         .catch((error) => console.log(error));

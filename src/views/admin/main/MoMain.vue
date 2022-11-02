@@ -17,7 +17,7 @@ const content = ref('');
 
 // 初始化操作
 (() => {
-    fetch(getActualPath('@/assets/doc/main.md'))
+    fetch(getActualPath('static/doc/main.md'))
         .then((response) => {
             return response.text();
         })

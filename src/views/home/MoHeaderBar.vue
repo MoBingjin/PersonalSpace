@@ -20,9 +20,12 @@
 
 <script setup>
 import { HomeFilled, Briefcase, InfoFilled } from '@element-plus/icons-vue';
-import { computed, markRaw, reactive } from 'vue';
+import { computed, getCurrentInstance, markRaw, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import storage from '@/utils/storage.mod.js';
+
+// 获取真实路径函数
+const getActualPath = getCurrentInstance().proxy.$getActualPath;
 
 // 跳转路由对象
 const route = useRoute();
@@ -61,7 +64,7 @@ const defaultActive = computed(() => {
 /**
  * 回到主页
  */
-const goHome = () => (window.location.href = '/');
+const goHome = () => (window.location.href = getActualPath('root'));
 </script>
 
 <style scoped>

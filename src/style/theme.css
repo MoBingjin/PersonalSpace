@@ -21,8 +21,8 @@
     --mo-home-main-mask-background-color: #99999957;
 
     /* 前台导航栏 */
-    --mo-header-bar-logo-font-family: "HYWenHei-85W", "Merriweather Sans", Helvetica, Tahoma, Arial, "PingFang SC",
-        "Hiragino Sans GB", "Microsoft Yahei", "WenQuanYi Micro Hei", "sans-serif";
+    --mo-header-bar-logo-font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC',
+        'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
     --mo-header-bar-logo-font-size: 28px;
     --mo-header-bar-logo-font-weight: 800;
     --mo-header-bar-logo-margin: 0 0 0 10px;
@@ -37,8 +37,8 @@
     --mo-header-bar-menu-background-color-hover: #ddd8;
 
     /* 前台侧边栏 */
-    --mo-side-bar-logo-font-family: "HYWenHei-85W", "Merriweather Sans", Helvetica, Tahoma, Arial, "PingFang SC",
-        "Hiragino Sans GB", "Microsoft Yahei", "WenQuanYi Micro Hei", "sans-serif";
+    --mo-side-bar-logo-font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC',
+        'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
     --mo-side-bar-logo-font-size: 28px;
     --mo-side-bar-logo-font-weight: 800;
     --mo-side-bar-logo-padding: 200px 0 50px 0;
@@ -74,8 +74,8 @@
     --mo-article-card-background-color: #fff;
     --mo-article-card-box-shadow: 0 1px 20px -6px rgb(0 0 0 / 50%);
     --mo-article-card-box-shadow-hover: 0 5px 10px 5px rgb(110 110 110 / 40%);
-    --mo-article-card-detail-font-family: "HYWenHei-85W", "Merriweather Sans", Helvetica, Tahoma, Arial, "PingFang SC",
-        "Hiragino Sans GB", "Microsoft Yahei", "WenQuanYi Micro Hei", "sans-serif";
+    --mo-article-card-detail-font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC',
+        'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
     --mo-article-card-title-font-weight: 550;
     --mo-article-card-title-color: #504e4e;
     --mo-article-card-title-color-hover: #fe9600;
@@ -87,8 +87,8 @@
 
     /* 文章浏览 */
     --mo-article-view-head-background-image: var(--mo-article-view-cover-image);
-    --mo-article-view-detail-font-family: "HYWenHei-85W", "Merriweather Sans", Helvetica, Tahoma, Arial, "PingFang SC",
-        "Hiragino Sans GB", "Microsoft Yahei", "WenQuanYi Micro Hei", "sans-serif";
+    --mo-article-view-detail-font-family: 'HYWenHei-85W', 'Merriweather Sans', Helvetica, Tahoma, Arial, 'PingFang SC',
+        'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'sans-serif';
     --mo-article-view-detail-color: #fff;
     --mo-article-view-detail-text-shadow: 2px 2px 10px #000;
     --mo-article-view-info-font-size: 14px;
@@ -133,6 +133,17 @@
     --mo-about-wave-background: #fff;
     --mo-about-body-padding: 10px;
 
+    /* 备案 */
+    --mo-beian-font-size: 12px;
+    --mo-beian-padding: 10px 0;
+    --mo-beian-background-color: #e6e6e6;
+    --mo-beian-icp-height: 20px;
+    --mo-beian-icp-margin: 0 10px 0 0;
+    --mo-beian-icp-color: #939393;
+    --mo-beian-police-height: 20px;
+    --mo-beian-police-color: #939393;
+    --mo-beian-police-img-margin: 0 2px 0 0;
+
     /***************************** 后台 *****************************/
 
     /* 后台管理登录 */
@@ -140,8 +151,8 @@
     --mo-login-background-after-background: #f6f6f6b4;
     --mo-login-panel-background: #ffffff80;
     --mo-login-panel-box-shadow: 0 0 10px #000;
-    --mo-login-title-font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-        "微软雅黑", Arial, sans-serif;
+    --mo-login-title-font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+        '微软雅黑', Arial, sans-serif;
     --mo-login-title-font-size: 30px;
     --mo-login-title-color: #000;
 
@@ -156,7 +167,7 @@
     --mo-panel-menu-divider-background-color: #bebebe;
 
     /* 后台管理头部 */
-    --mo-head-logo-font-family: "宋体";
+    --mo-head-logo-font-family: '宋体';
     --mo-head-logo-font-size: 30px;
     --mo-head-logo-color: #e6e6e6;
     --mo-head-logo-border: 1px solid #f5f5f5;

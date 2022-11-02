@@ -31,12 +31,14 @@
             </div>
             <el-backtop class="mo-main__backtop" />
         </div>
+        <mo-beian :icp-text="beian?.icp" :police-text="beian?.police" />
     </div>
 </template>
 
 <script setup>
 import { ArrowDownBold } from '@element-plus/icons-vue';
 import MoArticleCard from './components/MoArticleCard.vue';
+import MoBeian from '@/views/common/MoBeian.vue';
 import { getCurrentInstance, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import articleService from '@/api/article-service.mod.js';
@@ -58,6 +60,8 @@ const { model, listData, refresh } = managementViewUtils.create({ service: artic
 model.pageSize = storage.getObject('pageSize')['home'];
 // 头像路径
 const avatarURL = storage.get('avatarImageURL') || getActualPath('static/img/avatar.png');
+// 备案配置
+const beian = reactive(storage.getObject('beian'));
 
 // CSS变量
 const cssVariable = reactive({
@@ -98,8 +102,8 @@ const handleMoveToBody = () => document.querySelector('.mo-main__body').scrollIn
 
 <style scoped>
 .mo-main {
-    --mo-main-background-image: v-bind(cssVariable.backgroundURL);
-    --mo-main-wave-image: v-bind(cssVariable.waveURL);
+    --mo-main-background-image: v-bind('cssVariable.backgroundURL');
+    --mo-main-wave-image: v-bind('cssVariable.waveURL');
     --mo-main-avatar-animation: fadeInDown 1.5s 1;
     --mo-main-avatar-img-padding: 5px;
     --mo-main-avatar-img-transition: all 1s ease;
