@@ -152,7 +152,7 @@ const init = () => {
             form.defaultCoverImageURL = res.data['defaultCoverImageURL'];
             form._404ImageURL = res.data['_404ImageURL'];
             form.title = Object.assign({}, form.title, JSON.parse(res.data['title']));
-            form.pageSize = Object.assign({}, form.title, JSON.parse(res.data['pageSize']));
+            form.pageSize = Object.assign({}, form.pageSize, JSON.parse(res.data['pageSize']));
             form.adminEntrance = res.data['adminEntrance'];
             form.beian = Object.assign({}, form.beian, JSON.parse(res.data['beian']));
         })
