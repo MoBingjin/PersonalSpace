@@ -1,26 +1,62 @@
 import { ElMessage, ElMessageBox } from 'element-plus';
 import axios from 'axios.js';
 import storage from '@/utils/storage.mod.js';
+import globaleProperties from '@/utils/globale-properties.mod.js';
 
-// 创建一个axios实例
-const service = axios.create({
-    // 基础路径
-    baseURL: 'http://localhost:8233',
+// 后台管理入口
+const adminEntrance = storage.get('adminEntrance') || 'admin';
+
+// 配置项
+const options = {
+    // 是否开启mock
+    enableMock: true,
+    // mock基础路径
+    mockBaseURL: new URL(window.location.href).origin + '/static/data',
+    // mock替换请求数组
+    mockMatcher: ['/setting/public/', '/article/list/', '/article/info/[0-9]+'],
+    // 请求基础路径
+    baseURL: 'https://localhost:8233',
     // 请求超时时间（毫秒）
     timeout: 30000,
-    // header参数配置
+    // 请求header参数配置
     headers: {
         'Content-Type': 'application/json;charset=UTF-8'
     }
+};
+
+// 创建一个axios实例
+const service = axios.create({
+    baseURL: options.baseURL,
+    timeout: options.timeout,
+    headers: options.headers
 });
 
 // 请求拦截器
 service.interceptors.request.use(
-    (config) => {
+    async (config) => {
         const token = storage.get('token');
         if (token) {
             // 配置登录认证token
             config.headers.common['Authorization'] = 'Bearer ' + token;
+        }
+        const url = new URL(config.url);
+        // 替换mock数据请求
+        if (
+            options.enableMock &&
+            !new URL(window.location.href).searchParams.has(adminEntrance) &&
+            options.mockMatcher.find((regExp) => new RegExp(regExp).test(url.pathname))
+        ) {
+            if (!options.mockBaseActualURL) {
+                const getActualPath = await globaleProperties.get('getActualPath');
+                const mockBaseURL = new URL(options.mockBaseURL);
+                options.mockBaseActualURL = mockBaseURL.href.replace(
+                    mockBaseURL.pathname,
+                    getActualPath(mockBaseURL.pathname.substring(1))
+                );
+            }
+            const mockUrl = new URL(config.url.replace(url.origin, options.mockBaseActualURL));
+            config.url = mockUrl.href.replace(mockUrl.pathname, mockUrl.pathname + '.json').replace('/.json', '.json');
+            config.method = 'get';
         }
         return config;
     },
@@ -46,6 +82,17 @@ service.interceptors.response.use(
                 type: 'error'
             });
             return Promise.reject(new Error(`${res.message}: ${res.data.errorMessage}`));
+        }
+        const responseURL = new URL(response.request.responseURL);
+        // mock数据分页处理
+        if (
+            options.enableMock &&
+            responseURL.href.startsWith(options.mockBaseActualURL) &&
+            responseURL.searchParams.has('size')
+        ) {
+            const page = responseURL.searchParams.has('page') ? responseURL.searchParams.get('page') : 1;
+            const size = responseURL.searchParams.get('size');
+            res.data.list = res.data.list.slice((page - 1) * size, page * size);
         }
         return res;
     },
