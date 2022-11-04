@@ -38,7 +38,7 @@
         axios: 'https://cdn.staticfile.org/axios/1.1.3/esm/axios.min.js',
 
         // Lodash JS库
-        lodash: 'https://cdn.staticfile.org/lodash.js/4.17.21/lodash.min.js',
+        lodash: 'https://npm.elemecdn.com/lodash-es@4.17.21/lodash.js',
 
         // MdEditor富文本插件
         'md-editor-v3': 'https://npm.elemecdn.com/md-editor-v3@2.3.0/lib/md-editor-v3.es.js',
