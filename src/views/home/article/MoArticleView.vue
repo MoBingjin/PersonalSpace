@@ -37,10 +37,10 @@
 <script setup>
 import { getCurrentInstance, reactive } from 'vue';
 import { useRoute } from 'vue-router';
-import articleService from '@/api/article-service.mod.js';
-import storage from '@/utils/storage.mod.js';
-import store from '@/store/store.mod.js';
-import MdEditorV3 from 'md-editor-v3.js';
+import articleService from '@/api/article-service.mjs.js';
+import storage from '@/utils/storage.mjs.js';
+import store from '@/store/store.mjs.js';
+import MdEditorV3 from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 
 const { MdCatalog } = MdEditorV3;

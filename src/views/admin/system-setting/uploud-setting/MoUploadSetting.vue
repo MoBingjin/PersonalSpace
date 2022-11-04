@@ -39,7 +39,7 @@
 <script setup>
 import { reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import settingService from '@/api/setting-service.mod.js';
+import settingService from '@/api/setting-service.mjs.js';
 
 // 表单数据组件
 const formComponent = ref();

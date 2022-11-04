@@ -24,7 +24,7 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
-import tagService from '@/api/tag-service.mod.js';
+import tagService from '@/api/tag-service.mjs.js';
 
 // 回调事件
 const emits = defineEmits(['confirm']);

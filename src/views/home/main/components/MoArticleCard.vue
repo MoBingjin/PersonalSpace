@@ -36,7 +36,7 @@
 <script setup>
 import MoIcon from '@/components/icons/MoIcon.vue';
 import { getCurrentInstance } from 'vue';
-import storage from '@/utils/storage.mod.js';
+import storage from '@/utils/storage.mjs.js';
 
 // 参数
 defineProps({

@@ -26,8 +26,8 @@ import MoIcon from '@/components/icons/MoIcon.vue';
 import MoHeaderBar from './MoHeaderBar.vue';
 import MoSideBar from './MoSideBar.vue';
 import { computed, getCurrentInstance, ref, watch } from 'vue';
-import router from '@/router/router.mod.js';
-import store from '@/store/store.mod.js';
+import router from '@/router/router.mjs.js';
+import store from '@/store/store.mjs.js';
 
 // 是否启用工具栏
 const enableBar = ref(true);

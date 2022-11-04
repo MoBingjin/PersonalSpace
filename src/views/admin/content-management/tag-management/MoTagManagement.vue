@@ -51,8 +51,8 @@ import MoManagement from '@/components/management/MoManagement.vue';
 import MoTagAddOrUpdate from './components/MoTagAddOrUpdate.vue';
 import { ref, watch } from 'vue';
 import { ElMessage } from 'element-plus';
-import tagService from '@/api/tag-service.mod.js';
-import managementViewUtils from '@/utils/management-view-utils.mod.js';
+import tagService from '@/api/tag-service.mjs.js';
+import managementViewUtils from '@/utils/management-view-utils.mjs.js';
 
 // 表格组件对象
 const tableComponent = ref();

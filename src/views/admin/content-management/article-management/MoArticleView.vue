@@ -19,8 +19,8 @@
 </template>
 
 <script setup>
-import articleService from '@/api/article-service.mod.js';
-import MdEditorV3 from 'md-editor-v3.js';
+import articleService from '@/api/article-service.mjs.js';
+import MdEditorV3 from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import { reactive } from 'vue';
 

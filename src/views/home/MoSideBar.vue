@@ -15,7 +15,7 @@
 <script setup>
 import { HomeFilled, Briefcase, InfoFilled } from '@element-plus/icons-vue';
 import { markRaw, reactive } from 'vue';
-import storage from '@/utils/storage.mod.js';
+import storage from '@/utils/storage.mjs.js';
 
 // 回调对象
 const emits = defineEmits(['close-side-bar']);

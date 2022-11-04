@@ -43,8 +43,8 @@
 import MoIcon from '@/components/icons/MoIcon.vue';
 import { getCurrentInstance, reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import userService from '@/api/user-service.mod.js';
-import storage from '@/utils/storage.mod.js';
+import userService from '@/api/user-service.mjs.js';
+import storage from '@/utils/storage.mjs.js';
 
 // 获取真实路径函数
 const getActualPath = getCurrentInstance().proxy.$getActualPath;

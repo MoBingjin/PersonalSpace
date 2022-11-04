@@ -29,7 +29,7 @@
 <script setup>
 import MoToolbar from './MoToolbar.vue';
 import { reactive } from 'vue';
-import storage from '@/utils/storage.mod.js';
+import storage from '@/utils/storage.mjs.js';
 
 //参数
 defineProps({

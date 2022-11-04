@@ -6,7 +6,7 @@
 
 <script setup>
 import { getCurrentInstance, ref } from 'vue';
-import MdEditorV3 from 'md-editor-v3.js';
+import MdEditorV3 from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 
 // 获取真实路径函数

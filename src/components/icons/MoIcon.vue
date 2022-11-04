@@ -6,7 +6,7 @@
 
 <script setup>
 import { computed, ref } from 'vue';
-import store from '@/store/store.mod.js';
+import store from '@/store/store.mjs.js';
 import iconConfig from '@/assets/icons/icon.config.json';
 
 // 参数

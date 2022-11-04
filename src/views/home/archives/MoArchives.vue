@@ -27,8 +27,8 @@
 
 <script setup>
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
-import articleService from '@/api/article-service.mod.js';
-import storage from '@/utils/storage.mod.js';
+import articleService from '@/api/article-service.mjs.js';
+import storage from '@/utils/storage.mjs.js';
 
 // 归档状态数据
 const archivesState = reactive({

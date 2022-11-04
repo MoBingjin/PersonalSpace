@@ -4,8 +4,8 @@
 
 <script setup>
 import { getCurrentInstance, markRaw, ref } from 'vue';
-import service from '@/utils/request.mod.js';
-import storage from '@/utils/storage.mod.js';
+import service from '@/utils/request.mjs.js';
+import storage from '@/utils/storage.mjs.js';
 
 // 获取真实路径函数
 const getActualPath = getCurrentInstance().proxy.$getActualPath;

@@ -67,8 +67,8 @@ import MoManagement from '@/components/management/MoManagement.vue';
 import MoCategoryAddOrUpdate from './components/MoCategoryAddOrUpdate.vue';
 import { ref, watch } from 'vue';
 import { ElMessage } from 'element-plus';
-import categoryService from '@/api/category-service.mod.js';
-import managementViewUtils from '@/utils/management-view-utils.mod.js';
+import categoryService from '@/api/category-service.mjs.js';
+import managementViewUtils from '@/utils/management-view-utils.mjs.js';
 
 // 表格组件对象
 const tableComponent = ref();

@@ -41,10 +41,10 @@ import MoArticleCard from './components/MoArticleCard.vue';
 import MoBeian from '@/views/common/MoBeian.vue';
 import { getCurrentInstance, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import articleService from '@/api/article-service.mod.js';
-import managementViewUtils from '@/utils/management-view-utils.mod.js';
-import storage from '@/utils/storage.mod.js';
-import store from '@/store/store.mod.js';
+import articleService from '@/api/article-service.mjs.js';
+import managementViewUtils from '@/utils/management-view-utils.mjs.js';
+import storage from '@/utils/storage.mjs.js';
+import store from '@/store/store.mjs.js';
 
 // 获取真实路径函数
 const getActualPath = getCurrentInstance().proxy.$getActualPath;

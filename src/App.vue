@@ -4,8 +4,8 @@
 
 <script setup>
 import { getCurrentInstance, markRaw, ref } from 'vue';
-import settingService from '@/api/setting-service.mod.js';
-import storage from '@/utils/storage.mod.js';
+import settingService from '@/api/setting-service.mjs.js';
+import storage from '@/utils/storage.mjs.js';
 import '@/style/theme.css';
 
 // 获取真实路径函数

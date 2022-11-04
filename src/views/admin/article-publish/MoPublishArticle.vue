@@ -85,11 +85,11 @@
 import MoImageUploader from '@/components/upload/MoImageUploader.vue';
 import { reactive, ref, watch } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import articleService from '@/api/article-service.mod.js';
-import categoryService from '@/api/category-service.mod.js';
-import tagService from '@/api/tag-service.mod.js';
-import imageService from '@/api/image-service.mod.js';
-import MdEditorV3 from 'md-editor-v3.js';
+import articleService from '@/api/article-service.mjs.js';
+import categoryService from '@/api/category-service.mjs.js';
+import tagService from '@/api/tag-service.mjs.js';
+import imageService from '@/api/image-service.mjs.js';
+import MdEditorV3 from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 
 // 参数

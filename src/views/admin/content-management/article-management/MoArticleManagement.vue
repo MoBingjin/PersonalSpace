@@ -98,10 +98,10 @@
 import { Search } from '@element-plus/icons-vue';
 import MoArticleColumn from './components/MoArticleColumn.vue';
 import { computed, getCurrentInstance, reactive } from 'vue';
-import articleService from '@/api/article-service.mod.js';
-import categoryService from '@/api/category-service.mod.js';
-import tagService from '@/api/tag-service.mod.js';
-import managementViewUtils from '@/utils/management-view-utils.mod.js';
+import articleService from '@/api/article-service.mjs.js';
+import categoryService from '@/api/category-service.mjs.js';
+import tagService from '@/api/tag-service.mjs.js';
+import managementViewUtils from '@/utils/management-view-utils.mjs.js';
 
 // 局部ID
 const scopeId = getCurrentInstance().type.__scopeId;

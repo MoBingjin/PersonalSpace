@@ -58,7 +58,7 @@ import MoHeadMenu from './MoHeadMenu.vue';
 import MoLeftMenu from './MoLeftMenu.vue';
 import { computed, getCurrentInstance, markRaw, ref } from 'vue';
 import { ElMessageBox } from 'element-plus';
-import storage from '@/utils/storage.mod.js';
+import storage from '@/utils/storage.mjs.js';
 
 // 获取真实路径函数
 const getActualPath = getCurrentInstance().proxy.$getActualPath;

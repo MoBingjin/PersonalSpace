@@ -31,7 +31,7 @@
 <script setup>
 import MoImageUploader from '@/components/upload/MoImageUploader.vue';
 import { reactive, ref } from 'vue';
-import categoryService from '@/api/category-service.mod.js';
+import categoryService from '@/api/category-service.mjs.js';
 
 // 回调事件
 const emits = defineEmits(['confirm']);

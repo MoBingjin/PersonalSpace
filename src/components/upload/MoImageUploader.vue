@@ -23,8 +23,8 @@
 import { Plus } from '@element-plus/icons-vue';
 import { computed, reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import { imageApi } from '@/api/image-service.mod.js';
-import storage from '@/utils/storage.mod.js';
+import { imageApi } from '@/api/image-service.mjs.js';
+import storage from '@/utils/storage.mjs.js';
 
 // 参数
 const props = defineProps({

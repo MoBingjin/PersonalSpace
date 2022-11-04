@@ -22,7 +22,7 @@
 import { HomeFilled, Briefcase, InfoFilled } from '@element-plus/icons-vue';
 import { computed, getCurrentInstance, markRaw, reactive } from 'vue';
 import { useRoute } from 'vue-router';
-import storage from '@/utils/storage.mod.js';
+import storage from '@/utils/storage.mjs.js';
 
 // 获取真实路径函数
 const getActualPath = getCurrentInstance().proxy.$getActualPath;
